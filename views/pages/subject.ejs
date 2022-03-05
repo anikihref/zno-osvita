@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<%- include("../partials/head.ejs") %>
+</head>
+<body>
+	<div class="wrapper">
+		<header class="header header_breadcrump">
+			<%- include("../partials/header.ejs") %>
+			<div class="breadcrump">
+				<a class="breadcrump__first breadcrump__item" href="/">Тести ЗНО онлайн</a>
+				<a class="breadcrump__second breadcrump__item" href="#"> <%= name %> </a>
+			</div>
+		</header>
+
+		<main class="main">
+			<div class="main__body">
+				<div class="main__test-name test-name">
+					<div class="test-name__pre-title">
+						Тести ЗНО онлайн з предмета
+					</div>
+					<h2 class="test-name__title">
+						«<%= name %>»
+					</h2>
+				</div>
+
+				<div class="main__categories categories">
+					<div class="categories__item">
+
+						<nav class="categories__links">
+							<% for(let i=0; i<(years.length); i++) {%>
+							<h4 class="categories__name"><%= years[i] %></h4>
+
+							<div class="category__links">
+								<% for(let n=0; n<(links[i].length); n++) { %>
+
+									<a class="categories__link" href="/<%= linkName %>/<%= years[i] %><%= links[i][n] %>">ЗНО онлайн <span><%= years[i] %> року</span> з <%= nameRodovuyVidminok %> – <span><%= testNames[links[i][n]] %></span></a>
+								
+	
+	
+								<% }%>
+							</div>
+							<% }%>
+						</nav>
+					
+					</div>
+				</div>
+			</div>
+
+			<div class="main__advertising">
+				Реклама 50 грн
+			</div>
+		</main>
+		<%- include("../partials/footer.ejs") %>
+	</div>
+</body>
+
+</html>

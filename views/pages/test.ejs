@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+	<%- include("../partials/head.ejs") %>
+</head>
+
+
+<body>
+	<div class="wrapper">
+		<header class="header header_breadcrump">
+			<div class="header__content">
+				<div class="header__main">
+					<nav class="header__nav">
+						<a href="#" class="header__link active__link">ЗНО-онлайн</a>
+						<a href="#" class="header__link">ОСВІТА.UA</a>
+						<a href="#" class="header__link">Все про вступ</a>
+						<a href="#" class="header__link">Все про ЗНО</a>
+						<a href="#" class="header__link">Вступ.ОСВІТА.UA</a>
+						<a href="#" class="header__link">Рейтинги ВНЗ</a>
+					</nav>
+
+					<div class="authorization">
+						<a href="#" class="authorization__log-in" id="log-in">Вхід</a>
+						<span>/</span>
+						<a href="#" class="authorization__register" id="register">Реєстрація</a>
+					</div>
+				</div>
+				<div class="header__title-block">
+					<h1 class="header__title">ЗНО-ОНЛАЙН</h1>
+					<p>Онлайн — тести зовнішнього оцінювання</p>
+				</div>
+
+
+			</div>
+			<div class="breadcrump">
+				<a class="breadcrump__first breadcrump__item" href="/">Тести ЗНО онлайн </a>
+				<a class="breadcrump__second breadcrump__item" href="/math">Математика</a>
+				<a class="breadcrump__third breadcrump__item" href="#">ЗНО онлайн 2021 року з математики – <%= pageName %></a>
+			</div>
+		</header>
+
+		<main class="main">
+
+			<div class="main__body">
+				<div class="question">
+					<div class="question__blocks">
+						<div class="question__num">
+							Завдання <span id="question-num">1</span> з <span id="all-question-num"><%= questionNum %></span>
+						</div>
+					</div>
+
+
+				
+				</div>
+				<form class="question__form form" name="userForm">
+					<div class="question__elements" id="answer-form">
+						<div class="question__wrapper">
+							<div class="question__text-wrapper">
+								<% if (type === 'multipleWrite') { %>
+									<% for(var n=0; n<(questions.length); n++) { %>
+										<p class="question__text-multiple"> <%= n+1 %>. <%= questions[n] %></p>
+									<% } %>
+							<% } %>
+							<% if (type === 'radio' || type === 'write') { %>
+									<p>
+										<%= text %>
+									</p>
+							<% } %>
+							</div>
+	
+								<% if(type==='write' ) { %>
+									<div class="form__inputText" id="question">
+										<input type="text" id="writeInput">
+									</div>
+								<% } %>
+	
+								<% if (type==='radio') { %>
+										<div class="form__radio"  id="question">
+											<% for(var n=0; n<(variants.length); n++) { %>
+												<div class="form__answer form__answer<%= n+1 %>">
+													<label class="radio__button-label">
+														<input class="radio__input" type="radio" name="answer" id="answer<%= n+1 %>">
+														<div class="radio__button"></div>
+													</label>
+													<span class="radioAnswer" id="answer<%= n+1 %>"><%= variants[n] %></span>
+												</div>
+											<% } %>
+										</div>
+								<% } %>
+	
+								<% if(type === 'multipleWrite') {%>
+									
+										<div class="form__multipleWrite"  id="question">
+											<% for(var n=0; n<(questions.length); n++) { %>
+												<div class="form__inputText">
+													<p class="form__multipleWrite-num"><%= n+1 %>.</p>
+													<input type="text" class="multipleWriteInput" id="input">
+												</div>
+											<% } %>
+										</div>
+									
+								<% } %>
+						</div>
+			
+							</div>
+							<div class="form__btn-block">
+								<div class="form__btn-block-left">
+									<button class="form__green-btn form__btn" id="submitBtn" type="button">Ответить</button>
+									<button class="form__green-btn form__btn" id="nextBtn" type="button">Пропустить</button>
+									<button class="question__seeall-btn form__green-btn form__btn" type="button">Смотреть все</button>
+
+								</div>
+									
+								<div class="form__btn-block-right">
+									<button class="form__end-btn form__btn" id="submitBtn" type="button">Завершить тест</button>
+								</div>
+							</div>
+				</form>
+			</div>
+
+			<div class="main__advertising">
+				реклама 25 грн
+			</div>
+		</main>
+		<footer class="footer">
+
+		</footer>
+	</div>
+	<script src="/style.js"></script>
+
+	<script defer type="module" src="/main.js"></script>
+
+</body>
+
+</html>
