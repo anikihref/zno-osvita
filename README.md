@@ -14,7 +14,7 @@ In a few month I'll try to make it look better then original site [zno-osvita](h
 Download this project to your computer and make sure that you have npm and node.js installed on your computer.
 Open command line and go to this project. Than type this commands: 
 
-    npm init
+    npm i
     
     npm start
     
