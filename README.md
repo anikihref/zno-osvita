@@ -1,7 +1,7 @@
 > only fewer links are working now 'cause it's only first version of my project.
 
 # zno-osvita
-So it's mu first pet-project. I haven't done it yet, but I still working on it.
+So it's my first pet-project. I haven't done it yet, but I still working on it.
 
 In a few month I'll try to make it look better then original site [zno-osvita](https://zno.osvita.ua/).
 
