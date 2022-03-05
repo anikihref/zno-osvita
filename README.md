@@ -10,7 +10,6 @@ In a few month I'll try to make it look better then original site [zno-osvita](h
 Скачайте проект себе на компютер и убедитесь что на вашем компютере также установлен npm и node.js.
 Откройте коммандную строку и перейдите в директорию проекта. Затем напишите эти комманды:
 
-| =)
 
 Download this project to your computer and make sure that you have npm and node.js installed on your computer.
 Open command line and go to this project. Than type this commands: 
