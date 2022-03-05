@@ -19,6 +19,7 @@ Open command line and go to this project. Than type this commands:
     npm start
     
 Than open [this](localhost:5000) and it must work, if something went wrong or isn't clear for you write me a message @grandwar39@gmail.com
+
 Затем откройте ссылку сверху и это должно заработать. Если не работает или у вас возникли трудности - напишите мне сообщение(сверху почта)
     
     
