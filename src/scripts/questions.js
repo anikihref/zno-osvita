@@ -194,11 +194,11 @@ export let questions = {
       ],
 			options: {
 				year: "2021",
-				links: ["dodatkova", "osnovna", "probniy-test", "demonstration"],
+				links: ["dodatkova", "osnovna", "probniyTest", "demonstration"],
 			}
     },
   },
-  english: {
+  'english-lang': {
     year2021: {
       dodatkova: [
         {
@@ -207,7 +207,7 @@ export let questions = {
           expectedAnswer: ["132", "139"],
         },
         {
-          text: "У тебя здохла мать",
+          text: "У тебя здохла a",
           type: "radio",
           expectedAnswer: "Голова Тишка",
           variants: ["мне некого больше ебать", "1000-7", "Голова Тишка", ":)"],
@@ -393,7 +393,7 @@ export let questions = {
       ],
       options: {
         year: "2021",
-        links: ["dodatkova", "osnovna", "probniy-test", "demonstration"],
+        links: ["dodatkova", "osnovna", "probniyTest", "demonstration"],
       },
     },
     year2020: {
@@ -590,11 +590,11 @@ export let questions = {
       ],
       options: {
         year: "2020",
-        links: ["dodatkova", "osnovna", "probniy-test", "demonstration"],
+        links: ["dodatkova", "osnovna", "probniyTest", "demonstration"],
       },
     },
   },
-	ukrLanguage: {
+	'ukr-lang': {
 		year2021: {
 			osnovna: [
 				{

@@ -15,7 +15,7 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/src/scripts")); // делаем скрипты статичными
 app.use(express.static(__dirname + "/src/styles")); // делаем стили статичными
 app.use(express.static(__dirname + "/src/fonts")); // делаем шрифты статичными
-app.use(express.static(__dirname + "/src/imgs"));
+app.use(express.static(__dirname + "/src/imgs")); // длеаем картинки статичными
 
 app.use("/math", mathRouter);
 app.use("/english-lang", engLangRouter);

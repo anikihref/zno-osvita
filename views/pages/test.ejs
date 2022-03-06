@@ -32,12 +32,11 @@
 					<p>Онлайн — тести зовнішнього оцінювання</p>
 				</div>
 
-
 			</div>
 			<div class="breadcrump">
 				<a class="breadcrump__first breadcrump__item" href="/">Тести ЗНО онлайн </a>
-				<a class="breadcrump__second breadcrump__item" href="/math">Математика</a>
-				<a class="breadcrump__third breadcrump__item" href="#">ЗНО онлайн 2021 року з математики – <%= pageName %></a>
+				<a class="breadcrump__second breadcrump__item" href="/<%= subjectNames.linkName %>"><%= subjectNames.name %></a>
+				<a class="breadcrump__third breadcrump__item" href="#">ЗНО онлайн 2021 року з <%= subjectNames.nameRodovuyVidminok %> – <%= pageName %></a>
 			</div>
 		</header>
 
@@ -58,18 +57,19 @@
 					<div class="question__elements" id="answer-form">
 						<div class="question__wrapper">
 							<div class="question__text-wrapper">
-								<% if (type === 'multipleWrite') { %>
-									<% for(var n=0; n<(questions.length); n++) { %>
-										<p class="question__text-multiple"> <%= n+1 %>. <%= questions[n] %></p>
-									<% } %>
+							<% if (type === 'multipleWrite') { %>
+								<% for(var n=0; n<(multipleWrite.questions.length ); n++) { %>
+									<p class="question__text-multiple"> <%= n+1 %>. <%= multipleWrite.questions[n] %></p>
+								<% } %>
 							<% } %>
+
 							<% if (type === 'radio' || type === 'write') { %>
 									<p>
 										<%= text %>
 									</p>
 							<% } %>
+
 							</div>
-	
 								<% if(type==='write' ) { %>
 									<div class="form__inputText" id="question">
 										<input type="text" id="writeInput">
@@ -78,22 +78,22 @@
 	
 								<% if (type==='radio') { %>
 										<div class="form__radio"  id="question">
-											<% for(var n=0; n<(variants.length); n++) { %>
+											<% for(var n=0; n<(radio.variants.length); n++) { %>
 												<div class="form__answer form__answer<%= n+1 %>">
 													<label class="radio__button-label">
 														<input class="radio__input" type="radio" name="answer" id="answer<%= n+1 %>">
 														<div class="radio__button"></div>
 													</label>
-													<span class="radioAnswer" id="answer<%= n+1 %>"><%= variants[n] %></span>
+													<span class="radioAnswer" id="answer<%= n+1 %>"><%= radio.variants[n] %></span>
 												</div>
 											<% } %>
 										</div>
 								<% } %>
-	
+
 								<% if(type === 'multipleWrite') {%>
 									
 										<div class="form__multipleWrite"  id="question">
-											<% for(var n=0; n<(questions.length); n++) { %>
+											<% for(var n=0; n<(multipleWrite.questions.length); n++) { %>
 												<div class="form__inputText">
 													<p class="form__multipleWrite-num"><%= n+1 %>.</p>
 													<input type="text" class="multipleWriteInput" id="input">
