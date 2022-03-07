@@ -19,7 +19,7 @@ import {
 	createQuestionFinished
 } from "./createElement.js";
 
-const { $questionBlocks, $questionNum, $answerForm } = htmlElements;
+const { $questionBlocks, $questionNum, $answerForm, $questionWrapper } = htmlElements;
 
 export function findNextQuestion(question, logic = "default") {
   // делаем копию массива вопросов
@@ -83,7 +83,7 @@ export function seeAllQuestions() {
 
   allQuestionsList.forEach((question) => {
     // создаём html вопроса
-    const $question = createQuestionFinished(question);
+    const $question = createHtmlBlock('div', createQuestionFinished(question)) 
     // создаём div с номером вопроса
     const $questionNumber = createHtmlBlock("div", question.id + 1);
     // вставляем div с номером вопроса в блок вопроса
@@ -91,6 +91,7 @@ export function seeAllQuestions() {
     // добавляем классы блоку вопроса
     addClass(
       $question,
+			'question__wrapper',
       "question__wrapper_all",
       `question__wrapper${question.id}`
     );
@@ -109,7 +110,7 @@ export function seeAllQuestions() {
     // добавляем класс для блока с ответом
     addClass(
       $question.querySelector(".question__answer-wrapper"),
-      "question__answer-wrapper_all"
+      "question__answer-wrapper_all",
     );
   });
 }
@@ -123,12 +124,6 @@ export function insertAnswer(question) {
   const $answerWrapper = document.querySelector(`.form${question.id}`);
 
   switch (question.type) {
-    case "write": {
-      $answerWrapper.querySelector("#writeInput").value = question.answer;
-
-      break;
-    }
-
     case "radio": {
       // массив из всех радио кнопок
       const inputs = [...$answerWrapper.querySelectorAll("input.radio__input")];
@@ -146,10 +141,10 @@ export function insertAnswer(question) {
       break;
     }
 
-    case "multipleWrite": {
+    case "write": {
       // получаем массив input'ов типа type="text"
       const inputs = [
-        ...$answerWrapper.querySelectorAll("input.multipleWriteInput"),
+        ...$answerWrapper.querySelectorAll(".writeInput")
       ];
       // вставляем каждый ответ в соответствующую форму
       question.answer.forEach((answer, i) => {
@@ -165,15 +160,12 @@ export function changeQuestionNumber(num) {
   changeTextContent($questionNum, num);
 }
 
-export function turnQuestion(question, parent = $answerForm) {
-	// создаём html элемент вопроса
-	const $questionWrapper = createQuestion(question)
-
+export function turnQuestion(question, parent = $questionWrapper) {
 	// удаляем контент родительского блока
 	removeInnerContent(parent)
 
   // вставляем html вопроса в родительский блок
-	appendElements(parent, [$questionWrapper])
+	appendElements(parent, createQuestion(question))
 
   // если ранее ответ был дан то вставляем этот ответ
   if (question.hasOwnProperty("answer")) {
@@ -183,24 +175,15 @@ export function turnQuestion(question, parent = $answerForm) {
   moveActiveLink(question.id);
 	// переключаем номер вопроса
   changeQuestionNumber(question.id + 1);
-
-  return $questionWrapper;
 }
 
-export function turnQuestionFinished(question, parent = $answerForm) {
-	// создаём html элемент вопроса
-	const $questionWrapper = createQuestionFinished(question)
-
+export function turnQuestionFinished(question, parent = $questionWrapper) {
 	// удаляем контент родительского блока
 	removeInnerContent(parent)
-
+  // вставляем html вопроса в родительский блок
+  appendElements(parent, createQuestionFinished(question));
 	// перемещаем активную ссылку на вопрос
   moveActiveLink(question.id);
 	// переключаем номер вопроса
   changeQuestionNumber(question.id + 1);
-
-  // вставляем html вопроса в родительский блок
-  appendElements(parent, [$questionWrapper]);
-
-	return $questionWrapper
 }

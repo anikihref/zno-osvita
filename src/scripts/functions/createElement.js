@@ -1,7 +1,8 @@
 import { htmlElements } from "../htmlElements.js";
 import { addAttributes, addClass } from "./attributes.js";
-import { appendElements } from "./elementActions.js";
+import { appendElements, removeInnerContent } from "./elementActions.js";
 import { getFormObj } from "./getObjects.js";
+import { turnQuestionFinished } from "./questionsActions.js";
 
 const { $answerForm } = htmlElements
 
@@ -115,19 +116,24 @@ export function createQuestionTextWrapper(question) {
 export function createQuestion(question) {
   const $answerForm = createAnswerForm(question);
   const $questionTextWrapper = createQuestionTextWrapper(question);
-  const $questionWrapper = createHtmlBlock("div", [$questionTextWrapper, $answerForm]);
 
-  addClass($questionWrapper, "question__wrapper");
-
-  return $questionWrapper;
+  return  [$questionTextWrapper, $answerForm];
 }
 
 export function createQuestionFinished(question) {
   const $answerWrapper = createAnswerWrapper(question)
   const $questionTextWrapper = createQuestionTextWrapper(question);
-  const $questionWrapper = createHtmlBlock("div", [$questionTextWrapper, $answerWrapper]);
 
-  addClass($questionWrapper, "question__wrapper");
+  return [$questionTextWrapper, $answerWrapper];
+}
 
-  return $questionWrapper;
+export function recreateQuestionWrapper(question) {
+	const $questionWrapper = createHtmlBlock('div')
+	addClass($questionWrapper, 'question__wrapper')
+	removeInnerContent($answerForm)
+	appendElements($answerForm, [$questionWrapper])
+  // переключаем на этот же вопрос
+  turnQuestionFinished(question, $questionWrapper);
+
+	return $questionWrapper
 }

@@ -26,6 +26,7 @@ import {
   turnQuestionFinished,
 	makeDoneLink,
 } from "./functions/questionsActions.js";
+import { createHtmlBlock, recreateQuestionWrapper } from "./functions/createElement.js";
 
 document.addEventListener("DOMContentLoaded", (e) => {
   //* //// //// //// //// //// //// //// //// //// //// //
@@ -34,7 +35,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
   //														 												//
   //* ////			Основные константы и переменные				////
 
-  const {
+  let {
     $btn,
     $nextBtn,
     $endBtn,
@@ -46,6 +47,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     $wrapper,
     $questionNum,
     $answerForm,
+		$questionWrapper
   } = htmlElements;
 
   // вспомагательные данные о вопросах
@@ -105,14 +107,12 @@ document.addEventListener("DOMContentLoaded", (e) => {
 			// если тест не завершён
       if (!questionsConfig.isFinished) {
 				// переключаем вопрос
-        turnQuestion(nextQuestion, $answerForm);
+        turnQuestion(nextQuestion, $questionWrapper);
       }
 			// если тест завершён
       if (questionsConfig.isFinished) {
         // переключаем вопрос
-        turnQuestionFinished(nextQuestion, $answerForm);
-
-        // const $answerWrapper =
+        turnQuestionFinished(nextQuestion, $questionWrapper);
       }
     } else if (questionsConfig.questionSwitchLogic === "seeAll") {
       // получаем data-id элемента по которому кликнули
@@ -158,12 +158,12 @@ document.addEventListener("DOMContentLoaded", (e) => {
       else if (questionsConfig.questionSwitchLogic === "seeAll") {
         //! изменяем логику переключения между вопросами
         questionsConfig.questionSwitchLogic = "single";
+				// обновляем значение обёртки вопроса
+				$questionWrapper = recreateQuestionWrapper(question)
 
         changeTextContent($seeAllQuestionsBtn, "Смотреть все");
-        // показываем кнопку "следующий"
-        showElement($nextBtn);
-        // переключаем на этот же вопрос
-        turnQuestionFinished(question);
+				// показываем кнопку "следующий"
+				showElement($nextBtn);
       }
     }
 
@@ -200,7 +200,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
           }
 
           // переключаем вопрос
-          turnQuestion(nextQuestion, $answerForm);
+          turnQuestion(nextQuestion, $questionWrapper);
 
           //! переопределяем текущий вопрос
           questionsConfig.currentQuestion = nextQuestion;
@@ -217,7 +217,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
       if (questionsConfig.isFinished) {
         if (target === $nextBtn) {
           // переключаем вопрос
-          turnQuestionFinished(nextQuestion, $answerForm);
+          turnQuestionFinished(nextQuestion, $questionWrapper);
 
           //! переопределяем текущий вопрос
           questionsConfig.currentQuestion = nextQuestion;
@@ -260,6 +260,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
       $btnBlock.addEventListener("click", buttonsListener);
     })();
 
+		(function createFirstQuestion() {
+			turnQuestion(questionsConfig.currentQuestion, $questionWrapper)
+		})()
+
     addStyle($seeAllQuestionsBtn, "display", "none");
 
     start = null;
@@ -288,7 +292,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
         removeElements([$btn, $endBtn]);
 
 				
-        turnQuestionFinished(questionsConfig.currentQuestion, $answerForm);
+        turnQuestionFinished(questionsConfig.currentQuestion, $questionWrapper);
 
 				// для проверяем правильный ответ или нет и в зависимости от этого добавляе класс
 				[...document.querySelectorAll('.question__block')].forEach((element, i) => {

@@ -6,6 +6,7 @@
 		$questionBlocks: document.querySelector(".question__blocks"),
 		$questionText: document.querySelector(".question__text"),
 		$questionNum: document.querySelector('#question-num'),
+		$questionWrapper: document.querySelector('.question__wrapper'),
 		$answerForm: document.querySelector('#answer-form'),
 		$form:  document.forms[0],
 		$seeAllQuestionsBtn: document.querySelector(".question__seeall-btn"),

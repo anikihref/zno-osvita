@@ -37,16 +37,8 @@ engLangRouter.get("/2021demonstration", (req, res) => {
   const path = questions['english-lang'].year2021.demonstration;
 	res.render("pages/test.ejs", {
 		title: "Math",
-		type: path[0].type,
-		text: path[0].text,
 		questionNum: path.length,
 		pageName: "демонстраційний варіант",
-		radio: {
-			variants: path[0].variants || 0,
-		},
-		multipleWrite: {
-      questions: path[0].questions || 0,
-		},
 		subjectNames: subjectNames
 	})
 });
@@ -57,16 +49,8 @@ engLangRouter.get("/2021probniyTest", (req, res) => {
 	
 	res.render("pages/test.ejs", {
 		title: "Math",
-		type: path[0].type,
-		text: path[0].text,
 		questionNum: path.length,
 		pageName: "пробний тест",
-		radio: {
-			variants: path[0].variants || 0,
-		},
-		multipleWrite: {
-      questions: path[0].questions || 0,
-		},
 		subjectNames: subjectNames
 	})
 });
@@ -77,16 +61,8 @@ engLangRouter.get("/2021osnovna", (req, res) => {
 
 	res.render("pages/test.ejs", {
 		title: "Math",
-		type: path[0].type,
-		text: path[0].text,
 		questionNum: path.length,
 		pageName: "основна сесія",
-		radio: {
-			variants: path[0].variants || 0,
-		},
-		multipleWrite: {
-      questions: path[0].questions || 0,
-		},
 		subjectNames: subjectNames
 	})
 });
@@ -97,16 +73,8 @@ engLangRouter.get("/2021dodatkova", (req, res) => {
 
 	res.render("pages/test.ejs", {
 		title: "Math",
-		type: path[0].type,
-		text: path[0].text,
 		questionNum: path.length,
 		pageName: "додаткова сесія",
-		radio: {
-			variants: path[0].variants || 0,
-		},
-		multipleWrite: {
-      questions: path[0].questions || 0,
-		},
 		subjectNames: subjectNames
 	})
 });
@@ -119,16 +87,8 @@ engLangRouter.get("/2020demonstration", (req, res) => {
   const path = questions['english-lang'].year2021.demonstration;
 	res.render("pages/test.ejs", {
 		title: "Math",
-		type: path[0].type,
-		text: path[0].text,
 		questionNum: path.length,
 		pageName: "демонстраційний варіант",
-		radio: {
-			variants: path[0].variants || 0,
-		},
-		multipleWrite: {
-      questions: path[0].questions || 0,
-		},
 		subjectNames: subjectNames
 	})
 });
@@ -139,16 +99,8 @@ engLangRouter.get("/2020probniyTest", (req, res) => {
 	
 	res.render("pages/test.ejs", {
 		title: "Math",
-		type: path[0].type,
-		text: path[0].text,
 		questionNum: path.length,
 		pageName: "пробний тест",
-		radio: {
-			variants: path[0].variants || 0,
-		},
-		multipleWrite: {
-      questions: path[0].questions || 0,
-		},
 		subjectNames: subjectNames
 	})
 });
@@ -159,16 +111,8 @@ engLangRouter.get("/2020osnovna", (req, res) => {
 
 	res.render("pages/test.ejs", {
 		title: "Math",
-		type: path[0].type,
-		text: path[0].text,
 		questionNum: path.length,
 		pageName: "основна сесія",
-		radio: {
-			variants: path[0].variants || 0,
-		},
-		multipleWrite: {
-      questions: path[0].questions || 0,
-		},
 		subjectNames: subjectNames
 	})
 });
@@ -179,16 +123,8 @@ engLangRouter.get("/2020dodatkova", (req, res) => {
 
 	res.render("pages/test.ejs", {
 		title: "Math",
-		type: path[0].type,
-		text: path[0].text,
 		questionNum: path.length,
 		pageName: "додаткова сесія",
-		radio: {
-			variants: path[0].variants || 0,
-		},
-		multipleWrite: {
-      questions: path[0].questions || 0,
-		},
 		subjectNames: subjectNames
 	})
 });

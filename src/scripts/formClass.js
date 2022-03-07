@@ -12,10 +12,6 @@ export class Form {
 			this.questionObj.expectedAnswer.forEach((answer, i) => {
 				answerHtml += `<p>${++i}. ${answer}</p> `
 			}) 
-<<<<<<< HEAD
-=======
-			
->>>>>>> 8e46ddcb567c2987b5e8579157f6383dd4177fc7
 		} else if (this.questionObj.type = 'radio') {
 			answerHtml += `<p>${this.questionObj.variants[this.questionObj.answerId]}</p>`
 		} else {
