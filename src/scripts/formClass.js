@@ -12,7 +12,7 @@ export class Form {
 			this.questionObj.expectedAnswer.forEach((answer, i) => {
 				answerHtml += `<p>${++i}. ${answer}</p> `
 			}) 
-			an
+			
 		} else if (this.questionObj.type = 'radio') {
 			answerHtml += `<p>${this.questionObj.variants[this.questionObj.answerId]}</p>`
 		} else {
