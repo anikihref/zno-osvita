@@ -237,11 +237,11 @@ export let questions = {
 						
 						`,
           ],
-					type: "multipleWrite",
+					type: "write",
 					expectedAnswer: ['206', '309']
 				},
 				{
-					type: "multipleWrite",
+					type: "write",
 					text: `
 					<div class="question__text">
 						На рисунку зображено прямокутник <b>ABCD</b> й сектор <b>KAD</b>, у якому <b>∠KAD = 90°</b>. Площа сектора <b>KAD</b> дорівнює 100π см2. Дуга <b>KD</b> перетинає сторону <b>BC</b> в точці <b>M</b>, причому <b>BM = 16</b> см.
@@ -257,7 +257,7 @@ export let questions = {
 					expectedAnswer: ['20', '240']
 				},
 				{
-					type: "multipleWrite",
+					type: "write",
 					text: `
 					<div class="question__text">
 						У прямокутній системі координат у просторі задано вектор <b>a(2; -9; 3)</b> .
@@ -270,7 +270,7 @@ export let questions = {
 					expectedAnswer: ['8', '-188']
 				}, 
 				{
-					type: 'multipleWrite',
+					type: 'write',
 					text: `
 					<div class="question__text">
 					Арифметичну прогресію <b>(a<sub>n</sub>)</b> задано формулою <b>n</b>-го члена: <b>a<sub>n</sub> = 5 - 3,6n</b>.
@@ -286,7 +286,7 @@ export let questions = {
 					],
 				},
 				{
-					type: 'multipleWrite',
+					type: 'write',
 					questions: [`
 					<div class="question__text">
 					На виборах президента школи балотуються три кандидати: Наталя, Микола й Антон. За результатами опитування ймовірність того, що переможе Антон, дорівнює ймовірності того, що переможе Микола, й вдвічі менша за ймовірність того, що переможе Наталя. Якою за результатами опитування є ймовірність того, що президентом школи оберуть Миколу?
@@ -297,7 +297,7 @@ export let questions = {
 					],
 				},
 				{
-					type: 'multipleWrite',
+					type: 'write',
 					questions: [`
 					<div class="question__text">
 					Протягом 40 хвилин уроку учні виступили з трьома доповідями однакової тривалості й показали дві презентації. Показ кожної презентації тривав на 10 хвилин більше, ніж доповідь. Визначте тривалість однієї доповіді (у хв). Тривалістю пауз між доповідями й презентаціями знехтуйте.
@@ -308,7 +308,7 @@ export let questions = {
 					],
 				},
 				{
-					type: 'multipleWrite',
+					type: 'write',
 					questions: [`
 					<div class="question__text">
 						Обчисліть <b>400<sup>1-log<sub>20</sub>4</sup></b>
@@ -319,7 +319,7 @@ export let questions = {
 					],
 				},
 				{
-					type: 'multipleWrite',
+					type: 'write',
 					questions: [`
 					<div class="question__text">
 						Розв'яжіть нерівність <b>|x - 9| ≤ 3</b>. У відповіді запишіть суму всіх її цілих розв'язків на проміжку <b>[-15; 15]</b>.
@@ -330,7 +330,7 @@ export let questions = {
 					],
 				},
 				{
-					type: 'multipleWrite',
+					type: 'write',
 					questions: [`
 					<div class="question__text">
 						Олег пише смс-повідомлення з трьох речень. У кінці кожного з них він прикріпить один із п'ятнадцяти веселих смайликів. Скільки всього є способів вибору таких смайликів для прикріплення, якщо всі смайлики в повідомленні мають бути різними?
@@ -389,7 +389,7 @@ export let questions = {
             "Сколько будет 15 + 10?",
             "asda",
           ],
-          type: "multipleWrite",
+          type: "write",
           expectedAnswer: ["12", "25", "asd"],
         },
         {
@@ -480,7 +480,7 @@ export let questions = {
       dodatkova: [
         {
           questions: ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
-          type: "multipleWrite",
+          type: "write",
           expectedAnswer: ["132", "139"],
         },
         {
@@ -536,7 +536,7 @@ export let questions = {
         },
         {
           questions: ["Сколько будет 2 + 10?", "Сколько будет 15 + 10?"],
-          type: "multipleWrite",
+          type: "write",
           expectedAnswer: ["12", "25"],
         },
       ],
@@ -588,7 +588,7 @@ export let questions = {
             "Сколько будет 15 + 10?",
             "asda",
           ],
-          type: "multipleWrite",
+          type: "write",
           expectedAnswer: ["12", "25", "asd"],
         },
         {
@@ -677,7 +677,7 @@ export let questions = {
       dodatkova: [
         {
           questions: ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
-          type: "multipleWrite",
+          type: "write",
           expectedAnswer: ["132", "139"],
         },
         {
@@ -733,7 +733,7 @@ export let questions = {
         },
         {
           questions: ["Сколько будет 2 + 10?", "Сколько будет 15 + 10?"],
-          type: "multipleWrite",
+          type: "write",
           expectedAnswer: ["12", "25"],
         },
       ],
@@ -785,7 +785,7 @@ export let questions = {
             "Сколько будет 15 + 10?",
             "asda",
           ],
-          type: "multipleWrite",
+          type: "write",
           expectedAnswer: ["12", "25", "asd"],
         },
         {

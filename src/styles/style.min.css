@@ -378,7 +378,7 @@ main {
 	margin-bottom: 20px;
 }
 
-.form__multipleWrite-num {
+.form__write-num {
 	position: absolute;
 	background-color: transparent;
 	display: inline-block;

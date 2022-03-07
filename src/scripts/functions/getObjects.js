@@ -1,4 +1,4 @@
-import { RadioForm, WriteForm, MultipleWriteForm } from "../formClass.js"; 
+import { RadioForm, writeForm } from "../formClass.js"; 
 import { allQuestionsList } from "../currentQuestions.js"
 import { htmlElements } from "../htmlElements.js";
 
@@ -19,16 +19,12 @@ const {
 		const type = obj.type
 		
     switch (type) {
-      case "write": {
-        return new WriteForm(obj);
-      }
-
       case "radio": {
         return new RadioForm(obj);
       }
 
-      case "multipleWrite": {
-        return new MultipleWriteForm(obj);
+      case "write": {
+        return new writeForm(obj);
       }
 
       default: {
@@ -37,10 +33,6 @@ const {
     }
   }
 
-	 // из массива объектов всех вопросов выбирает элемент по переданому id
-	export function getQuestionObj(id) {
-		
-    return allQuestionsList[id];
-  }
+
 
 
