@@ -103,6 +103,7 @@ main {
   display: flex;
   flex-direction: column;
   max-width: 980px;
+	
 }
 
 .header {
@@ -354,12 +355,10 @@ main {
 }
 
 
-.question__text > p {
-  display: block;
-}
 .question__text-multiple:not(:last-child) {
 	margin-bottom: 20px;
 }
+
 
 .form__multipleWrite {
 	display: flex;
@@ -594,4 +593,29 @@ main {
 	margin-left: 30px;
 	display: flex;
 	align-items: center;
+}
+.question__text {
+	margin-bottom: 30px;
+}
+.question__image {
+	margin-bottom: 30px;
+}
+
+.zavdannia-5 {
+	display: flex; 	
+	align-items: center;
+}
+
+.zavdannia-5__img1,
+.zavdannia-5__img2 {
+	width: 60px;
+	height: 20px;
+}
+
+.zavdannia-5__img1 {
+	background: no-repeat left center url('/Other_pictures/Year_2021/Dodatkova/zavdannia-5-1.png')
+}
+
+.zavdannia-5__img2 {
+	background: no-repeat left center url('/Other_pictures/Year_2021/Dodatkova/zavdannia-5-2.png')
 }

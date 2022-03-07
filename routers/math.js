@@ -119,8 +119,9 @@ mathRouter.get("/2021dodatkova", (req, res) => {
 
 mathRouter.post("/result", jsonParser, (req, res) => {
   const allQuesitons = req.body;
-
+	console.log(allQuesitons);
   const answers = allQuesitons.reduce((acc, obj) => {
+		
     // если тип ответа массив
     if (typeof obj.answer === "object") {
       // вычисляем какую часть массива занимает 1 элемент
@@ -139,7 +140,10 @@ mathRouter.post("/result", jsonParser, (req, res) => {
       }
     } else {
       // если ответ равен правильному ответу то добавляем 1 бал
-			if (obj.answer === obj.expectedAnswer) {
+			if (
+				obj.type === 'radio' &&
+				obj.answer === obj.variants[obj.answerId]
+			) {
 				acc++
 				obj.result = 'succes'
 			}

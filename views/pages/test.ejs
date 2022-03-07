@@ -57,18 +57,19 @@
 					<div class="question__elements" id="answer-form">
 						<div class="question__wrapper">
 							<div class="question__text-wrapper">
-							<% if (type === 'multipleWrite') { %>
-								<% for(var n=0; n<(multipleWrite.questions.length ); n++) { %>
-									<p class="question__text-multiple"> <%= n+1 %>. <%= multipleWrite.questions[n] %></p>
-								<% } %>
-							<% } %>
-
-							<% if (type === 'radio' || type === 'write') { %>
-									<p>
-										<%= text %>
-									</p>
-							<% } %>
-
+								<div class="question__text">
+									<% if (type === 'multipleWrite') { %>
+										<% for(var n=0; n<(multipleWrite.questions.length ); n++) { %>
+											<p class="question__text-multiple"> <%= n+1 %>. <%= multipleWrite.questions[n] %></p>
+										<% } %>
+									<% } %>
+	
+									<% if (type === 'radio' || type === 'write') { %>
+											<p>
+												<%= text %>
+											</p>
+									<% } %>
+								</div>
 							</div>
 								<% if(type==='write' ) { %>
 									<div class="form__inputText" id="question">

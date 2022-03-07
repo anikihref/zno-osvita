@@ -26,14 +26,6 @@ import {
   turnQuestionFinished,
 	makeDoneLink,
 } from "./functions/questionsActions.js";
-import {
-  createAnswerWrapper,
-  createAnswerForm,
-  createHtmlBlock,
-  createQuestionTextWrapper,
-  createQuestion,
-  createQuestionFinished,
-} from "./functions/createElement.js";
 
 document.addEventListener("DOMContentLoaded", (e) => {
   //* //// //// //// //// //// //// //// //// //// //// //
@@ -187,6 +179,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 // получаем ответ
                 .getAnswer();
 
+
+					
             // проверяем дал ли пользователь ответ
             if (validateEmpty(answer)) {
               //! добавляем поле ответа в объект вопроса

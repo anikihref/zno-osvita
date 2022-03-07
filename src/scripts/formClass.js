@@ -12,6 +12,9 @@ export class Form {
 			this.questionObj.expectedAnswer.forEach((answer, i) => {
 				answerHtml += `<p>${++i}. ${answer}</p> `
 			}) 
+			an
+		} else if (this.questionObj.type = 'radio') {
+			answerHtml += `<p>${this.questionObj.variants[this.questionObj.answerId]}</p>`
 		} else {
 			answerHtml += `<p>${this.questionObj.expectedAnswer}</p>`
 		}
@@ -27,7 +30,7 @@ export class Form {
 
 	createAnswerBlock() {
 		if (!this.questionObj.answer) { return ' ' }
-
+		
 		let answerHtml = ''
 		if (typeof this.questionObj.answer === 'object') {
 			this.questionObj.answer.forEach((answer, i) => {
@@ -61,13 +64,13 @@ export class RadioForm extends Form {
 	getAnswer() {
 		const inputs = [...document.querySelectorAll(`input.radio__input`)]; // из коллекции делаем массив
 		const resultInput = inputs.find((el) => el.checked);
-		// console.log(inputs);
+		
 		if (!resultInput) {
 			return;
 		}
 		return document.querySelector(
 			`span[id=${resultInput.getAttribute("id")}]`
-		).textContent;
+		).innerHTML;
 	}
 
 	// генерирует внутреннее содержимое формы
@@ -105,7 +108,11 @@ export class RadioForm extends Form {
 	}
 
 	createQuestionText() {
-		return `<p class='question__text-radio'>${this.questionObj.text}</p>`
+		const $question = createHtmlBlock('p', this.questionObj.text)
+
+		addClass('question__text-radio')
+
+		return $question
 	}
 }
 
@@ -135,7 +142,11 @@ export class WriteForm extends Form {
 	}
 
 	createQuestionText() {
-		return `<p class='question__text-inputText'>${this.questionObj.text}</p>`
+		const $question = createHtmlBlock('p', this.questionObj.text)
+
+		addClass('question__text-radio')
+
+		return $question
 	}
 }
 
@@ -154,15 +165,26 @@ export class MultipleWriteForm extends Form {
 	createFormInnerHtml() {
 		let innerHtml = "";
 		let num = 1;
-		for (const question of this.questionObj.questions) {
+		
+		if (this.questionObj.questions.length === 1) {
 			innerHtml += `
 			<div class="form__inputText">
-				<p class="form__multipleWrite-num">${num}.</p>
-				<input type="text" class="multipleWriteInput" id="input${num}">
+				<input type="text" class="writeInput" id="input1">
 			</div>
-			`;
-			num++;
+			`
+		} else {
+			for (const question of this.questionObj.questions) {
+				innerHtml += `
+				<div class="form__inputText">
+					<p class="form__multipleWrite-num">${num}.</p>
+					<input type="text" class="writeInput" id="input${num}">
+				</div>
+				`;
+				num++;
+			}
 		}
+
+	
 		return innerHtml;
 	}
 
@@ -179,13 +201,24 @@ export class MultipleWriteForm extends Form {
 	createQuestionText() {
 		let num = 1;
 		let outerHtml = "";
-		for (const question of this.questionObj.questions) {
-			outerHtml += `
-				<p class="question__text-multiple"> ${num}. ${question}</p>
-			`;
-
-			num++;
+		if (this.questionObj.text) {
+			outerHtml += 	`<p>${this.questionObj.text}</p>`
 		}
+
+		if (this.questionObj.questions.length === 1) {
+			outerHtml = `
+				<p class="question__text-multiple"> ${this.questionObj.questions[0]}</p>
+			`;
+		} else {
+			for (const question of this.questionObj.questions) {
+				outerHtml += `
+					<p class="question__text-multiple"> ${num}. ${question}</p>
+				`;
+	
+				num++;
+			}
+		}
+		
 		return outerHtml;
 	}
 }
