@@ -54,10 +54,8 @@ export let questions = {
 					<div class="question__text">
 						У рівнобедреному трикутнику <b>ABC</b> з основою <b>AC ∠B = 40°</b> . Визначте градусну міру кута <b>A</b>. <br>
 					</div>
-					<div class="question__image">
-						<img src="/Geometry_pictures/Year_2021/Dodatkova/zavdannia-5.png" alt='Triangle'>
-					</div>
 					`,
+					questionImage: '/Geometry_pictures/Year_2021/Dodatkova/zavdannia-5.png',
           type: "radio",
           answerId: 1,
           variants: ["80°", "70°", "60°", "50°", '40°'],
@@ -111,11 +109,7 @@ export let questions = {
 					`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-9-5.svg">`],
         },
         {
-					text: `
-					<div class="question__image">
-						<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-10.svg">
-					</div>	
-					`,
+					questionImage: `/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-10.svg`,
           type: "radio",
 					answerId: 4,
 					variants: [
@@ -160,10 +154,8 @@ export let questions = {
 					<div class="question__text">
 					У прямокутній системі координат на площині зображено план паркової зони, що має форму фігури, обмеженої графіками функцій <b>y = f(x)</b> і <b>y = 3</b> (див. рисунок). Укажіть формулу для обчислення площі <b>S</b> цієї фігури.
 					</div>
-					<div class="question__image">
-						<img src="/Algebra_graphics/Year_2021/Dodatkova/13-zavdanniya.png">
-					</div>
 					`,
+					questionImage: `/Algebra_graphics/Year_2021/Dodatkova/13-zavdanniya.png`,
 					type: 'radio',
 					answerId: 4,
 					variants: [
@@ -178,7 +170,7 @@ export let questions = {
 				{
 					text: `
 					<div class="question__text">
-						Визначте довжину апофеми правильної чотирикутної піраміди, якщо площа її повної поверхні дорівнює 208 см2, а довжина сторони основи - 8 см.
+						Визначте довжину апофеми правильної чотирикутної піраміди, якщо площа її повної поверхні дорівнює 208 см<sup>2</sup>, а довжина сторони основи - 8 см.
 					</div>
 					`,
 					type: 'radio',
@@ -210,12 +202,10 @@ export let questions = {
 				{
 					text: `
 					<div class="question__text">
-					Заїзна кишеня для висадки пасажирів громадського (маршрутного) транспорту й таксі, облаштована перед входом у супермаркет, має форму рівнобічної трапеції <b>ABCD</b>. Довжина більшої основи <b>AD</b> становить 38 м, ширина кишені дорівнює 5 м. Уздовж меншої основи <b>BC</b> й бічних сторін <b>AB</b> й <b>CD</b> планують установити запобіжні стовпчики на відстані 1 м один від одного. Частину з них уже встановили (див. рисунок). Скільки всього стовпчиків має бути за планом уздовж сторін <b>AB, BC</b> й <b>CD</b> цієї кишені, якщо вздовж <b>BC</b> вже встановлено 15 стовпчиків?
-					</div>
-					<div class="question__image"> 
-						<img src="/Geometry_pictures/Year_2021/Dodatkova/zavdannia-16.png">
+						Заїзна кишеня для висадки пасажирів громадського (маршрутного) транспорту й таксі, облаштована перед входом у супермаркет, має форму рівнобічної трапеції <b>ABCD</b>. Довжина більшої основи <b>AD</b> становить 38 м, ширина кишені дорівнює 5 м. Уздовж меншої основи <b>BC</b> й бічних сторін <b>AB</b> й <b>CD</b> планують установити запобіжні стовпчики на відстані 1 м один від одного. Частину з них уже встановили (див. рисунок). Скільки всього стовпчиків має бути за планом уздовж сторін <b>AB, BC</b> й <b>CD</b> цієї кишені, якщо вздовж <b>BC</b> вже встановлено 15 стовпчиків?
 					</div>
 					`,
+					questionImage: `/Geometry_pictures/Year_2021/Dodatkova/zavdannia-16.png`,
 					type: 'radio',
 					variants: [
 						'39',
@@ -227,10 +217,7 @@ export let questions = {
 					answerId: 1
 				},
 				{
-					text: `
-					<div class="question__image"> 
-						<img src="/Other_pictures/Year_2021/Dodatkova/zavdannia-17.png">
-					</div>`,
+					questionImage: `/Other_pictures/Year_2021/Dodatkova/zavdannia-17.png`,
 					questions: [
             " Визначте енергетичну (калорійну) цінність (у ккал) цього морозива масою 100 г, якщо енергетична цінність білків масою 1 г становить 4 ккал, жирів масою 1 г – 9 ккал, вуглеводів масою 1 г – 4 ккал.",
             `Морозиво, з'їдене Ладою, становило 30 % від усієї пачки (500 г). Визначте енергетичну цінність (у ккал) спожитого нею морозива.
@@ -246,10 +233,8 @@ export let questions = {
 					<div class="question__text">
 						На рисунку зображено прямокутник <b>ABCD</b> й сектор <b>KAD</b>, у якому <b>∠KAD = 90°</b>. Площа сектора <b>KAD</b> дорівнює 100π см2. Дуга <b>KD</b> перетинає сторону <b>BC</b> в точці <b>M</b>, причому <b>BM = 16</b> см.
 					</div>
-					<div class="question__image"> 
-						<img src="/Geometry_pictures/Year_2021/Dodatkova/zavdannia-18.png">
-					</div>
 					`,
+					questionImage: `/Geometry_pictures/Year_2021/Dodatkova/zavdannia-18.png`,
 					questions: [
 						`Визначте довжину (у см) сторони <b>AD</b>.`,
 						`Обчисліть площу (у см<sup>2</sup>) прямокутника <b>ABCD</b>.`

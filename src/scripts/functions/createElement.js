@@ -1,6 +1,6 @@
 import { htmlElements } from "../htmlElements.js";
 import { addAttributes, addClass } from "./attributes.js";
-import { appendElements, removeInnerContent } from "./elementActions.js";
+import { appendElements, prependElements, removeInnerContent } from "./elementActions.js";
 import { getFormObj } from "./getObjects.js";
 import { turnQuestionFinished } from "./questionsActions.js";
 
@@ -116,6 +116,10 @@ export function createQuestionTextWrapper(question) {
 export function createQuestion(question) {
   const $answerForm = createAnswerForm(question);
   const $questionTextWrapper = createQuestionTextWrapper(question);
+	
+	if (question.questionImage) {
+		appendElements($questionTextWrapper, [createQuestionImageBlock(question)])
+	}
 
   return  [$questionTextWrapper, $answerForm];
 }
@@ -136,4 +140,11 @@ export function recreateQuestionWrapper(question) {
   turnQuestionFinished(question, $questionWrapper);
 
 	return $questionWrapper
+}
+
+export function createQuestionImageBlock(question) {
+	const $imageWrapper = createHtmlBlock('div', `<img src="${question.questionImage}">`)
+	addClass($imageWrapper, 'question__wrapper-image')
+
+	return $imageWrapper
 }

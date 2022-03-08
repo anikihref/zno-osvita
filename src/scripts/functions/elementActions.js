@@ -8,6 +8,12 @@ export function appendElements(parent, elements) {
 	}
 }
 
+export function prependElements(parent, elements) {
+	for (const $element of elements) {
+		parent.prepend($element);
+	}
+}
+
 export function removeElements(elements) {
 	elements.forEach($element => {
 		if (!$element) { return }

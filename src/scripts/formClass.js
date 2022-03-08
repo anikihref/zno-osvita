@@ -128,14 +128,9 @@ export class writeForm extends Form {
 	}
 
 	createFormInnerHtml() {
-		let innerHtml = "";
+		let innerHtml = "<div class='question__write-text'>Впишіть відповідь:</div>";
 		
-		if (this.questionObj.questions.length === 1) {
-			innerHtml += `
-			<div class="form__inputText">
-				<input type="text" class="writeInput" id="input1">
-			</div>`
-		} else {
+	
 			for (let i = 1; i <= this.questionObj.questions.length; i++) {
 				innerHtml += `
 				<div class="form__inputText">
@@ -143,7 +138,7 @@ export class writeForm extends Form {
 					<input type="text" class="writeInput" id="input${i}">
 				</div>`
 			}
-		}
+		
 
 		return innerHtml;
 	}

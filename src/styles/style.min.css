@@ -359,21 +359,23 @@ main {
 	margin-bottom: 20px;
 }
 
+.question__write-text {
+	margin-bottom: 20px;
+	font-size: 1.3rem;
+	position: relative;
+	left: -20px;
+}
 
 .form__multipleWrite {
-	display: flex;
-	flex-wrap: wrap;
 	margin-left: 20px;
 }
 
 .form__multipleWrite:first-child {
 	margin-left: 20px;
 }
-.form__multipleWrite > div {
+.form__multipleWrite > .form__inputText {
 	display: flex;
 	align-items: center;
-	margin-right: 50px;
-	
 	position: relative;
 	margin-bottom: 20px;
 }
@@ -597,8 +599,8 @@ main {
 .question__text {
 	margin-bottom: 30px;
 }
-.question__image {
-	margin-bottom: 30px;
+.question__wrapper-image {
+	margin-top: 30px;
 }
 
 .zavdannia-5 {

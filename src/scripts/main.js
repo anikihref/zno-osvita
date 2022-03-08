@@ -26,7 +26,7 @@ import {
   turnQuestionFinished,
 	makeDoneLink,
 } from "./functions/questionsActions.js";
-import { createHtmlBlock, recreateQuestionWrapper } from "./functions/createElement.js";
+import { createHtmlBlock, createQuestionImageBlock, recreateQuestionWrapper } from "./functions/createElement.js";
 
 document.addEventListener("DOMContentLoaded", (e) => {
   //* //// //// //// //// //// //// //// //// //// //// //
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
   //														 												//
   //														 												//
   //* ////			Основные константы и переменные				////
-
+	console.log(createQuestionImageBlock(allQuestionsList[4]));
   let {
     $btn,
     $nextBtn,
