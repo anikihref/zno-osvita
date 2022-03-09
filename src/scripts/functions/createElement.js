@@ -74,36 +74,6 @@ export function createElementWithAttribute(elem, attributeObj) {
   return $element;
 }
 
-// создаёт html формы
-export function createAnswerForm(questionObj) {
-    const formObj = getFormObj(questionObj, questionObj.type); // создаём объект на основе нового
-    return formObj.createFormWithContent(); // создаём html
-}
-
-export function createAnswerWrapper(question) {
-	const $qestionAnswerWrapper = document.createElement("div");
-
-	// создаём элемент с правильными ответами
-	const $expectedAnswerBlock = getFormObj(
-		question,
-		question.type
-	).createExpectedAnswerBlock();
-	// создаём элемент с ответами пользователя
-	const $answerBlock = getFormObj(
-		question,
-		question.type
-	).createAnswerBlock();
-
-
-	addClass($qestionAnswerWrapper, "question__answer-wrapper")
-	appendElements($qestionAnswerWrapper, [
-		$expectedAnswerBlock,
-		$answerBlock
-	])
-	
-	return $qestionAnswerWrapper;
-}
-
 export function createQuestionTextWrapper(question) {
   const $questionText = getFormObj(question).createQuestionText()
   const $questionTextWrapper = createHtmlBlock("div", $questionText);
@@ -113,23 +83,8 @@ export function createQuestionTextWrapper(question) {
   return $questionTextWrapper;
 }
 
-export function createQuestion(question) {
-  const $answerForm = createAnswerForm(question);
-  const $questionTextWrapper = createQuestionTextWrapper(question);
-	
-	if (question.questionImage) {
-		appendElements($questionTextWrapper, [createQuestionImageBlock(question)])
-	}
 
-  return  [$questionTextWrapper, $answerForm];
-}
 
-export function createQuestionFinished(question) {
-  const $answerWrapper = createAnswerWrapper(question)
-  const $questionTextWrapper = createQuestionTextWrapper(question);
-
-  return [$questionTextWrapper, $answerWrapper];
-}
 
 export function recreateQuestionWrapper(question) {
 	const $questionWrapper = createHtmlBlock('div')
@@ -140,11 +95,4 @@ export function recreateQuestionWrapper(question) {
   turnQuestionFinished(question, $questionWrapper);
 
 	return $questionWrapper
-}
-
-export function createQuestionImageBlock(question) {
-	const $imageWrapper = createHtmlBlock('div', `<img src="${question.questionImage}">`)
-	addClass($imageWrapper, 'question__wrapper-image')
-
-	return $imageWrapper
 }

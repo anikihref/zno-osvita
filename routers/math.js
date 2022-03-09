@@ -83,7 +83,7 @@ mathRouter.get("/2021dodatkova", (req, res) => {
 
 mathRouter.post("/result", jsonParser, (req, res) => {
   const allQuesitons = req.body;
-	console.log(allQuesitons);
+
   const answers = allQuesitons.reduce((acc, obj) => {
 		
     // если тип ответа массив
@@ -94,7 +94,7 @@ mathRouter.post("/result", jsonParser, (req, res) => {
       // пробегаемся по каждому элементу массива ответов и массива правильных ответов
       for (let i = 0; i < obj.answer.length; i++) {
         // и элементы равны добавляем частичку бала
-        
+        // console.log(obj.answer[i], obj.expectedAnswer[i]);
 				if (obj.answer[i] === obj.expectedAnswer[i]) {
 					acc += part
 				}
@@ -102,6 +102,13 @@ mathRouter.post("/result", jsonParser, (req, res) => {
 					acc += 0
 				}
       }
+			if(acc === 1) {
+				obj.result = 'succes'
+			} else if (acc < 1 && acc > 0) {
+				obj.result = 'partiallySucces'
+			} else {
+				obj.result = 'mistake'
+			}
     } else {
       // если ответ равен правильному ответу то добавляем 1 бал
 			if (

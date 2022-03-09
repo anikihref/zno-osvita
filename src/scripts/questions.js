@@ -3,6 +3,13 @@ export let questions = {
     year2021: {
       dodatkova: [
 				{
+					text: 'asdasd',
+					type: 'multipleRadio',
+					questions: ['aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'bbbbbbbbbbbbbbbbb', 'ccccccccccccccc'],
+					variants: ['1', '2', '14', 'asd', '22'],
+					expectedAnswer: ['1', '14', '2']
+				},
+				{
 					text: `
 						У під'їзді шістнадцятиповерхового будинку на першому поверсі розташовано 6 квартир, а на кожному з решти поверхів – по 8. На 
 						якому поверсі квартира № 31, якщо квартири від № 1 і далі пронумеровано послідовно від першого до останнього поверху?
@@ -325,6 +332,7 @@ export let questions = {
 						'2730'
 					],
 				},
+			
       ],
       osnovna: [
         {

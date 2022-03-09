@@ -15,11 +15,11 @@ import {
 
 import {
   createHtmlBlock,
-	createQuestion,
-	createQuestionFinished
 } from "./createElement.js";
+import { getFormObj } from "./getObjects.js";
 
-const { $questionBlocks, $questionNum, $answerForm, $questionWrapper } = htmlElements;
+const { $questionBlocks, $questionNum, $answerForm, $questionWrapper } =
+  htmlElements;
 
 export function findNextQuestion(question, logic = "default") {
   // делаем копию массива вопросов
@@ -36,7 +36,7 @@ export function findNextQuestion(question, logic = "default") {
       return remainingObjects.find((obj) => !obj.answer);
     }
   } else if (logic === "default") {
-		// если мы на последнем вопросе то переходим на первый
+    // если мы на последнем вопросе то переходим на первый
     if (allQuestionsList.length - 1 == question.id) {
       return allQuesitonsCopy[0];
     } else {
@@ -62,8 +62,8 @@ export function moveActiveLink(nextQuestionId) {
 }
 
 export function makeDoneLink() {
-	const $doneQuestionLink = document.querySelector('.question__block_active')
-	addClass($doneQuestionLink, 'question__block_done')
+  const $doneQuestionLink = document.querySelector(".question__block_active");
+  addClass($doneQuestionLink, "question__block_done");
 }
 
 export function createQuestionLinks(num) {
@@ -82,8 +82,9 @@ export function seeAllQuestions() {
   removeInnerContent($answerForm);
 
   allQuestionsList.forEach((question) => {
+		const formObj = getFormObj(question)
     // создаём html вопроса
-    const $question = createHtmlBlock('div', createQuestionFinished(question)) 
+    const $question = createHtmlBlock("div", [formObj.createQuestionWrapper(), formObj.createAnswerWrapper()]);
     // создаём div с номером вопроса
     const $questionNumber = createHtmlBlock("div", question.id + 1);
     // вставляем div с номером вопроса в блок вопроса
@@ -91,7 +92,7 @@ export function seeAllQuestions() {
     // добавляем классы блоку вопроса
     addClass(
       $question,
-			'question__wrapper',
+      "question__wrapper",
       "question__wrapper_all",
       `question__wrapper${question.id}`
     );
@@ -110,7 +111,7 @@ export function seeAllQuestions() {
     // добавляем класс для блока с ответом
     addClass(
       $question.querySelector(".question__answer-wrapper"),
-      "question__answer-wrapper_all",
+      "question__answer-wrapper_all"
     );
   });
 }
@@ -143,15 +144,34 @@ export function insertAnswer(question) {
 
     case "write": {
       // получаем массив input'ов типа type="text"
-      const inputs = [
-        ...$answerWrapper.querySelectorAll(".writeInput")
-      ];
+      const inputs = [...$answerWrapper.querySelectorAll(".writeInput")];
       // вставляем каждый ответ в соответствующую форму
       question.answer.forEach((answer, i) => {
         inputs[i].value = answer;
       });
 
       break;
+    }
+
+    case "multipleRadio": {
+      const answers = question.answer;
+      const $answersBlock = document.querySelector(
+        ".multiple-radio__variants-block"
+      );
+
+      // console.log(answers);
+      answers.forEach((answer, i) => {
+        const $parent = document.querySelector(
+          `.multipleRadio__form-row${i + 1}`
+        );
+        const answerId = [
+          ...$answersBlock.querySelectorAll(".multiple-radio__variant-text"),
+        ].find((el) => el.textContent === answer).id;
+				
+				const $input = $parent.querySelector(`input[id='${answerId}']`)
+				$input.checked = true
+				
+      });
     }
   }
 }
@@ -161,29 +181,31 @@ export function changeQuestionNumber(num) {
 }
 
 export function turnQuestion(question, parent = $questionWrapper) {
-	// удаляем контент родительского блока
-	removeInnerContent(parent)
+	const formObj = getFormObj(question)
+  // удаляем контент родительского блока
+  removeInnerContent(parent);
 
   // вставляем html вопроса в родительский блок
-	appendElements(parent, createQuestion(question))
+  appendElements(parent, [formObj.createQuestionWrapper(), formObj.createAnswerForm()]);
 
   // если ранее ответ был дан то вставляем этот ответ
   if (question.hasOwnProperty("answer")) {
     insertAnswer(question);
   }
-	// перемещаем активную ссылку на вопрос
+  // перемещаем активную ссылку на вопрос
   moveActiveLink(question.id);
-	// переключаем номер вопроса
+  // переключаем номер вопроса
   changeQuestionNumber(question.id + 1);
 }
 
 export function turnQuestionFinished(question, parent = $questionWrapper) {
-	// удаляем контент родительского блока
-	removeInnerContent(parent)
+	const formObj = getFormObj(question)
+  // удаляем контент родительского блока
+  removeInnerContent(parent);
   // вставляем html вопроса в родительский блок
-  appendElements(parent, createQuestionFinished(question));
-	// перемещаем активную ссылку на вопрос
+  appendElements(parent, [formObj.createQuestionWrapper(), formObj.createAnswerWrapper()]);
+  // перемещаем активную ссылку на вопрос
   moveActiveLink(question.id);
-	// переключаем номер вопроса
+  // переключаем номер вопроса
   changeQuestionNumber(question.id + 1);
 }

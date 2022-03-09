@@ -322,6 +322,7 @@ main {
   border: 1px solid #41a88a;
   width: 27px;
   height: 28px;
+	font-weight: bold;
 }
 .question__block:hover {
   background-color: #e8e4e3;
@@ -332,6 +333,9 @@ main {
   background-color: #c0e1d7;
 }
 
+.question__block_partially {
+	background-color: #fdb63a !important;
+}
 .question__block_succes {
 	background-color: #63e6c0 !important;
 }
@@ -533,6 +537,7 @@ main {
 
 
 .radio__button-label {
+	position: relative;
 	max-width: 200px;
 }
 
@@ -571,8 +576,8 @@ main {
 .radioAnswer {
 	cursor: default;
 }
-.radio__input:checked + .radio__button::after,
-.radio__input:checked + .radio__button::before {
+.radio__input:checked + .radio__button::after
+/* .radio__input:checked + .radio__button::before*/ { 
 	display: block;
 	
 }
@@ -621,3 +626,90 @@ main {
 .zavdannia-5__img2 {
 	background: no-repeat left center url('/Other_pictures/Year_2021/Dodatkova/zavdannia-5-2.png')
 }
+.question__multipleRadio-questions {
+	display: flex;
+	column-gap: 50px;
+}
+.multiple-radio__questions-block {
+	display: flex;
+	flex-direction: column;
+	row-gap: 20px;
+}
+
+.multiple-radio__question-num {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 30px;
+	height: 30px;
+	background-color: #eee;
+	font-weight: bold;
+}
+
+.multiple-radio__question {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	column-gap: 8px;
+	overflow: hidden;
+	flex-wrap: wrap;
+}
+
+.multiple-radio__question-text {
+	word-break: break-word;
+	font-size: 1.2rem;
+	width: 100%;
+	max-width: 200px;
+}
+
+.question__form-text_help {
+	font-size: 1.1rem;
+	font-style: italic;
+}
+
+.multiple-radio__variants-block {
+	display: flex;
+	flex-direction: column;
+	row-gap: 20px;
+}
+
+.multiple-radio__variant {
+	display: flex;
+	align-items: center;
+	column-gap: 8px;
+	max-width: 300px;
+	font-size: 1.2rem;
+
+}
+
+.multiple-radio__variant-letter {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 30px;
+	height: 30px;
+	background-color: #eee;
+	font-weight: bold;
+}
+
+.multipleRadio__form-row {
+	display: flex;
+	align-items: center;
+	column-gap: 5px;
+	margin-bottom: 5px;
+}
+
+.multipleRadio__form-num {
+	font-weight: bold;
+	font-size: 1rem;
+}
+
+.multipleRadio__form-letter {
+	position: absolute;
+	top: -20px;
+	font-weight: bold;
+	font-size: 1rem;
+	left: 50%;
+	transform: translateX(-50%);
+}
+

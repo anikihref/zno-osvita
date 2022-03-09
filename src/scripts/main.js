@@ -26,7 +26,7 @@ import {
   turnQuestionFinished,
 	makeDoneLink,
 } from "./functions/questionsActions.js";
-import { createHtmlBlock, createQuestionImageBlock, recreateQuestionWrapper } from "./functions/createElement.js";
+import { createHtmlBlock, createTextBlock, recreateQuestionWrapper } from "./functions/createElement.js";
 
 document.addEventListener("DOMContentLoaded", (e) => {
   //* //// //// //// //// //// //// //// //// //// //// //
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
   //														 												//
   //														 												//
   //* ////			Основные константы и переменные				////
-	console.log(createQuestionImageBlock(allQuestionsList[4]));
+	
   let {
     $btn,
     $nextBtn,
@@ -179,8 +179,9 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 // получаем ответ
                 .getAnswer();
 
+						// console.log(question);
 
-					
+
             // проверяем дал ли пользователь ответ
             if (validateEmpty(answer)) {
               //! добавляем поле ответа в объект вопроса
@@ -188,7 +189,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
             } else {
               return;
             }
-
+						
 						// если мы на последнем вопросе
 						if (questionsConfig.isLastUnanswered) {
 							//! Завершаем тест
@@ -303,6 +304,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
 					}
 					else if (question.result === 'mistake' || !question.result) {
 						addClass(element, 'question__block_mistake')
+					} else if (question.result === 'partiallySucces') {
+						addClass(element, 'question__block_partially')
 					}
 					else if (question.result === 'succes') {
 						addClass(element, 'question__block_succes')

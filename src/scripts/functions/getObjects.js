@@ -1,4 +1,4 @@
-import { RadioForm, writeForm } from "../formClass.js"; 
+import { RadioForm, WriteForm, MultipleRadio } from "../formClass.js"; 
 import { allQuestionsList } from "../currentQuestions.js"
 import { htmlElements } from "../htmlElements.js";
 
@@ -17,14 +17,15 @@ const {
 	// создаёт instance класса формы
   export function getFormObj(obj) {
 		const type = obj.type
-		
     switch (type) {
       case "radio": {
         return new RadioForm(obj);
       }
-
+			case "multipleRadio": {
+				return new MultipleRadio(obj);
+			}
       case "write": {
-        return new writeForm(obj);
+        return new WriteForm(obj);
       }
 
       default: {
