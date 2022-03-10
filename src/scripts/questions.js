@@ -2,22 +2,15 @@ export let questions = {
   math: {
     year2021: {
       dodatkova: [
-				{
-					text: 'asdasd',
-					type: 'multipleRadio',
-					questions: ['aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'bbbbbbbbbbbbbbbbb', 'ccccccccccccccc'],
-					variants: ['1', '2', '14', 'asd', '22'],
-					expectedAnswer: ['1', '14', '2']
-				},
-				{
-					text: `
+        {
+          text: `
 						У під'їзді шістнадцятиповерхового будинку на першому поверсі розташовано 6 квартир, а на кожному з решти поверхів – по 8. На 
 						якому поверсі квартира № 31, якщо квартири від № 1 і далі пронумеровано послідовно від першого до останнього поверху?
-					`,	
-					type: "radio",
-					variants: ['3', '4', '5', '6'],
-					answerId: 2
-				},
+					`,
+          type: "radio",
+          variants: ["3", "4", "5", "6"],
+					expectedAnswer: ['5']
+        },
         {
           text: `
 					<div class="question__text">
@@ -28,54 +21,63 @@ export let questions = {
 					<div class="zavdannia-5"><div class="zavdannia-5__img2"></div> <div> – кількість відвідувачів у червні</div></div>
 					`,
           type: "radio",
-					answerId: 3,
           variants: [
-						`<img src="/Other_pictures/Year_2021/Dodatkova/zavdannia-5-diagramma1.png">`, 
-						`<img src="/Other_pictures/Year_2021/Dodatkova/zavdannia-5-diagramma2.png">`, 
-						`<img src="/Other_pictures/Year_2021/Dodatkova/zavdannia-5-diagramma3.png">`, 
-						`<img src="/Other_pictures/Year_2021/Dodatkova/zavdannia-5-diagramma4.png">`
-					],
+            `<img src="/Other_pictures/Year_2021/Dodatkova/zavdannia-5-diagramma1.png">`,
+            `<img src="/Other_pictures/Year_2021/Dodatkova/zavdannia-5-diagramma2.png">`,
+            `<img src="/Other_pictures/Year_2021/Dodatkova/zavdannia-5-diagramma3.png">`,
+            `<img src="/Other_pictures/Year_2021/Dodatkova/zavdannia-5-diagramma4.png">`,
+          ],
+					expectedAnswer: [`<img src="/Other_pictures/Year_2021/Dodatkova/zavdannia-5-diagramma4.png">`]
+
         },
         {
           text: `
-					<div class="question__text">
-						Точки <b>A</b> та <b>B</b> лежать на сфері радіуса 10 см. Укажіть найбільше можливе значення довжини відрізка <b>AB</b>.
-					</div>
+						Точки <b>A</b> та <b>B</b> лежать на сфері радіуса 10 см. Укажіть найбільше можливе значення довжини відрізка <b>AB</b>.	
 					`,
           type: "radio",
-					variants: ['20 см', '100π см', '10 см', '20π см'],
-          answerId: 0
+          variants: ["20 см", "100π см", "10 см", "20π см"],
+					expectedAnswer: ['20 см']
+
         },
         {
           text: `
-					<div class="question__text">
 						Обчисліть суму коренів рівняння <b>x<sup>2</sup> + 3x - 4 = 0</b>
-					</div>
 					`,
           type: "radio",
-          answerId: 1,
           variants: ["-4", "-3", "3", "5"],
+					expectedAnswer: ['-3']
+
         },
+				
         {
           text: `
-					<div class="question__text">
-						У рівнобедреному трикутнику <b>ABC</b> з основою <b>AC ∠B = 40°</b> . Визначте градусну міру кута <b>A</b>. <br>
-					</div>
+				
+						У рівнобедреному трикутнику <b>ABC</b> з основою <b>AC ∠B = 40°</b> . Визначте градусну міру кута <b>A</b>. 
+	
 					`,
-					questionImage: '/Geometry_pictures/Year_2021/Dodatkova/zavdannia-5.png',
+          questionImage:
+            "/Geometry_pictures/Year_2021/Dodatkova/zavdannia-5.png",
           type: "radio",
-          answerId: 1,
-          variants: ["80°", "70°", "60°", "50°", '40°'],
+          variants: ["80°", "70°", "60°", "50°", "40°"],
+					expectedAnswer: ['70°']
+
         },
         {
           text: `
-					<div class="question__text">
+					
 						Укажіть функцію, графік якої проходить через початок координат.
-					</div>
+
 					`,
           type: "radio",
-					variants: ['<b>y = x - 1</b>', '<b>y = 1 - x</b>', '<b>y = 1</b>', '<b>y = -1</b>', '<b>y = x</b>'],
-          answerId: 4,
+          variants: [
+            "<b>y = x - 1</b>",
+            "<b>y = 1 - x</b>",
+            "<b>y = 1</b>",
+            "<b>y = -1</b>",
+            "<b>y = x</b>",
+          ],
+					expectedAnswer: ['<b>y = x</b>']
+
         },
         {
           text: `
@@ -84,8 +86,15 @@ export let questions = {
 					</div>
 					`,
           type: "radio",
-          variants: ["<b>9x + y</b>", "<b>9x + 14y</b>", "<b>-5x + 6y</b>", "<b>9x + 6y</b>", "<b>16x + 2y</b>"],
-					answerId: 3
+          variants: [
+            "<b>9x + y</b>",
+            "<b>9x + 14y</b>",
+            "<b>-5x + 6y</b>",
+            "<b>9x + 6y</b>",
+            "<b>16x + 2y</b>",
+          ],
+					expectedAnswer: ['<b>9x + 6y</b>']
+
         },
         {
           text: `
@@ -97,8 +106,15 @@ export let questions = {
 					</div>
 					`,
           type: "radio",
-          answerId: 2,
-          variants: ["лише І та ІІ", "лише І", "лише І та ІІІ", "лише ІІ", "І, ІІ та ІІІ"],
+          variants: [
+            "лише І та ІІ",
+            "лише І",
+            "лише І та ІІІ",
+            "лише ІІ",
+            "І, ІІ та ІІІ",
+          ],
+					expectedAnswer: ["лише І та ІІІ"]
+
         },
         {
           text: `
@@ -107,232 +123,274 @@ export let questions = {
 					</div>
 					`,
           type: "radio",
-          answerId: 0,
           variants: [
-					`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-9-1.svg">`,
-					`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-9-2.svg">`, 
-					`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-9-3.svg">`,
-					`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-9-4.svg">`,
-					`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-9-5.svg">`],
+            `<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-9-1.svg">`,
+            `<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-9-2.svg">`,
+            `<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-9-3.svg">`,
+            `<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-9-4.svg">`,
+            `<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-9-5.svg">`,
+          ],
+					expectedAnswer: ['<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-9-1.svg">']
+
         },
         {
-					questionImage: `/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-10.svg`,
+          questionImage: `/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-10.svg`,
           type: "radio",
-					answerId: 4,
-					variants: [
-						`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-10-1.svg">`,
-						`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-10-2.svg">`,
-						`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-10-3.svg">`,
-						`<b>12</b>`,
-						`<b>2</b>`
-					],
           answerId: 4,
+          variants: [
+            `<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-10-1.svg">`,
+            `<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-10-2.svg">`,
+            `<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-10-3.svg">`,
+            `<b>12</b>`,
+            `<b>2</b>`,
+          ],
+					expectedAnswer: ['<b>2</b>']
         },
         {
-          text:`
+          text: `
 					<div class="question__text">
 						Якому з наведених проміжків належить корінь рівняння <img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-11.svg">?
 					</div>
 					`,
           type: "radio",
-					answerId: 3,
-					variants: ['(-∞; -5]', '(-5; -2]', '(-2; 2]', '(2; 5]', '(5; +∞)'],
           answerId: 3,
+          variants: ["(-∞; -5]", "(-5; -2]", "(-2; 2]", "(2; 5]", "(5; +∞)"],
+					expectedAnswer: ["(2; 5]"]
         },
-				{
-					text: `
+        {
+          text: `
 					<div class="question__text">
 						Укажіть правильну подвійну нерівність, якщо <b>a = 0,5<sup>-1</sup>, b = 0,2, c = log<sub>0,2</sub>5</b>.
 					</div>
 					`,
-					type: 'radio',
-					answerId: 0,
-					variants: [
-						`<b>c &lt; b &lt; a</b>`,
-						`<b>b &lt; c &lt; a</b>`,
-						`<b>a &lt; c &lt; b</b>`,
-						`<b>c &lt; a &lt; b</b>`,
-						`<b>b &lt; a &lt; c</b>` 
-					],
-					answerId: 0
-				},
-				{
-					text: `
+          type: "radio",
+          variants: [
+            `<b>c &lt; b &lt; a</b>`,
+            `<b>b &lt; c &lt; a</b>`,
+            `<b>a &lt; c &lt; b</b>`,
+            `<b>c &lt; a &lt; b</b>`,
+            `<b>b &lt; a &lt; c</b>`,
+          ],
+					expectedAnswer: ["<b>c &lt; b &lt; a</b>"]
+        },
+        {
+          text: `
 					<div class="question__text">
 					У прямокутній системі координат на площині зображено план паркової зони, що має форму фігури, обмеженої графіками функцій <b>y = f(x)</b> і <b>y = 3</b> (див. рисунок). Укажіть формулу для обчислення площі <b>S</b> цієї фігури.
 					</div>
 					`,
-					questionImage: `/Algebra_graphics/Year_2021/Dodatkova/13-zavdanniya.png`,
-					type: 'radio',
-					answerId: 4,
-					variants: [
-						`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-13-1.svg">`,
-						`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-13-2.svg">`,
-						`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-13-3.svg">`,
-						`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-13-4.svg">`,
-						`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-13-5.svg">`,
-					],
-					answerId: 4
-				},
-				{
-					text: `
+          questionImage: `/Algebra_graphics/Year_2021/Dodatkova/13-zavdanniya.png`,
+          type: "radio",
+          variants: [
+            `<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-13-1.svg">`,
+            `<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-13-2.svg">`,
+            `<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-13-3.svg">`,
+            `<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-13-4.svg">`,
+            `<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-13-5.svg">`,
+          ],
+					expectedAnswer: [`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-13-5.svg">`]
+        },
+        {
+          text: `
 					<div class="question__text">
 						Визначте довжину апофеми правильної чотирикутної піраміди, якщо площа її повної поверхні дорівнює 208 см<sup>2</sup>, а довжина сторони основи - 8 см.
 					</div>
 					`,
-					type: 'radio',
-					variants: [
-						`13 см`,
-						`12 см`,
-						`9 см`,
-						`8 см`,
-						`6 см` 
-					],
-					answerId: 2
-				},
-				{
-					text: `
+          type: "radio",
+          variants: [`13 см`, `12 см`, `9 см`, `8 см`, `6 см`],
+					expectedAnswer: [`9 см`]
+
+        },
+        {
+          text: `
 					<div class="question__text">
 						Розв'яжіть нерівність <b>3<sup>x</sup> &lt; 27 • 3<sup>-x</sup></b>.
 					</div>
 					`,
-					type: 'radio',
-					variants: [
-						`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-15-1.svg">`,
-						`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-15-2.svg">`,
-						`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-15-3.svg">`,
-						`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-15-4.svg">`,
-						`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-15-5.svg">` 
-					],
-					answerId: 4
-				}, 
-				{
-					text: `
+          type: "radio",
+          variants: [
+            `<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-15-1.svg">`,
+            `<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-15-2.svg">`,
+            `<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-15-3.svg">`,
+            `<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-15-4.svg">`,
+            `<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-15-5.svg">`,
+          ],
+					expectedAnswer: [`<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-15-5.svg">`]
+
+        },
+        {
+          text: `
 					<div class="question__text">
 						Заїзна кишеня для висадки пасажирів громадського (маршрутного) транспорту й таксі, облаштована перед входом у супермаркет, має форму рівнобічної трапеції <b>ABCD</b>. Довжина більшої основи <b>AD</b> становить 38 м, ширина кишені дорівнює 5 м. Уздовж меншої основи <b>BC</b> й бічних сторін <b>AB</b> й <b>CD</b> планують установити запобіжні стовпчики на відстані 1 м один від одного. Частину з них уже встановили (див. рисунок). Скільки всього стовпчиків має бути за планом уздовж сторін <b>AB, BC</b> й <b>CD</b> цієї кишені, якщо вздовж <b>BC</b> вже встановлено 15 стовпчиків?
 					</div>
 					`,
-					questionImage: `/Geometry_pictures/Year_2021/Dodatkova/zavdannia-16.png`,
-					type: 'radio',
-					variants: [
-						'39',
-						'41',
-						'42',
-						'43',
-						'45',
-					],
-					answerId: 1
-				},
-				{
-					questionImage: `/Other_pictures/Year_2021/Dodatkova/zavdannia-17.png`,
-					questions: [
+          questionImage: `/Geometry_pictures/Year_2021/Dodatkova/zavdannia-16.png`,
+          type: "radio",
+          variants: ["39", "41", "42", "43", "45"],
+					expectedAnswer: [`41`]
+
+        },
+        {
+          type: "radio",
+          text: `Установіть відповідність між функцією (1-3) і властивістю (А – Д) її графіка.`,
+          questions: [
+            "<b>y = log<sub>2</sub>x</b>",
+            "<b>y = x<sup>2</sup> + 3</b>",
+            "<b>y = cosx x</b>",
+          ],
+          variants: [
+            "не перетинає вісь <b>y</b>",
+            "паралельний осі  <b>x</b>",
+            "розташований у всіх координатних чвертях",
+            "має лише одну спільну точку з графіком рівняння <b>x<sup>2</sup> + y<sup>2</sup> = 9</b>",
+            "симетричний відносно початку координат",
+          ],
+          expectedAnswer: [
+            "не перетинає вісь <b>y</b>",
+            "має лише одну спільну точку з графіком рівняння <b>x<sup>2</sup> + y<sup>2</sup> = 9</b>",
+            "розташований у всіх координатних чвертях",
+          ],
+        },
+        {
+          type: "radio",
+          text: 'Увідповідніть вираз (1-3) із його значенням (А – Д), якщо <img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-18.svg">.',
+          questions: [
+            '<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-18-1.svg">',
+            '<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-18-2.svg">',
+            '<img src="/svg/algebra_rivniannia/Year2021/dodatkova/zavdannia-18-3.svg">',
+          ],
+          variants: ["-1", "1", "4", "5", "6"],
+          expectedAnswer: ["1", "4", "5"],
+        },
+        {
+          type: "radio",
+          text: "На рисунку зображено куб <b>ABCDA<sub>1</sub>B<sub>1</sub>C<sub>1</sub>D<sub>1</sub></b>, ребро якого дорівнює 2. До кожного початку речення (1-3) доберіть його закінчення (А – Д) так, щоб утворилося правильне твердження.",
+          questionImage:
+            "/Geometry_pictures/Year_2021/Dodatkova/zavdannia-19.png",
+          questions: [
+            "Довжина діагоналі куба дорівнює",
+            "Відстань від точки <b>A</b> до прямої <b>A<sub>1</sub>C<sub>1</sub></b> дорівнює",
+            "Відстань від точки <b>A</b> до площини <b>(BB<sub>1</sub>D<sub>1</sub>)</b> дорівнює",
+          ],
+          variants: [
+            "<b>2</b>",
+            '<img src="/svg/geometry/Year2021/dodatkova/zavdannia-19-2.svg">',
+            '<img src="/svg/geometry/Year2021/dodatkova/zavdannia-19-3.svg">',
+            '<img src="/svg/geometry/Year2021/dodatkova/zavdannia-19-4.svg">',
+            '<img src="/svg/geometry/Year2021/dodatkova/zavdannia-19-5.svg">',
+          ],
+          expectedAnswer: [
+            '<img src="/svg/geometry/Year2021/dodatkova/zavdannia-19-3.svg">',
+            "<b>2</b>",
+            '<img src="/svg/geometry/Year2021/dodatkova/zavdannia-19-5.svg">',
+          ],
+        },
+        {
+          questionImage: `/Other_pictures/Year_2021/Dodatkova/zavdannia-17.png`,
+          questions: [
             " Визначте енергетичну (калорійну) цінність (у ккал) цього морозива масою 100 г, якщо енергетична цінність білків масою 1 г становить 4 ккал, жирів масою 1 г – 9 ккал, вуглеводів масою 1 г – 4 ккал.",
             `Морозиво, з'їдене Ладою, становило 30 % від усієї пачки (500 г). Визначте енергетичну цінність (у ккал) спожитого нею морозива.
 						
 						`,
           ],
-					type: "write",
-					expectedAnswer: ['206', '309']
-				},
-				{
-					type: "write",
-					text: `
+          type: "write",
+          expectedAnswer: ["206", "309"],
+        },
+        {
+          type: "write",
+          text: `
 					<div class="question__text">
 						На рисунку зображено прямокутник <b>ABCD</b> й сектор <b>KAD</b>, у якому <b>∠KAD = 90°</b>. Площа сектора <b>KAD</b> дорівнює 100π см2. Дуга <b>KD</b> перетинає сторону <b>BC</b> в точці <b>M</b>, причому <b>BM = 16</b> см.
 					</div>
 					`,
-					questionImage: `/Geometry_pictures/Year_2021/Dodatkova/zavdannia-18.png`,
-					questions: [
-						`Визначте довжину (у см) сторони <b>AD</b>.`,
-						`Обчисліть площу (у см<sup>2</sup>) прямокутника <b>ABCD</b>.`
-					],
-					expectedAnswer: ['20', '240']
-				},
-				{
-					type: "write",
-					text: `
+          questionImage: `/Geometry_pictures/Year_2021/Dodatkova/zavdannia-18.png`,
+          questions: [
+            `Визначте довжину (у см) сторони <b>AD</b>.`,
+            `Обчисліть площу (у см<sup>2</sup>) прямокутника <b>ABCD</b>.`,
+          ],
+          expectedAnswer: ["20", "240"],
+        },
+        {
+          type: "write",
+          text: `
 					<div class="question__text">
 						У прямокутній системі координат у просторі задано вектор <b>a(2; -9; 3)</b> .
 					</div>
 					`,
-					questions: [
-						`Визначте координати вектора <b>b = -2a</b>. У відповіді запишіть їхню суму.`,
-						`Обчисліть скалярний добуток векторів <b>a • b</b>.`
-					],
-					expectedAnswer: ['8', '-188']
-				}, 
-				{
-					type: 'write',
-					text: `
+          questions: [
+            `Визначте координати вектора <b>b = -2a</b>. У відповіді запишіть їхню суму.`,
+            `Обчисліть скалярний добуток векторів <b>a • b</b>.`,
+          ],
+          expectedAnswer: ["8", "-188"],
+        },
+        {
+          type: "write",
+          text: `
 					<div class="question__text">
 					Арифметичну прогресію <b>(a<sub>n</sub>)</b> задано формулою <b>n</b>-го члена: <b>a<sub>n</sub> = 5 - 3,6n</b>.
 					</div>
 					`,
-					questions: [
-						`Визначте <b>шостий</b> член цієї прогресії.`,
-						`Визначте різницю <b>a<sub>4</sub> - a<sub>2</sub></b>.`
-					],
-					expectedAnswer: [
-						'-16,6',
-						'-7,2'
-					],
-				},
-				{
-					type: 'write',
-					questions: [`
+          questions: [
+            `Визначте <b>шостий</b> член цієї прогресії.`,
+            `Визначте різницю <b>a<sub>4</sub> - a<sub>2</sub></b>.`,
+          ],
+          expectedAnswer: ["-16,6", "-7,2"],
+        },
+        {
+          type: "write",
+          questions: [
+            `
 					<div class="question__text">
 					На виборах президента школи балотуються три кандидати: Наталя, Микола й Антон. За результатами опитування ймовірність того, що переможе Антон, дорівнює ймовірності того, що переможе Микола, й вдвічі менша за ймовірність того, що переможе Наталя. Якою за результатами опитування є ймовірність того, що президентом школи оберуть Миколу?
 					</div>
-					`],
-					expectedAnswer: [
-						'0,25'
-					],
-				},
-				{
-					type: 'write',
-					questions: [`
+					`,
+          ],
+          expectedAnswer: ["0,25"],
+        },
+        {
+          type: "write",
+          questions: [
+            `
 					<div class="question__text">
 					Протягом 40 хвилин уроку учні виступили з трьома доповідями однакової тривалості й показали дві презентації. Показ кожної презентації тривав на 10 хвилин більше, ніж доповідь. Визначте тривалість однієї доповіді (у хв). Тривалістю пауз між доповідями й презентаціями знехтуйте.
 					</div>
-					`],
-					expectedAnswer: [
-						'4'
-					],
-				},
-				{
-					type: 'write',
-					questions: [`
+					`,
+          ],
+          expectedAnswer: ["4"],
+        },
+        {
+          type: "write",
+          questions: [
+            `
 					<div class="question__text">
 						Обчисліть <b>400<sup>1-log<sub>20</sub>4</sup></b>
 					</div>
-					`],
-					expectedAnswer: [
-						'25'
-					],
-				},
-				{
-					type: 'write',
-					questions: [`
+					`,
+          ],
+          expectedAnswer: ["25"],
+        },
+        {
+          type: "write",
+          questions: [
+            `
 					<div class="question__text">
 						Розв'яжіть нерівність <b>|x - 9| ≤ 3</b>. У відповіді запишіть суму всіх її цілих розв'язків на проміжку <b>[-15; 15]</b>.
 					</div>
-					`],
-					expectedAnswer: [
-						'63'
-					],
-				},
-				{
-					type: 'write',
-					questions: [`
+					`,
+          ],
+          expectedAnswer: ["63"],
+        },
+        {
+          type: "write",
+          questions: [
+            `
 					<div class="question__text">
 						Олег пише смс-повідомлення з трьох речень. У кінці кожного з них він прикріпить один із п'ятнадцяти веселих смайликів. Скільки всього є способів вибору таких смайликів для прикріплення, якщо всі смайлики в повідомленні мають бути різними?
 					</div>
-					`],
-					expectedAnswer: [
-						'2730'
-					],
-				},
-			
+					`,
+          ],
+          expectedAnswer: ["2730"],
+        },
       ],
       osnovna: [
         {
@@ -360,13 +418,13 @@ export let questions = {
           variants: ["15", "12", "123", "124"],
         },
       ],
-			options: {
-				year: "2021",
-				links: ["dodatkova", "osnovna", "probniyTest", "demonstration"],
-			}
+      options: {
+        year: "2021",
+        links: ["dodatkova", "osnovna", "probniyTest", "demonstration"],
+      },
     },
   },
-  'english-lang': {
+  "english-lang": {
     year2021: {
       dodatkova: [
         {
@@ -376,21 +434,21 @@ export let questions = {
         },
       ],
       osnovna: [
-				{
+        {
           questions: ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
           type: "write",
           expectedAnswer: ["132", "139"],
         },
       ],
       probniyTest: [
-				{
+        {
           questions: ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
           type: "write",
           expectedAnswer: ["132", "139"],
         },
       ],
       demonstration: [
-				{
+        {
           questions: ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
           type: "write",
           expectedAnswer: ["132", "139"],
@@ -403,28 +461,28 @@ export let questions = {
     },
     year2020: {
       dodatkova: [
-				{
+        {
           questions: ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
           type: "write",
           expectedAnswer: ["132", "139"],
         },
       ],
       osnovna: [
-				{
+        {
           questions: ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
           type: "write",
           expectedAnswer: ["132", "139"],
         },
       ],
       probniyTest: [
-				{
+        {
           questions: ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
           type: "write",
           expectedAnswer: ["132", "139"],
         },
       ],
       demonstration: [
-				{
+        {
           questions: ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
           type: "write",
           expectedAnswer: ["132", "139"],
@@ -436,74 +494,74 @@ export let questions = {
       },
     },
   },
-	'ukr-lang': {
-		year2021: {
-			osnovna: [
-				{
+  "ukr-lang": {
+    year2021: {
+      osnovna: [
+        {
           questions: ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
           type: "write",
           expectedAnswer: ["132", "139"],
         },
-			],
-			dodatkova: [
-				{
+      ],
+      dodatkova: [
+        {
           questions: ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
           type: "write",
           expectedAnswer: ["132", "139"],
         },
-			],
-			
-			options: {
+      ],
+
+      options: {
         year: "2021",
         links: ["dodatkova", "osnovna"],
       },
-		},
-		year2020: {
-			dodatkova: [
-				{
+    },
+    year2020: {
+      dodatkova: [
+        {
           questions: ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
           type: "write",
           expectedAnswer: ["132", "139"],
         },
-			],
-			osnovna: [
-				{
+      ],
+      osnovna: [
+        {
           questions: ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
           type: "write",
           expectedAnswer: ["132", "139"],
         },
-			],
-			options: {
+      ],
+      options: {
         year: "2020",
         links: ["dodatkova", "osnovna"],
       },
-		},
-		year2005: {
-			dodatkova: [
-				{
+    },
+    year2005: {
+      dodatkova: [
+        {
           questions: ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
           type: "write",
           expectedAnswer: ["132", "139"],
         },
-			],
-			osnovna: [
-				{
+      ],
+      osnovna: [
+        {
           questions: ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
           type: "write",
           expectedAnswer: ["132", "139"],
         },
-			],
-			demonstration: [
-				{
+      ],
+      demonstration: [
+        {
           questions: ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
           type: "write",
           expectedAnswer: ["132", "139"],
         },
-			],
-			options: {
+      ],
+      options: {
         year: "2005",
         links: ["dodatkova", "osnovna", "demonstration"],
       },
-		}
-	}
+    },
+  },
 };

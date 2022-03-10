@@ -175,11 +175,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
             // получаем ответ
             const answer =
               // получаем объект формы
-              getFormObj(question, question.type)
+              getFormObj(question)
                 // получаем ответ
                 .getAnswer();
 
-						// console.log(question);
 
 
             // проверяем дал ли пользователь ответ

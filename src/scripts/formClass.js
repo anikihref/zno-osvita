@@ -1,6 +1,7 @@
-import { addAttributes, addClass } from './functions/attributes.js';
+import { addClass } from './functions/attributes.js';
 import { createHtmlBlock,  createTextBlock } from './functions/createElement.js'
 import { appendElements } from './functions/elementActions.js';
+import { turnQuestionFinished } from './functions/questionsActions.js';
 
 export class Form {
 	constructor(questionObj) {
@@ -99,65 +100,6 @@ export class Form {
 	}
 }
 
-export class RadioForm extends Form {
-	constructor(questionObj) {
-		super(questionObj);
-	}
-
-	getAnswer() {
-		const inputs = [...document.querySelectorAll(`input.radio__input`)]; // из коллекции делаем массив
-		const resultInput = inputs.find((el) => el.checked);
-		
-		if (!resultInput) {
-			return;
-		}
-		return document.querySelector(
-			`span[id=${resultInput.getAttribute("id")}]`
-		).innerHTML;
-	}
-
-	// генерирует внутреннее содержимое формы
-	createFormInnerHtml() {
-		let resultingHtml = "";
-		const variants = this.questionObj.variants;
-
-		for (const variant of Object.values(variants)) {
-			const num = Object.values(variants).indexOf(variant) + 1;
-
-			resultingHtml += `
-			<div class="form__answer form__answer${num}">
-				<label class="radio__button-label">
-					<input class="radio__input" type="radio" name="answer${this.questionObj.id}" id="answer${num}" data-id="${num}">
-					
-					<div class="radio__button"></div>
-				</label>
-				<span class="radioAnswer" id="answer${num}">${variant}</span>
-			</div>
-			`;
-		}
-
-		return resultingHtml;
-	}
-
-	// создаёт форму и заполняет её
-	createAnswerForm() {
-		const $form = createHtmlBlock('div', this.createFormInnerHtml(), {
-			id: 'question'
-		})
-
-		$form.classList.add('form__radio', `form${this.questionObj.id}`)
-
-		return $form;
-	}
-
-	createQuestionText() {
-		const $question = createHtmlBlock('p', this.questionObj.text)
-
-		addClass('question__text-radio')
-
-		return $question
-	}
-}
 
 export class WriteForm extends Form {
 	constructor(questionObj) {
@@ -209,7 +151,7 @@ export class WriteForm extends Form {
 		} else {
 			this.questionObj.questions.forEach((question, i) => {
 				outerHtml += `
-					<p class="question__text-multiple"> ${i}. ${question}</p>
+					<p class="question__text-multiple"> ${i + 1}. ${question}</p>
 				`
 			})
 		}
@@ -228,7 +170,7 @@ export class WriteForm extends Form {
 	}
 }
 
-export class MultipleRadio extends Form {
+export class RadioForm extends Form {
 	constructor(questionObj) {
 		super(questionObj);
 	}
@@ -236,21 +178,29 @@ export class MultipleRadio extends Form {
 	getAnswer() {
 		const checkedInputs = []
 		const answers = []
-		const $answersBlock = document.querySelector('.multiple-radio__variants-block')
 
-		this.questionObj.questions.forEach((question, i) => {
-			const $parent = document.querySelector(`.multipleRadio__form-row${i + 1}`)
+		if (this.questionObj.questions) {
+			this.questionObj.questions.forEach((question, i) => {
+				const $parent = document.querySelector(`.radio__form-row${i + 1}`)
+				const currentInputs = [...$parent.querySelectorAll(`input.radio__input`)]; // из коллекции делаем массив
+				checkedInputs.push(currentInputs.find((el) => el.checked)	)
+			})
+		} else if (this.questionObj.text) {
+			const $parent = document.querySelector(`.radio__form-row1`)
 			const currentInputs = [...$parent.querySelectorAll(`input.radio__input`)]; // из коллекции делаем массив
 			checkedInputs.push(currentInputs.find((el) => el.checked)	)
-		})
-		console.log(checkedInputs);
+		}
+
+		// console.log(checkedInputs);
 
 		checkedInputs.forEach(input => {
-			if (!input) { return }
-			
-			const result = $answersBlock.querySelector(
-				`div[id=${input.getAttribute("id")}]`
-			).innerHTML; 
+			// если ответа нет то ответ null
+			if (!input) { return answers.push(null) }
+			// поскольку у каждого инпута последний символ id его индекс то вытаскивем его оттуда
+			const id = input.id.split('').at(-1)
+			// получаем ответ по индексу из массива ответов
+			const result = this.questionObj.variants[id]
+	
 			answers.push(result)
 		})
 
@@ -259,15 +209,15 @@ export class MultipleRadio extends Form {
 
 	createQuestion() {
 		let resultingHtml = `
-		<div class="multiple-radio__questions-block">
+		<div class="radio__questions-block">
 			<div class="question__form-text_help">Початок речення:</div>
 		`
 
 		this.questionObj.questions.forEach((question, i) => {
 			resultingHtml += `
-			<div class="multiple-radio__question">
-				<div class="multiple-radio__question-num">${i + 1}</div>
-				<div class="multiple-radio__question-text">${question}</div>
+			<div class="radio__question">
+				<div class="radio__question-num">${i + 1}</div>
+				<div class="radio__question-text">${question}</div>
 			</div>`
 		})
 
@@ -279,16 +229,16 @@ export class MultipleRadio extends Form {
 		const letters = ['А', 'Б', 'В', 'Г', 'Ґ', 'Д', 'Є']
 
 		let resultingHtml = `
-		<div class="multiple-radio__variants-block">
+		<div class="radio__variants-block">
 			<div class="question__form-text_help">Закінчення речення:</div>
 		`
 
 		this.questionObj.variants.forEach((variant, i) => {
 			
 			resultingHtml += `
-			<div class="multiple-radio__variant">
-				<div class="multiple-radio__variant-letter">${letters[i]}</div>
-				<div class="multiple-radio__variant-text" id="answer${i}">${variant}</div>
+			<div class="radio__variant">
+				<div class="radio__variant-letter">${letters[i]}</div>
+				<div class="radio__variant-text" id="answer${i}">${variant}</div>
 			</div>`
 		})
 
@@ -298,8 +248,10 @@ export class MultipleRadio extends Form {
 
 	// создаёт блок с вопросами и вариантами ответа
 	createQuestions() {
+		if (!this.questionObj.questions) { return '' }
+
 		const $questions = createHtmlBlock('div', [this.createQuestion(), this.createFormVariants()]) 
-		addClass($questions, 'question__multipleRadio-questions')
+		addClass($questions, 'question__radio-questions')
 
 		return $questions
 	}
@@ -311,30 +263,47 @@ export class MultipleRadio extends Form {
 		const letters = ['А', 'Б', 'В', 'Г', 'Ґ', 'Д', 'Є']
 		let resultingHtml = ``
 
-		this.questionObj.questions.forEach((question, i) => {
-			resultingHtml += `
-				<div class="multipleRadio__form-row multipleRadio__form-row${i + 1}">
-					<div class="multipleRadio__form-num">${i+1}</div>
-			`
-			
-
-			this.questionObj.variants.forEach((variant, j) => {
-				
+		if (this.questionObj.questions) {
+			this.questionObj.questions.forEach((question, i) => {
 				resultingHtml += `
-				<label class="radio__button-label">
+					<div class="radio__form-row radio__form-row${i + 1}">
+						<div class="radio__form-num">${i+1}</div>
 				`
-				if (i === 0) {
-					resultingHtml += `<div class="multipleRadio__form-letter">${letters[j]}</div>`
-				}
+	
+				this.questionObj.variants.forEach((variant, j) => {
+					
+					resultingHtml += `
+					<label class="radio__button-label">
+					`
+					if (i === 0) {
+						resultingHtml += `<div class="radio__form-letter">${letters[j]}</div>`
+					}
+					resultingHtml += `
+						<input class="radio__input" type="radio" name="answer${i}" id="answer${j}" data-id="${j + 1}">
+						<div class="radio__button"></div>
+					</label>
+					`
+				}) 
+	
+				resultingHtml += `</div>`
+			})
+		} else if (this.questionObj.text) {
+			resultingHtml += `<div class="radio__form-row radio__form-row1 radio__form-row_single">`
+
+			this.questionObj.variants.forEach((variant, j) => {	
 				resultingHtml += `
-					<input class="radio__input" type="radio" name="answer${i}" id="answer${j}" data-id="${j + 1}">
-					<div class="radio__button"></div>
-				</label>
+				<div class="radio__form-input_single">
+					<label class="radio__button-label">
+						<input class="radio__input" type="radio" name="answer0" id="answer${j}" data-id="${j + 1}">
+						<div class="radio__button"></div>
+					</label>
+					<div class="radio__form-answer_single">${variant}</div>
+				</div>
 				`
 			}) 
-
 			resultingHtml += `</div>`
-		})
+		}
+	
 
 
 		const $form = createHtmlBlock('div', resultingHtml)

@@ -626,17 +626,17 @@ main {
 .zavdannia-5__img2 {
 	background: no-repeat left center url('/Other_pictures/Year_2021/Dodatkova/zavdannia-5-2.png')
 }
-.question__multipleRadio-questions {
+.question__radio-questions {
 	display: flex;
 	column-gap: 50px;
 }
-.multiple-radio__questions-block {
+.radio__questions-block {
 	display: flex;
 	flex-direction: column;
 	row-gap: 20px;
 }
 
-.multiple-radio__question-num {
+.radio__question-num {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -646,16 +646,14 @@ main {
 	font-weight: bold;
 }
 
-.multiple-radio__question {
+.radio__question {
 	display: flex;
 	align-items: center;
-	flex-wrap: wrap;
 	column-gap: 8px;
 	overflow: hidden;
-	flex-wrap: wrap;
 }
 
-.multiple-radio__question-text {
+.radio__question-text {
 	word-break: break-word;
 	font-size: 1.2rem;
 	width: 100%;
@@ -667,13 +665,13 @@ main {
 	font-style: italic;
 }
 
-.multiple-radio__variants-block {
+.radio__variants-block {
 	display: flex;
 	flex-direction: column;
 	row-gap: 20px;
 }
 
-.multiple-radio__variant {
+.radio__variant {
 	display: flex;
 	align-items: center;
 	column-gap: 8px;
@@ -682,7 +680,7 @@ main {
 
 }
 
-.multiple-radio__variant-letter {
+.radio__variant-letter {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -692,19 +690,19 @@ main {
 	font-weight: bold;
 }
 
-.multipleRadio__form-row {
+.radio__form-row {
 	display: flex;
 	align-items: center;
 	column-gap: 5px;
 	margin-bottom: 5px;
 }
 
-.multipleRadio__form-num {
+.radio__form-num {
 	font-weight: bold;
 	font-size: 1rem;
 }
 
-.multipleRadio__form-letter {
+.radio__form-letter {
 	position: absolute;
 	top: -20px;
 	font-weight: bold;
@@ -713,3 +711,21 @@ main {
 	transform: translateX(-50%);
 }
 
+.radio__form-row_single {
+	align-items: flex-start;
+	flex-direction: column;
+	margin-left: 30px;
+}
+
+.radio__form-row_single>:not(:last-child) {
+	margin-bottom: 10px;
+}
+
+.radio__form-answer_single {
+	margin-left: 30px;
+}
+
+.radio__form-input_single {
+	display: flex;
+	align-items: center;
+}

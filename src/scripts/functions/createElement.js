@@ -85,7 +85,7 @@ export function createQuestionTextWrapper(question) {
 
 
 
-
+// пересоздаёт обёртку для вопроса, нужно присвоить переменной $questionWrapper в гл. файле
 export function recreateQuestionWrapper(question) {
 	const $questionWrapper = createHtmlBlock('div')
 	addClass($questionWrapper, 'question__wrapper')

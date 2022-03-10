@@ -125,22 +125,7 @@ export function insertAnswer(question) {
   const $answerWrapper = document.querySelector(`.form${question.id}`);
 
   switch (question.type) {
-    case "radio": {
-      // массив из всех радио кнопок
-      const inputs = [...$answerWrapper.querySelectorAll("input.radio__input")];
-      // массив из всех span'ов вариантов ответа
-      const $answerElement = [...document.querySelectorAll("span.radioAnswer")]
-        // ищем среди span'ов тот span у которого текст совпадает с ответом пользователя
-        .find((element) => element.textContent === question.answer);
 
-      // среди радио кнопок ищем ту кнопку у которой id совпадает с id span'а
-      // делаем кнопку выбраной
-      inputs.find((input) => {
-        return input.getAttribute("id") === $answerElement.getAttribute("id");
-      }).checked = true;
-
-      break;
-    }
 
     case "write": {
       // получаем массив input'ов типа type="text"
@@ -153,23 +138,21 @@ export function insertAnswer(question) {
       break;
     }
 
-    case "multipleRadio": {
+    case "radio": {
       const answers = question.answer;
-      const $answersBlock = document.querySelector(
-        ".multiple-radio__variants-block"
-      );
 
-      // console.log(answers);
       answers.forEach((answer, i) => {
-        const $parent = document.querySelector(
-          `.multipleRadio__form-row${i + 1}`
-        );
-        const answerId = [
-          ...$answersBlock.querySelectorAll(".multiple-radio__variant-text"),
-        ].find((el) => el.textContent === answer).id;
+				console.log(answer);
+				if (!answer) { return }
 				
-				const $input = $parent.querySelector(`input[id='${answerId}']`)
-				$input.checked = true
+        const $parent = document.querySelector(
+          `.radio__form-row${i + 1}`
+        );
+
+				const inputs = [...$parent.querySelectorAll('.radio__input')]
+				const id = question.variants.findIndex(variant => variant === answer)
+
+				inputs[id].checked = true
 				
       });
     }

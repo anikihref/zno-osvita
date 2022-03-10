@@ -1,4 +1,4 @@
-import { RadioForm, WriteForm, MultipleRadio } from "../formClass.js"; 
+import { RadioForm, WriteForm } from "../formClass.js"; 
 import { allQuestionsList } from "../currentQuestions.js"
 import { htmlElements } from "../htmlElements.js";
 
@@ -21,9 +21,7 @@ const {
       case "radio": {
         return new RadioForm(obj);
       }
-			case "multipleRadio": {
-				return new MultipleRadio(obj);
-			}
+
       case "write": {
         return new WriteForm(obj);
       }
