@@ -11,16 +11,21 @@ import {
   appendElements,
   removeInnerContent,
   changeTextContent,
+  prependElements,
 } from "./elementActions.js";
 
-import {
-  createHtmlBlock,
-} from "./createElement.js";
+import { createHtmlBlock, createQuestionNumber } from "./createElement.js";
 import { getFormObj } from "./getObjects.js";
 
 const { $questionBlocks, $questionNum, $answerForm, $questionWrapper } =
   htmlElements;
 
+/* 
+ищет следующий вопрос
+есть два режима функции:
+	> default: просто ищет след вопрос
+	> smart: пропускает уже отвеченные вопросы
+*/
 export function findNextQuestion(question, logic = "default") {
   // делаем копию массива вопросов
   const allQuesitonsCopy = [...allQuestionsList];
@@ -45,6 +50,7 @@ export function findNextQuestion(question, logic = "default") {
   }
 }
 
+// перемещает активную ссылку на вопрост
 export function moveActiveLink(nextQuestionId) {
   // элемент ссылки на вопрос который станет активным
   const $nextActiveBlock = $questionBlocks.querySelector(
@@ -61,11 +67,13 @@ export function moveActiveLink(nextQuestionId) {
   removeClass($activeBlock, "question__block_active");
 }
 
+// добавляет класс для отвеченных вопросов
 export function makeDoneLink() {
   const $doneQuestionLink = document.querySelector(".question__block_active");
   addClass($doneQuestionLink, "question__block_done");
 }
 
+// создаёт блоки-ссылки на вопросы
 export function createQuestionLinks(num) {
   for (let i = 1; i <= num; i++) {
     const $questionLink = createHtmlBlock("div", [`<span>${i}</span>`]);
@@ -78,17 +86,21 @@ export function createQuestionLinks(num) {
   }
 }
 
+// увидеть сразу все вопросы (только после завершения теста)
 export function seeAllQuestions() {
   removeInnerContent($answerForm);
 
   allQuestionsList.forEach((question) => {
-		const formObj = getFormObj(question)
+    const formObj = getFormObj(question);
     // создаём html вопроса
-    const $question = createHtmlBlock("div", [formObj.createQuestionWrapper(), formObj.createAnswerWrapper()]);
+    const $question = createHtmlBlock("div", [
+      formObj.createQuestionWrapper(),
+      formObj.createAnswerWrapper(),
+    ]);
     // создаём div с номером вопроса
-    const $questionNumber = createHtmlBlock("div", question.id + 1);
+    const $questionNumber = createQuestionNumber(question.id + 1);
     // вставляем div с номером вопроса в блок вопроса
-    appendElements($question, [$questionNumber]);
+    prependElements($question, [$questionNumber]);
     // добавляем классы блоку вопроса
     addClass(
       $question,
@@ -98,16 +110,7 @@ export function seeAllQuestions() {
     );
     // добавляем блок вопроса в блок со всеми вопросами
     appendElements($answerForm, [$question]);
-    // стилизируем div номер вопроса
-    addStyles($questionNumber, {
-      position: "absolute",
-      fontSize: "12rem",
-      right: "30px",
-      top: "50%",
-      transform: "translateY(-50%)",
-      opacity: ".2",
-      color: "#fff",
-    });
+
     // добавляем класс для блока с ответом
     addClass(
       $question.querySelector(".question__answer-wrapper"),
@@ -116,7 +119,7 @@ export function seeAllQuestions() {
   });
 }
 
-// arg1 объект вопроса
+// вставляет ответ если он уже был дан
 export function insertAnswer(question) {
   if (!question.answer) {
     return;
@@ -125,8 +128,6 @@ export function insertAnswer(question) {
   const $answerWrapper = document.querySelector(`.form${question.id}`);
 
   switch (question.type) {
-
-
     case "write": {
       // получаем массив input'ов типа type="text"
       const inputs = [...$answerWrapper.querySelectorAll(".writeInput")];
@@ -142,34 +143,34 @@ export function insertAnswer(question) {
       const answers = question.answer;
 
       answers.forEach((answer, i) => {
-				console.log(answer);
-				if (!answer) { return }
-				
-        const $parent = document.querySelector(
-          `.radio__form-row${i + 1}`
-        );
+        console.log(answer);
+        if (!answer) {
+          return;
+        }
 
-				const inputs = [...$parent.querySelectorAll('.radio__input')]
-				const id = question.variants.findIndex(variant => variant === answer)
+        const $parent = document.querySelector(`.radio__form-row${i + 1}`);
 
-				inputs[id].checked = true
-				
+        const inputs = [...$parent.querySelectorAll(".radio__input")];
+        const id = question.variants.findIndex((variant) => variant === answer);
+
+        inputs[id].checked = true;
       });
     }
   }
 }
 
-export function changeQuestionNumber(num) {
-  changeTextContent($questionNum, num);
-}
-
+// переключатель вопроса (когда тест не завершён)
 export function turnQuestion(question, parent = $questionWrapper) {
-	const formObj = getFormObj(question)
+  const formObj = getFormObj(question);
   // удаляем контент родительского блока
   removeInnerContent(parent);
 
   // вставляем html вопроса в родительский блок
-  appendElements(parent, [formObj.createQuestionWrapper(), formObj.createAnswerForm()]);
+  appendElements(parent, [
+    createQuestionNumber(question.id + 1),
+    formObj.createQuestionWrapper(),
+    formObj.createAnswerForm(),
+  ]);
 
   // если ранее ответ был дан то вставляем этот ответ
   if (question.hasOwnProperty("answer")) {
@@ -177,18 +178,19 @@ export function turnQuestion(question, parent = $questionWrapper) {
   }
   // перемещаем активную ссылку на вопрос
   moveActiveLink(question.id);
-  // переключаем номер вопроса
-  changeQuestionNumber(question.id + 1);
 }
 
+// переключатель вопроса (когда тест завершён)
 export function turnQuestionFinished(question, parent = $questionWrapper) {
-	const formObj = getFormObj(question)
+  const formObj = getFormObj(question);
   // удаляем контент родительского блока
   removeInnerContent(parent);
   // вставляем html вопроса в родительский блок
-  appendElements(parent, [formObj.createQuestionWrapper(), formObj.createAnswerWrapper()]);
+  appendElements(parent, [
+    createQuestionNumber(question.id + 1),
+    formObj.createQuestionWrapper(),
+    formObj.createAnswerWrapper(),
+  ]);
   // перемещаем активную ссылку на вопрос
   moveActiveLink(question.id);
-  // переключаем номер вопроса
-  changeQuestionNumber(question.id + 1);
 }

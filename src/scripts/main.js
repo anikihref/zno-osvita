@@ -22,7 +22,6 @@ import {
   insertAnswer,
   turnQuestion,
   seeAllQuestions,
-  changeQuestionNumber,
   turnQuestionFinished,
 	makeDoneLink,
 } from "./functions/questionsActions.js";
@@ -41,12 +40,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     $endBtn,
     $btnBlock,
     $questionBlocks,
-    $questionText,
-    $form,
     $seeAllQuestionsBtn,
-    $wrapper,
-    $questionNum,
-    $answerForm,
 		$questionWrapper
   } = htmlElements;
 

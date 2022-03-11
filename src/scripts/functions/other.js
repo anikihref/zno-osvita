@@ -17,11 +17,11 @@ export function validateEmpty(value) {
 
 		return isInvalid ? void 0 : value;
 	}
-	//// //// //// ////
+	
 	else if (value == null || value == "") {
 		return;
 	}
-	//// //// //// ////
+
 	else {
 		return value;
 	}

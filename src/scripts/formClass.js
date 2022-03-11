@@ -1,13 +1,13 @@
 import { addClass } from './functions/attributes.js';
 import { createHtmlBlock,  createTextBlock } from './functions/createElement.js'
 import { appendElements } from './functions/elementActions.js';
-import { turnQuestionFinished } from './functions/questionsActions.js';
 
 export class Form {
 	constructor(questionObj) {
 		this.questionObj = questionObj;
 	}
 
+	// создаёт блок с текстом вопроса
 	// должен возвращать массив элементов которые будут в вопросе
 	createQuestionWrapper() {
 		const elements = []
@@ -28,6 +28,7 @@ export class Form {
 		return $questionWrapper
 	}
 
+	// создаёт блок с ответами пользователя (если ответы были)
 	createAnswerWrapper() {
 		const $qestionAnswerWrapper = createHtmlBlock("div", [
 			// создаём элемент с правильными ответами
@@ -41,20 +42,7 @@ export class Form {
 		return $qestionAnswerWrapper;
 	}
 
-	createQuestionText() {
-		const $questionTextWrapper = createHtmlBlock('div', `<p>${this.questionObj.text}</p>`)
-		addClass($questionTextWrapper, 'question__text')
-
-		return $questionTextWrapper
-	}
-	
-	createQuestionImageBlock() {
-		const $imageWrapper = createHtmlBlock('div', `<img src="${this.questionObj.questionImage}">`)
-		addClass($imageWrapper, 'question__wrapper-image')
-	
-		return $imageWrapper
-	}
-
+	// создаёт блок с правильными ответами
 	createExpectedAnswerBlock() {
 		let answerHtml = ''
 		if (typeof this.questionObj.expectedAnswer === 'object') {
@@ -75,7 +63,24 @@ export class Form {
 		$answerBlock.prepend($answerBlockTitle)
 		return $answerBlock
 	}
+	
+	// создаёт оболочку для текста вопроса
+	createQuestionText() {
+		const $questionTextWrapper = createHtmlBlock('div', `<p>${this.questionObj.text}</p>`)
+		addClass($questionTextWrapper, 'question__text')
 
+		return $questionTextWrapper
+	}
+	
+	// создаёт блок с картинкой для вопроса
+	createQuestionImageBlock() {
+		const $imageWrapper = createHtmlBlock('div', `<img src="${this.questionObj.questionImage}">`)
+		addClass($imageWrapper, 'question__wrapper-image')
+	
+		return $imageWrapper
+	}
+
+	// создаёт блок с создаёт блок с правильными ответами и ответами пользователя (если ответы были)
 	createAnswerBlock() {
 		if (!this.questionObj.answer) { return ' ' }
 		
@@ -100,12 +105,12 @@ export class Form {
 	}
 }
 
-
+// для type: 'write'
 export class WriteForm extends Form {
 	constructor(questionObj) {
 		super(questionObj);
 	}
-
+	// получает ответ пользователя
 	getAnswer() {
 		const inputs = [...document.querySelectorAll(`.form__inputText > input`)];
 		const values = inputs.map((elem) => elem.value);
@@ -113,6 +118,7 @@ export class WriteForm extends Form {
 		return values;
 	}
 
+	// создаёт элементы формы ответа
 	createFormInnerHtml() {
 		let innerHtml = "<div class='question__write-text'>Впишіть відповідь:</div>";
 		
@@ -129,6 +135,7 @@ export class WriteForm extends Form {
 		return innerHtml;
 	}
 
+	// создаёт оболочку для формы ответа и вставляет результат выполнения функции createFormInnerHtml
 	createAnswerForm() {
 		const $form = createHtmlBlock('div', this.createFormInnerHtml(), {
 			id: 'question'
@@ -139,7 +146,7 @@ export class WriteForm extends Form {
 		return $form;
 	}
 
-
+	// создаёт блок с вопросами
 	createQuestions() {
 		let outerHtml = "";
 
@@ -160,21 +167,14 @@ export class WriteForm extends Form {
 		addClass($questions, 'question__write-questions')
 		return $questions
 	}
-
-
-	createQuestionText() {
-		const $questionTextWrapper = createHtmlBlock('div', `<p>${this.questionObj.text}</p>`)
-		addClass($questionTextWrapper, 'question__text')
-		
-		return $questionTextWrapper;
-	}
 }
 
+// для type: 'radio'
 export class RadioForm extends Form {
 	constructor(questionObj) {
 		super(questionObj);
 	}
-
+	// получает ответ пользователя
 	getAnswer() {
 		const checkedInputs = []
 		const answers = []
@@ -206,7 +206,7 @@ export class RadioForm extends Form {
 
 		return answers
 	}
-
+	// создаёт блок с вопросами ответов
 	createQuestion() {
 		let resultingHtml = `
 		<div class="radio__questions-block">
@@ -225,6 +225,7 @@ export class RadioForm extends Form {
 		return resultingHtml
 	}
 	
+	// создаёт блок с вариантами ответов
 	createFormVariants() {
 		const letters = ['А', 'Б', 'В', 'Г', 'Ґ', 'Д', 'Є']
 
@@ -246,7 +247,7 @@ export class RadioForm extends Form {
 		return resultingHtml
 	}
 
-	// создаёт блок с вопросами и вариантами ответа
+	// создаёт блок с вопросами и вариантами ответа (если есть поле questions)
 	createQuestions() {
 		if (!this.questionObj.questions) { return '' }
 
@@ -256,9 +257,7 @@ export class RadioForm extends Form {
 		return $questions
 	}
 
-
-
-
+	// создаёт форму для ответа
 	createAnswerForm() {
 		const letters = ['А', 'Б', 'В', 'Г', 'Ґ', 'Д', 'Є']
 		let resultingHtml = ``

@@ -126,40 +126,35 @@ ukrLangRouter.post("/result", jsonParser, (req, res) => {
   const allQuesitons = req.body;
 
   const answers = allQuesitons.reduce((acc, obj) => {
-    // если тип ответа массив
-    if (typeof obj.answer === "object") {
-      // вычисляем какую часть массива занимает 1 элемент
-      const part = 1 / obj.expectedAnswer.length;
-
-      // пробегаемся по каждому элементу массива ответов и массива правильных ответов
-      for (let i = 0; i < obj.answer.length; i++) {
-        // и элементы равны добавляем частичку бала
-        
-				if (obj.answer[i] === obj.expectedAnswer[i]) {
-					acc += part
-				}
-				else {
-					acc += 0
-				}
+		if (!obj.answer) { 
+			obj.result = "mistake"
+			return acc += 0
+		}
+    // вычисляем какую часть массива занимает 1 элемент
+    const part = 1 / obj.expectedAnswer.length;
+    // пробегаемся по каждому элементу массива ответов и массива правильных ответов
+    for (let i = 0; i < obj.answer.length; i++) {
+      // и если элементы равны добавляем частичку бала
+      if (obj.answer[i] === obj.expectedAnswer[i]) {
+        acc += part;
+      } else {
+        acc += 0;
       }
+    }
+
+    if (acc === 1) {
+      obj.result = "succes";
+    } else if (acc < 1 && acc > 0) {
+      obj.result = "partiallySucces";
     } else {
-      // если ответ равен правильному ответу то добавляем 1 бал
-			if (obj.answer === obj.expectedAnswer) {
-				acc++
-				obj.result = 'succes'
-			}
-			else {
-				acc += 0
-				obj.result = 'mistake'
-			}
+      obj.result = "mistake";
     }
 
     return acc;
   }, 0);
 
-
   const data = {
-		allQuesitons: allQuesitons,
+    allQuesitons: allQuesitons,
     succesfulAnswersNum: answers.toFixed(0), // количество правильных ответов
     allQuesitonsNum: allQuesitons.length, // количество вопросов
     percentage: ((answers.toFixed(0) / allQuesitons.length) * 100).toFixed(1), // процент правильных ответов

@@ -10,7 +10,6 @@ const testName = pagePathParts[2] // 2021dodatkova or 2018osnovna
 const year = testName.substring(0, 4)
 const test = testName.substring(4)
 
-
 export const allQuestionsList = (
 	questions[subject][`year${year}`][test]
 	// добавляем поле id с индексом элемента каждому объекту

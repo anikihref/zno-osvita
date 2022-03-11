@@ -1,3 +1,4 @@
+import { allQuestionsList } from "../currentQuestions.js";
 import { htmlElements } from "../htmlElements.js";
 import { addAttributes, addClass } from "./attributes.js";
 import { appendElements, prependElements, removeInnerContent } from "./elementActions.js";
@@ -6,7 +7,9 @@ import { turnQuestionFinished } from "./questionsActions.js";
 
 const { $answerForm } = htmlElements
 
-// создаёт элемент parent c Html контентом - content внутри
+/* создаёт элемент parent c Html контентом - content(может быть и html элементом и простым текстом) внутри. 
+	можно добавить атрибуты attributesObj в виде { someAttribute: attributeValue }
+*/
 export function createHtmlBlock(parent, content, attributesObj) {
   const $element = document.createElement(parent);
 	let contentArray = content;
@@ -50,8 +53,6 @@ export function createHtmlBlock(parent, content, attributesObj) {
   return $element;
 }
 
-
-
 // создаёт элемент parent c текстовым контентом - text внутри
 export function createTextBlock(parent, text) {
   const $element = document.createElement(parent);
@@ -61,7 +62,7 @@ export function createTextBlock(parent, text) {
 }
 
 // передаём строку с именем html тега и объект с любыми названиями атрибутов которые будут вставлены в элемент
-// arg2 типа { someAttribute: attributeValue }
+// arg2 вида { someAttribute: attributeValue }
 export function createElementWithAttribute(elem, attributeObj) {
   // создаём блок
   const $element = document.createElement(elem);
@@ -74,17 +75,6 @@ export function createElementWithAttribute(elem, attributeObj) {
   return $element;
 }
 
-export function createQuestionTextWrapper(question) {
-  const $questionText = getFormObj(question).createQuestionText()
-  const $questionTextWrapper = createHtmlBlock("div", $questionText);
-	
-	addClass($questionTextWrapper, 'question__text-wrapper')
-
-  return $questionTextWrapper;
-}
-
-
-
 // пересоздаёт обёртку для вопроса, нужно присвоить переменной $questionWrapper в гл. файле
 export function recreateQuestionWrapper(question) {
 	const $questionWrapper = createHtmlBlock('div')
@@ -95,4 +85,14 @@ export function recreateQuestionWrapper(question) {
   turnQuestionFinished(question, $questionWrapper);
 
 	return $questionWrapper
+}
+
+export function createQuestionNumber(questionNum) {
+	const $questionNumber = createHtmlBlock("div", `
+		Завдання ${questionNum} з ${allQuestionsList.length}
+	`);
+
+	addClass($questionNumber, 'question__num_all')
+
+	return $questionNumber
 }

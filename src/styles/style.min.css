@@ -197,6 +197,7 @@ main {
 .main__body {
   width: 68%;
   padding: 20px 10px 0 20px;
+	overflow: hidden;
 }
 .main__advertising {
   padding: 20px 20px 0 10px;
@@ -307,12 +308,12 @@ main {
 .question__blocks {
   position: relative;
   padding: 20px 0 40px 0;
-  border-top: 1px solid #ebe6e6;
-  border-bottom: 1px solid #ebe6e6;
+  border-top: 1px solid #c8c8c8;
   display: flex;
   flex-wrap: wrap;
   row-gap: 10px;
 }
+
 .question__block {
   display: flex;
   justify-content: center;
@@ -454,25 +455,28 @@ main {
 .question__seeall-btn {
 	min-width: 20%;
 }
-.question__wrapper_all:nth-child(odd) {
-	background-color: #41a88a;
+
+.question__answer-wrapper_all {
+	display: flex;
 }
-.question__wrapper_all:nth-child(even) {
-	background-color: #35866e;
-}
+
 .question__wrapper_all:not(:last-child) {
-	padding-bottom: 50px;
-}
-.question__wrapper_all:last-child {
-	border-bottom-left-radius: 20px;
-	border-bottom-right-radius: 20px;
-}
-.question__wrapper_all:first-child {
-	border-top-left-radius: 20px;
-	border-top-right-radius: 20px;
+	margin-bottom: 50px;
 }
 
-
+.question__num_all {
+	background-color: #fff;
+	margin-left: auto;
+	margin-right: 15px;
+	border: 1px solid #41a88a;
+	max-width: 200px;
+	width: fit-content;
+	font-size: 1.2rem;
+	padding: 10px;
+	position: relative;
+	transform: translateY(-50%);
+	z-index: 1000;
+}
 
 .form__question-all-text {
 	margin-bottom: 20px;
@@ -506,35 +510,16 @@ main {
 }
 
 .question__wrapper {
+	border-top: 1px solid #c8c8c8;
+	margin-top: 30px;
 	position: relative;
-	padding-bottom: 40px;
 	min-height: 300px;
-	overflow: hidden;
 }
 .question__answer-wrapper {
 	margin-top: 50px;
 	display: flex;
 	column-gap: 60px;
-	max-width: fit-content;
-	min-width: 65%;
-	border-radius: 0px 20px 0px 0px;
 }
-.question__answer-wrapper_all {
-	margin-left: -30px;
-	padding: 20px 30px 20px 20px;
-	background-color: #61ddba;
-}
-
-.question__wrapper_all {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	padding: 20px 0 0 30px !important;
-	
-}
-
-
-
 
 .radio__button-label {
 	position: relative;
