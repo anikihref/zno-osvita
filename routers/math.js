@@ -33,7 +33,7 @@ mathRouter.get("/", (req, res) => {
   });
 });
 
-mathRouter.get("/2021demonstration", (req, res) => {
+mathRouter.get("/2021_demonstration", (req, res) => {
   const path = questions.math.year2021.demonstration;
   res.render("pages/test.ejs", {
     title: "Math",
@@ -43,7 +43,7 @@ mathRouter.get("/2021demonstration", (req, res) => {
   });
 });
 
-mathRouter.get("/2021probniyTest", (req, res) => {
+mathRouter.get("/2021_probniyTest", (req, res) => {
   const path = questions.math.year2021.probniyTest;
 
   res.render("pages/test.ejs", {
@@ -54,7 +54,7 @@ mathRouter.get("/2021probniyTest", (req, res) => {
   });
 });
 
-mathRouter.get("/2021osnovna", (req, res) => {
+mathRouter.get("/2021_osnovna", (req, res) => {
   const path = questions.math.year2021.osnovna;
 
   res.render("pages/test.ejs", {
@@ -65,12 +65,12 @@ mathRouter.get("/2021osnovna", (req, res) => {
   });
 });
 
-mathRouter.get("/2021dodatkova", (req, res) => {
-  const path = questions.math.year2021.dodatkova;
+mathRouter.get("/2021_dodatkova", (req, res) => {
+  const filePath = questions.math.year2021.dodatkova;
 
   res.render("pages/test.ejs", {
     title: "Math",
-    questionNum: path.length,
+    questionNum: filePath.length,
     pageName: "додаткова сесія",
     subjectNames: subjectNames,
   });

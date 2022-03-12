@@ -1,8 +1,7 @@
-import { allQuestionsList } from "../currentQuestions.js";
+import { allQuestionsList } from "../main.js";
 import {
   addAttributes,
   addClass,
-  addStyles,
   removeClass,
 } from "./attributes.js";
 import { htmlElements } from "../htmlElements.js";

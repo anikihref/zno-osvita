@@ -227,7 +227,7 @@ export class RadioForm extends Form {
 	
 	// создаёт блок с вариантами ответов
 	createFormVariants() {
-		const letters = ['А', 'Б', 'В', 'Г', 'Ґ', 'Д', 'Є']
+		const letters = ['А', 'Б', 'В', 'Г', 'Д', 'Є']
 
 		let resultingHtml = `
 		<div class="radio__variants-block">
@@ -259,7 +259,7 @@ export class RadioForm extends Form {
 
 	// создаёт форму для ответа
 	createAnswerForm() {
-		const letters = ['А', 'Б', 'В', 'Г', 'Ґ', 'Д', 'Є']
+		const letters = ['А', 'Б', 'В', 'Г', 'Д', 'Є']
 		let resultingHtml = ``
 
 		if (this.questionObj.questions) {

@@ -1,31 +1,28 @@
-import { allQuestionsList } from "./currentQuestions.js"; // объект содержащий все вопросы
+// // import { allQuestionsList } from "./currentQuestions.js"; // объект содержащий все вопросы
 import { htmlElements } from "./htmlElements.js"; // объект содержащий все нужные html элементы
-// import { RadioForm, WriteForm, MultipleWriteForm } from "./formClass.js"; // Классы для создания формы
 import { getFormObj } from "./functions/getObjects.js";
-import { addClass, addStyles, hasClass } from "./functions/attributes.js";
-import { addField, validateEmpty, addStyle } from "./functions/other.js";
+import { addClass, hasClass } from "./functions/attributes.js";
+import { validateEmpty, addStyle } from "./functions/other.js";
 
 import {
   removeElements,
   findHtmlElement,
   changeTextContent,
-  removeInnerContent,
-  appendElements,
   hideElement,
   showElement,
 } from "./functions/elementActions.js";
 
 import {
   findNextQuestion,
-  moveActiveLink,
   createQuestionLinks,
-  insertAnswer,
   turnQuestion,
   seeAllQuestions,
   turnQuestionFinished,
-	makeDoneLink,
+  makeDoneLink,
 } from "./functions/questionsActions.js";
-import { createHtmlBlock, createTextBlock, recreateQuestionWrapper } from "./functions/createElement.js";
+import { recreateQuestionWrapper } from "./functions/createElement.js";
+
+export let allQuestionsList = {};
 
 document.addEventListener("DOMContentLoaded", (e) => {
   //* //// //// //// //// //// //// //// //// //// //// //
@@ -33,7 +30,15 @@ document.addEventListener("DOMContentLoaded", (e) => {
   //														 												//
   //														 												//
   //* ////			Основные константы и переменные				////
-	
+
+  const pathName = document.location.pathname.split("/");
+
+  const urlPath = {
+    subject: pathName[1],
+    year: pathName[2].split("_")[0],
+    test: pathName[2].split("_")[1],
+  };
+
   let {
     $btn,
     $nextBtn,
@@ -41,33 +46,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
     $btnBlock,
     $questionBlocks,
     $seeAllQuestionsBtn,
-		$questionWrapper
+    $questionWrapper,
   } = htmlElements;
-
   // вспомагательные данные о вопросах
-  const questionsConfig = {
-    // закончен ли тест
-    isFinished: false,
-    isLastUnanswered: false,
-    //			количество неотвеченых вопросов
-    unsweredQuestionsNum: allQuestionsList.length,
-    // 			single (по одному вопросу) или
-    // 			seeAll (смотреть все сразу) только после завершения теста
-    questionSwitchLogic: "single",
-    //			текущий вопрос
-    currentQuestion: allQuestionsList[0],
-
-    checkAnswersNumber() {
-      const unanseredNum = allQuestionsList.filter((obj) => {
-        return !obj.answer;
-      }).length;
-      this.unsweredQuestionsNum = unanseredNum;
-
-      if (unanseredNum == 1) {
-        this.isLastUnanswered = true;
-      }
-    },
-  };
+  let questionsConfig = {};
 
   //* ////			Основные константы и переменные				////
   //														 												//
@@ -83,11 +65,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
   const questionLinksListener = (e) => {
     const target = e.target.closest(".question__block");
-
-    if (
-      target == null ||
-      hasClass(target, "question__block_active") // если кликнули на текущий вопрос
-    ) {
+    if (target == null) {
       return;
     }
 
@@ -98,12 +76,12 @@ document.addEventListener("DOMContentLoaded", (e) => {
     questionsConfig.currentQuestion = nextQuestion;
 
     if (questionsConfig.questionSwitchLogic === "single") {
-			// если тест не завершён
+      // если тест не завершён
       if (!questionsConfig.isFinished) {
-				// переключаем вопрос
+        // переключаем вопрос
         turnQuestion(nextQuestion, $questionWrapper);
       }
-			// если тест завершён
+      // если тест завершён
       if (questionsConfig.isFinished) {
         // переключаем вопрос
         turnQuestionFinished(nextQuestion, $questionWrapper);
@@ -122,7 +100,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
       // скроллим окно к этим координатам
       window.scrollTo(0, yPos);
       // изменяем номер вопроса
-      changeQuestionNumber(+targetId + 1);
     }
   };
 
@@ -152,12 +129,12 @@ document.addEventListener("DOMContentLoaded", (e) => {
       else if (questionsConfig.questionSwitchLogic === "seeAll") {
         //! изменяем логику переключения между вопросами
         questionsConfig.questionSwitchLogic = "single";
-				// обновляем значение обёртки вопроса
-				$questionWrapper = recreateQuestionWrapper(question)
+        // обновляем значение обёртки вопроса
+        $questionWrapper = recreateQuestionWrapper(question);
 
         changeTextContent($seeAllQuestionsBtn, "Смотреть все");
-				// показываем кнопку "следующий"
-				showElement($nextBtn);
+        // показываем кнопку "следующий"
+        showElement($nextBtn);
       }
     }
 
@@ -173,8 +150,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 // получаем ответ
                 .getAnswer();
 
-
-
             // проверяем дал ли пользователь ответ
             if (validateEmpty(answer)) {
               //! добавляем поле ответа в объект вопроса
@@ -182,15 +157,14 @@ document.addEventListener("DOMContentLoaded", (e) => {
             } else {
               return;
             }
-						
-						// если мы на последнем вопросе
-						if (questionsConfig.isLastUnanswered) {
-							//! Завершаем тест
-							finishTest()
-						}
-						
-						makeDoneLink()
-						
+
+            // если мы на последнем вопросе
+            if (questionsConfig.isLastUnanswered) {
+              //! Завершаем тест
+              finishTest();
+            }
+
+            makeDoneLink();
           }
 
           // переключаем вопрос
@@ -232,38 +206,63 @@ document.addEventListener("DOMContentLoaded", (e) => {
   //														 				//
   //* //// //// //// //// //// //// //// /
 
-  //* //// //// //// //// //// //// //// ///
-  //                                      //
-  //                                      //
-  //                                      //
-  //* //// ////			 I I F E			 //// ////
+  //* //// //// //// //// //// //// //// ////
+  //                                       //
+  //                                       //
+  //                                       //
+  //* //// //// 	 Начало работы 		//// ////
+	
+  function getQuestions() {
+    fetch(
+      `/getQuestions?subject=${urlPath.subject}&year=${urlPath.year}&test=${urlPath.test}`
+    )
+      .then((res) => res.json())
+      .then((questions) => {
+        //! записываем полученые вопросы в переменную
+        allQuestionsList = questions;
 
-  let start = function () {
-    (function insertQuestionLinks() {
-      createQuestionLinks(allQuestionsList.length); // создаём блоки-ссылки на вопросы
+        //! определяем объект со вспомагательными методами и переменными
+        questionsConfig = {
+          // закончен ли тест
+          isFinished: false,
+          isLastUnanswered: false,
+          //			количество неотвеченых вопросов
+          unsweredQuestionsNum: allQuestionsList.length,
+          // 			single (по одному вопросу) или
+          // 			seeAll (смотреть все сразу) только после завершения теста
+          questionSwitchLogic: "single",
+          //			текущий вопрос
+          currentQuestion: allQuestionsList[0],
 
-      addClass(
-        findHtmlElement(document, ".question__block"), // получаем первый блок ссылку
-        "question__block_active"
-      );
-    })();
+          checkAnswersNumber() {
+            const unanseredNum = allQuestionsList.filter((obj) => {
+              return !obj.answer;
+            }).length;
+            this.unsweredQuestionsNum = unanseredNum;
 
-    (function addListeners() {
-      $questionBlocks.addEventListener("click", questionLinksListener);
+            if (unanseredNum == 1) {
+              this.isLastUnanswered = true;
+            }
+          },
+        };
 
-      $btnBlock.addEventListener("click", buttonsListener);
-    })();
+        createQuestionLinks(allQuestionsList.length); // создаём блоки-ссылки на вопросы
+        addClass(
+          findHtmlElement(document, ".question__block"), // получаем первый блок ссылку и делаем её активной
+          "question__block_active"
+        );
 
-		(function createFirstQuestion() {
-			turnQuestion(questionsConfig.currentQuestion, $questionWrapper)
-		})()
+        // ставим слушатели
+        $questionBlocks.addEventListener("click", questionLinksListener);
+        $btnBlock.addEventListener("click", buttonsListener);
 
-    addStyle($seeAllQuestionsBtn, "display", "none");
+        turnQuestion(questionsConfig.currentQuestion, $questionWrapper); // вставляем первый вопрос
 
-    start = null;
-  };
+        hideElement($seeAllQuestionsBtn); // прячем кнопку смотреть все
+      });
+  }
 
-  start();
+  getQuestions();
 
   function finishTest() {
     fetch("result", {
@@ -275,7 +274,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
       body: JSON.stringify(allQuestionsList),
     })
       .then((res) => res.json())
-      //// //// //// //// ////
 
       .then((data) => {
         //! переопределяем значение
@@ -285,32 +283,31 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
         removeElements([$btn, $endBtn]);
 
-				
         turnQuestionFinished(questionsConfig.currentQuestion, $questionWrapper);
 
-				// для проверяем правильный ответ или нет и в зависимости от этого добавляе класс
-				[...document.querySelectorAll('.question__block')].forEach((element, i) => {
-					const question = data.allQuesitons[i]
-					
-					if (!question.answer) {
-						return
-					}
-					else if (question.result === 'mistake' || !question.result) {
-						addClass(element, 'question__block_mistake')
-					} else if (question.result === 'partiallySucces') {
-						addClass(element, 'question__block_partially')
-					}
-					else if (question.result === 'succes') {
-						addClass(element, 'question__block_succes')
-					}
-				})
+        // для проверяем правильный ответ или нет и в зависимости от этого добавляе класс
+        [...document.querySelectorAll(".question__block")].forEach(
+          (element, i) => {
+            const question = data.allQuesitons[i];
+
+            if (!question.answer) {
+              return;
+            } else if (question.result === "mistake" || !question.result) {
+              addClass(element, "question__block_mistake");
+            } else if (question.result === "partiallySucces") {
+              addClass(element, "question__block_partially");
+            } else if (question.result === "succes") {
+              addClass(element, "question__block_succes");
+            }
+          }
+        );
         console.log(data);
       });
   }
 
-  //* //// ////			 I I F E			 //// ////
-  //                                      //
-  //                                      //
-  //                                      //
-  //* //// //// //// //// //// //// //// ///
+  //* //// //// 	 Начало работы 		//// ////
+  //                                       //
+  //                                       //
+  //                                       //
+  //* //// //// //// //// //// //// //// ////
 });

@@ -1,5 +1,4 @@
 import { RadioForm, WriteForm } from "../formClass.js"; 
-import { allQuestionsList } from "../currentQuestions.js"
 import { htmlElements } from "../htmlElements.js";
 
 const {
@@ -31,7 +30,3 @@ const {
       }
     }
   }
-
-
-
-

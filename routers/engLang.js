@@ -33,7 +33,7 @@ engLangRouter.get("/", (req, res) => {
   });
 });
 
-engLangRouter.get("/2021demonstration", (req, res) => {
+engLangRouter.get("/2021_demonstration", (req, res) => {
   const path = questions['english-lang'].year2021.demonstration;
 	res.render("pages/test.ejs", {
 		title: "Math",
@@ -44,7 +44,7 @@ engLangRouter.get("/2021demonstration", (req, res) => {
 });
 
 
-engLangRouter.get("/2021probniyTest", (req, res) => {
+engLangRouter.get("/2021_probniyTest", (req, res) => {
   const path = questions['english-lang'].year2021.probniyTest;
 	
 	res.render("pages/test.ejs", {
@@ -56,7 +56,7 @@ engLangRouter.get("/2021probniyTest", (req, res) => {
 });
 
 
-engLangRouter.get("/2021osnovna", (req, res) => {
+engLangRouter.get("/2021_osnovna", (req, res) => {
   const path = questions['english-lang'].year2021.osnovna;
 
 	res.render("pages/test.ejs", {
@@ -68,7 +68,7 @@ engLangRouter.get("/2021osnovna", (req, res) => {
 });
 
 
-engLangRouter.get("/2021dodatkova", (req, res) => {
+engLangRouter.get("/2021_dodatkova", (req, res) => {
   const path = questions['english-lang'].year2021.dodatkova;
 
 	res.render("pages/test.ejs", {
@@ -83,7 +83,7 @@ engLangRouter.get("/2021dodatkova", (req, res) => {
 //* 2020 //// //// //// ////
 
 
-engLangRouter.get("/2020demonstration", (req, res) => {
+engLangRouter.get("/2020_demonstration", (req, res) => {
   const path = questions['english-lang'].year2021.demonstration;
 	res.render("pages/test.ejs", {
 		title: "Math",
@@ -94,7 +94,7 @@ engLangRouter.get("/2020demonstration", (req, res) => {
 });
 
 
-engLangRouter.get("/2020probniyTest", (req, res) => {
+engLangRouter.get("/2020_probniyTest", (req, res) => {
   const path = questions['english-lang'].year2021.probniyTest;
 	
 	res.render("pages/test.ejs", {
@@ -106,7 +106,7 @@ engLangRouter.get("/2020probniyTest", (req, res) => {
 });
 
 
-engLangRouter.get("/2020osnovna", (req, res) => {
+engLangRouter.get("/2020_osnovna", (req, res) => {
   const path = questions['english-lang'].year2021.osnovna;
 
 	res.render("pages/test.ejs", {
@@ -118,7 +118,7 @@ engLangRouter.get("/2020osnovna", (req, res) => {
 });
 
 
-engLangRouter.get("/2020dodatkova", (req, res) => {
+engLangRouter.get("/2020_dodatkova", (req, res) => {
   const path = questions['english-lang'].year2021.dodatkova;
 
 	res.render("pages/test.ejs", {
