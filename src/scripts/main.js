@@ -265,7 +265,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
   getQuestions();
 
   function finishTest() {
-    fetch("result", {
+    fetch("/result", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -288,7 +288,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
         // для проверяем правильный ответ или нет и в зависимости от этого добавляе класс
         [...document.querySelectorAll(".question__block")].forEach(
           (element, i) => {
-            const question = data.allQuesitons[i];
+            const question = data.allQuestions[i];
 
             if (!question.answer) {
               return;
