@@ -45,15 +45,11 @@ export class Form {
 	// создаёт блок с правильными ответами
 	createExpectedAnswerBlock() {
 		let answerHtml = ''
-		if (typeof this.questionObj.expectedAnswer === 'object') {
-			this.questionObj.expectedAnswer.forEach((answer, i) => {
-				answerHtml += `<p>${++i}. ${answer}</p> `
-			}) 
-		} else if (this.questionObj.type = 'radio') {
-			answerHtml += `<p>${this.questionObj.variants[this.questionObj.answerId]}</p>`
-		} else {
-			answerHtml += `<p>${this.questionObj.expectedAnswer}</p>`
-		}
+		
+		this.questionObj.expectedAnswer.forEach((answer, i) => {
+			answerHtml += `<p>${++i}. ${answer}</p> `
+		}) 
+
 		const $answerBlockTitle = createTextBlock('h3', 'Ответ:')
 		const $answerBlock = createHtmlBlock('div', answerHtml)
 
@@ -85,20 +81,15 @@ export class Form {
 		if (!this.questionObj.answer) { return ' ' }
 		
 		let answerHtml = ''
-		if (typeof this.questionObj.answer === 'object') {
-			this.questionObj.answer.forEach((answer, i) => {
-				answerHtml += `<p>${++i}. ${answer}</p> `
-			}) 
-		} else {
-			answerHtml += `<p>${this.questionObj.answer}</p>`
-		}
+		this.questionObj.answer.forEach((answer, i) => {
+			answerHtml += `<p>${++i}. ${answer}</p> `
+		}) 
+		
 		const $answerBlockTitle = createTextBlock('h3', 'Ваш ответ:')
 		const $answerBlock = createHtmlBlock('div', answerHtml)
 
 		addClass($answerBlockTitle, 'question__answer-title')
 		addClass($answerBlock, 'question__answer')
-		// $answerBlockTitle.classList.add('question__answer-title')
-		// $answerBlock.classList.add('question__answer')
 
 		$answerBlock.prepend($answerBlockTitle)
 		return $answerBlock
@@ -173,6 +164,8 @@ export class WriteForm extends Form {
 export class RadioForm extends Form {
 	constructor(questionObj) {
 		super(questionObj);
+		this.letters = ['А', 'Б', 'В', 'Г', 'Д', 'Є']
+
 	}
 	// получает ответ пользователя
 	getAnswer() {
@@ -227,8 +220,6 @@ export class RadioForm extends Form {
 	
 	// создаёт блок с вариантами ответов
 	createFormVariants() {
-		const letters = ['А', 'Б', 'В', 'Г', 'Д', 'Є']
-
 		let resultingHtml = `
 		<div class="radio__variants-block">
 			<div class="question__form-text_help">Закінчення речення:</div>
@@ -238,7 +229,7 @@ export class RadioForm extends Form {
 			
 			resultingHtml += `
 			<div class="radio__variant">
-				<div class="radio__variant-letter">${letters[i]}</div>
+				<div class="radio__variant-letter">${this.letters[i]}</div>
 				<div class="radio__variant-text" id="answer${i}">${variant}</div>
 			</div>`
 		})
@@ -259,7 +250,6 @@ export class RadioForm extends Form {
 
 	// создаёт форму для ответа
 	createAnswerForm() {
-		const letters = ['А', 'Б', 'В', 'Г', 'Д', 'Є']
 		let resultingHtml = ``
 
 		if (this.questionObj.questions) {
@@ -275,7 +265,7 @@ export class RadioForm extends Form {
 					<label class="radio__button-label">
 					`
 					if (i === 0) {
-						resultingHtml += `<div class="radio__form-letter">${letters[j]}</div>`
+						resultingHtml += `<div class="radio__form-letter">${this.letters[j]}</div>`
 					}
 					resultingHtml += `
 						<input class="radio__input" type="radio" name="answer${i}" id="answer${j}" data-id="${j + 1}">

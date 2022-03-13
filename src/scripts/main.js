@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
               getFormObj(question)
                 // получаем ответ
                 .getAnswer();
-
+						console.log(answer);
             // проверяем дал ли пользователь ответ
             if (validateEmpty(answer)) {
               //! добавляем поле ответа в объект вопроса
@@ -221,6 +221,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
         //! записываем полученые вопросы в переменную
         allQuestionsList = questions;
 
+				// добавляем поле id с его index'ом каждому вопросу 
+				allQuestionsList.forEach((question, index) => {
+					question.id = index
+				})
         //! определяем объект со вспомагательными методами и переменными
         questionsConfig = {
           // закончен ли тест

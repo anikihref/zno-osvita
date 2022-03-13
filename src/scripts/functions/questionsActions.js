@@ -142,7 +142,6 @@ export function insertAnswer(question) {
       const answers = question.answer;
 
       answers.forEach((answer, i) => {
-        console.log(answer);
         if (!answer) {
           return;
         }

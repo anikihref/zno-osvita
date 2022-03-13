@@ -4,7 +4,6 @@ import fs from "fs";
 import { mathRouter } from "./routers/math.js";
 import { engLangRouter } from "./routers/engLang.js";
 import { ukrLangRouter } from "./routers/ukrLang.js";
-import { log } from "console";
 
 const PORT = 5000;
 const __dirname = path.resolve();
@@ -13,10 +12,8 @@ const app = express();
 const jsonParser = express.json();
 
 app.set("view engine", "ejs");
-app.use(express.static(__dirname + "/src/scripts")); // делаем скрипты статичными
-app.use(express.static(__dirname + "/src/styles")); // делаем стили статичными
-app.use(express.static(__dirname + "/src/fonts")); // делаем шрифты статичными
-app.use(express.static(__dirname + "/src/imgs")); // длеаем картинки статичными
+app.use(express.static(__dirname + "/src")); // делаем папку исходников статичной
+
 
 app.use("/math", mathRouter);
 app.use("/english-lang", engLangRouter);
@@ -32,7 +29,7 @@ app.get("/", (req, res) => {
 app.get("/getQuestions", (req, res) => {
   const queries = req.query;
 
-  fs.readFile(path.join(__dirname, "questions.json"), { encoding: "utf-8" }, (err, data) => {
+  fs.readFile(path.join(__dirname, "src", "questions.json"), { encoding: "utf-8" }, (err, data) => {
       if (err) {
         console.log(err);
       }
@@ -47,7 +44,7 @@ app.get("/getQuestions", (req, res) => {
 // получаем результат, обрабатываем его и отправляем назад
 app.post("/result", jsonParser, (req, res) => {
 	const allQuestions = req.body;
-	// console.log(allQuestions[1].expectedAnswer, allQuestions[1].answer);
+
   const answers = allQuestions.reduce((acc, obj) => {
 		// если нет ответа на вопрос
 		if (!obj.answer) { 
@@ -63,7 +60,6 @@ app.post("/result", jsonParser, (req, res) => {
     // пробегаемся по каждому элементу массива ответов и массива правильных ответов
     for (let i = 0; i < obj.answer.length; i++) {
       // и если элементы равны добавляем частичку бала
-			console.log(obj.answer[i] === obj.expectedAnswer[i]);
       if (obj.answer[i] === obj.expectedAnswer[i]) {
         mark += part;
       } else {
