@@ -1,5 +1,7 @@
 import express from "express"
-import { questions } from "../src/scripts/questions.js";
+import { questions } from "../app.js";
+
+export const engLangRouter = express.Router()
 
 const testNames = {
   osnovna: "основна сесія",
@@ -14,30 +16,31 @@ const subjectNames = {
 	linkName: 'english-lang'
 }
 
-const jsonParser = express.json();
-export const engLangRouter = express.Router()
 
 engLangRouter.get("/", (req, res) => {
-  const testObject = Object.keys(questions['english-lang']).map((key) => {
-    return questions['english-lang'][key];
-  });
+	const years = Object.keys(questions['english-lang']).map((key) => key.split('_')[1])
+	const links = {}
+	years.forEach(year => {
+		const currentLinks = Object.keys(questions['english-lang'][`year_${year}`])
+		links[year] = currentLinks
+	})
 
   res.render("pages/subject.ejs", {
     title: "English language",
     name: subjectNames.name,
     nameRodovuyVidminok: subjectNames.nameRodovuyVidminok,
     linkName: subjectNames.linkName,
-    years: testObject.map((obj) => obj.options.year),
-    links: testObject.map((obj) => obj.options.links),
+    years: years,
+    links: links,
     testNames: testNames,
   });
 });
 
 engLangRouter.get("/2021_demonstration", (req, res) => {
-  const path = questions['english-lang'].year2021.demonstration;
+  const testsPath = questions['english-lang'].year_2021.demonstration;
 	res.render("pages/test.ejs", {
 		title: "Math",
-		questionNum: path.length,
+		questionNum: testsPath.length,
 		pageName: "демонстраційний варіант",
 		subjectNames: subjectNames
 	})
@@ -45,11 +48,11 @@ engLangRouter.get("/2021_demonstration", (req, res) => {
 
 
 engLangRouter.get("/2021_probniyTest", (req, res) => {
-  const path = questions['english-lang'].year2021.probniyTest;
+  const testsPath = questions['english-lang'].year_2021.probniyTest;
 	
 	res.render("pages/test.ejs", {
 		title: "Math",
-		questionNum: path.length,
+		questionNum: testsPath.length,
 		pageName: "пробний тест",
 		subjectNames: subjectNames
 	})
@@ -57,11 +60,11 @@ engLangRouter.get("/2021_probniyTest", (req, res) => {
 
 
 engLangRouter.get("/2021_osnovna", (req, res) => {
-  const path = questions['english-lang'].year2021.osnovna;
+  const testsPath = questions['english-lang'].year_2021.osnovna;
 
 	res.render("pages/test.ejs", {
 		title: "Math",
-		questionNum: path.length,
+		questionNum: testsPath.length,
 		pageName: "основна сесія",
 		subjectNames: subjectNames
 	})
@@ -69,11 +72,11 @@ engLangRouter.get("/2021_osnovna", (req, res) => {
 
 
 engLangRouter.get("/2021_dodatkova", (req, res) => {
-  const path = questions['english-lang'].year2021.dodatkova;
+  const testsPath = questions['english-lang'].year_2021.dodatkova;
 
 	res.render("pages/test.ejs", {
 		title: "Math",
-		questionNum: path.length,
+		questionNum: testsPath.length,
 		pageName: "додаткова сесія",
 		subjectNames: subjectNames
 	})
@@ -84,10 +87,10 @@ engLangRouter.get("/2021_dodatkova", (req, res) => {
 
 
 engLangRouter.get("/2020_demonstration", (req, res) => {
-  const path = questions['english-lang'].year2021.demonstration;
+  const testsPath = questions['english-lang'].year_2020.demonstration;
 	res.render("pages/test.ejs", {
 		title: "Math",
-		questionNum: path.length,
+		questionNum: testsPath.length,
 		pageName: "демонстраційний варіант",
 		subjectNames: subjectNames
 	})
@@ -95,11 +98,11 @@ engLangRouter.get("/2020_demonstration", (req, res) => {
 
 
 engLangRouter.get("/2020_probniyTest", (req, res) => {
-  const path = questions['english-lang'].year2021.probniyTest;
+  const testsPath = questions['english-lang'].year_2020.probniyTest;
 	
 	res.render("pages/test.ejs", {
 		title: "Math",
-		questionNum: path.length,
+		questionNum: testsPath.length,
 		pageName: "пробний тест",
 		subjectNames: subjectNames
 	})
@@ -107,11 +110,11 @@ engLangRouter.get("/2020_probniyTest", (req, res) => {
 
 
 engLangRouter.get("/2020_osnovna", (req, res) => {
-  const path = questions['english-lang'].year2021.osnovna;
+  const testsPath = questions['english-lang'].year_2020.osnovna;
 
 	res.render("pages/test.ejs", {
 		title: "Math",
-		questionNum: path.length,
+		questionNum: testsPath.length,
 		pageName: "основна сесія",
 		subjectNames: subjectNames
 	})
@@ -119,11 +122,11 @@ engLangRouter.get("/2020_osnovna", (req, res) => {
 
 
 engLangRouter.get("/2020_dodatkova", (req, res) => {
-  const path = questions['english-lang'].year2021.dodatkova;
+  const testsPath = questions['english-lang'].year_2020.dodatkova;
 
 	res.render("pages/test.ejs", {
 		title: "Math",
-		questionNum: path.length,
+		questionNum: testsPath.length,
 		pageName: "додаткова сесія",
 		subjectNames: subjectNames
 	})

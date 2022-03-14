@@ -11,6 +11,8 @@ const __dirname = path.resolve();
 const app = express();
 const jsonParser = express.json();
 
+export let questions; // здесь все вопросы
+
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/src")); // делаем папку исходников статичной
 
@@ -18,6 +20,15 @@ app.use(express.static(__dirname + "/src")); // делаем папку исхо
 app.use("/math", mathRouter);
 app.use("/english-lang", engLangRouter);
 app.use("/ukr-lang", ukrLangRouter);
+
+// читаем файл с вопросами и записываем их в переменную questions
+fs.readFile(path.join(__dirname, "src", "questions.json"), { encoding: "utf-8" }, (err, data) => {
+	if (err) {
+		console.log(err);
+	}
+	questions = JSON.parse(data)
+});
+
 
 app.get("/", (req, res) => {
   res.render("pages/main", {
@@ -34,7 +45,7 @@ app.get("/getQuestions", (req, res) => {
         console.log(err);
       }
 
-      const questions = JSON.parse(data)[queries.subject][`year${queries.year}`][queries.test];
+      const questions = JSON.parse(data)[queries.subject][`year_${queries.year}`][queries.test];
 
 			res.send(JSON.stringify(questions));
     }

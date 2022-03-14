@@ -1,5 +1,7 @@
 import express from "express";
-import { questions } from "../src/scripts/questions.js";
+import { questions } from "../app.js";
+
+export const mathRouter = express.Router();
 
 const testNames = {
   osnovna: "основна сесія",
@@ -14,63 +16,64 @@ const subjectNames = {
   linkName: "math",
 };
 
-const jsonParser = express.json();
-export const mathRouter = express.Router();
 
 mathRouter.get("/", (req, res) => {
-  const testObject = Object.keys(questions.math).map((key) => {
-    return questions.math[key];
-  });
+	const years = Object.keys(questions.math).map((key) => key.split("_")[1]);
+	const links = {};
+	years.forEach((year) => {
+		const currentLinks = Object.keys(questions.math[`year_${year}`]);
+		links[year] = currentLinks;
+	});
 
-  res.render("pages/subject.ejs", {
-    title: "Math",
-    name: subjectNames.name,
-    nameRodovuyVidminok: subjectNames.nameRodovuyVidminok,
-    linkName: subjectNames.linkName,
-    years: testObject.map((obj) => obj.options.year),
-    links: testObject.map((obj) => obj.options.links),
-    testNames: testNames,
-  });
+	res.render("pages/subject.ejs", {
+		title: "Math",
+		name: subjectNames.name,
+		nameRodovuyVidminok: subjectNames.nameRodovuyVidminok,
+		linkName: subjectNames.linkName,
+		years: years,
+		links: links,
+		testNames: testNames,
+	});
 });
 
 mathRouter.get("/2021_demonstration", (req, res) => {
-  const path = questions.math.year2021.demonstration;
+  const testsPath = questions.math.year_2021.demonstration;
   res.render("pages/test.ejs", {
     title: "Math",
-    questionNum: path.length,
+    questionNum: testsPath.length,
     pageName: "демонстраційний варіант",
     subjectNames: subjectNames,
   });
 });
 
 mathRouter.get("/2021_probniyTest", (req, res) => {
-  const path = questions.math.year2021.probniyTest;
+  const testsPath = questions.math.year_2021.probniyTest;
 
   res.render("pages/test.ejs", {
     title: "Math",
-    questionNum: path.length,
+    questionNum: testsPath.length,
     pageName: "пробний тест",
     subjectNames: subjectNames,
   });
 });
 
 mathRouter.get("/2021_osnovna", (req, res) => {
-  const path = questions.math.year2021.osnovna;
+  const testsPath = questions.math.year_2021.osnovna;
 
   res.render("pages/test.ejs", {
     title: "Math",
-    questionNum: path.length,
+    questionNum: testsPath.length,
     pageName: "основна сесія",
     subjectNames: subjectNames,
   });
 });
 
 mathRouter.get("/2021_dodatkova", (req, res) => {
-  const filePath = questions.math.year2021.dodatkova;
-
+  const testsPath = questions.math.year_2021.dodatkova;
+	console.log(questions);
   res.render("pages/test.ejs", {
     title: "Math",
-    questionNum: filePath.length,
+    questionNum: testsPath.length,
     pageName: "додаткова сесія",
     subjectNames: subjectNames,
   });

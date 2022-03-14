@@ -1,6 +1,6 @@
 {
   "math": {
-    "year2021": {
+    "year_2021": {
       "dodatkova": [
         {
           "text": "У під'їзді шістнадцятиповерхового будинку на першому поверсі розташовано 6 квартир, а на кожному з решти поверхів – по 8. На якому поверсі квартира № 31, якщо квартири від № 1 і далі пронумеровано послідовно від першого до останнього поверху?",
@@ -314,15 +314,11 @@
           "answerId": 3,
           "variants": ["15", "12", "123", "124"]
         }
-      ],
-      "options": {
-        "year": "2021",
-        "links": ["dodatkova", "osnovna", "probniyTest", "demonstration"]
-      }
+      ]
     }
   },
   "english-lang": {
-    "year2021": {
+    "year_2021": {
       "dodatkova": [
         {
           "questions": ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
@@ -350,13 +346,9 @@
           "type": "write",
           "expectedAnswer": ["132", "139"]
         }
-      ],
-      "options": {
-        "year": "2021",
-        "links": ["dodatkova", "osnovna", "probniyTest", "demonstration"]
-      }
+      ]
     },
-    "year2020": {
+    "year_2020": {
       "dodatkova": [
         {
           "questions": ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
@@ -384,15 +376,11 @@
           "type": "write",
           "expectedAnswer": ["132", "139"]
         }
-      ],
-      "options": {
-        "year": "2020",
-        "links": ["dodatkova", "osnovna", "probniyTest", "demonstration"]
-      }
+      ]
     }
   },
   "ukr-lang": {
-    "year2021": {
+    "year_2021": {
       "osnovna": [
         {
           "questions": ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
@@ -406,10 +394,9 @@
           "type": "write",
           "expectedAnswer": ["132", "139"]
         }
-      ],
-      "options": { "year": "2021", "links": ["dodatkova", "osnovna"] }
+      ]
     },
-    "year2020": {
+    "year_2020": {
       "dodatkova": [
         {
           "questions": ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
@@ -423,10 +410,9 @@
           "type": "write",
           "expectedAnswer": ["132", "139"]
         }
-      ],
-      "options": { "year": "2020", "links": ["dodatkova", "osnovna"] }
+      ]
     },
-    "year2005": {
+    "year_2005": {
       "dodatkova": [
         {
           "questions": ["Сколько будет 122 + 10?", "Сколько будет 152 - 13?"],
@@ -447,11 +433,7 @@
           "type": "write",
           "expectedAnswer": ["132", "139"]
         }
-      ],
-      "options": {
-        "year": "2005",
-        "links": ["dodatkova", "osnovna", "demonstration"]
-      }
+      ]
     }
   }
 }
