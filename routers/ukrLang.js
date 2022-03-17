@@ -26,9 +26,9 @@ ukrLangRouter.get("/", (req, res) => {
 		links[year] = currentLinks
 	})
 	
+  // генерируем страницу с тестом
   res.render("pages/subject.ejs", {
-    // генерируем страницу с тестом
-    title: "Ukrainian language",
+    title: subjectNames.name,
     name: subjectNames.name,
     nameRodovuyVidminok: subjectNames.nameRodovuyVidminok,
     linkName: subjectNames.linkName,

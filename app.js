@@ -40,16 +40,7 @@ app.get("/", (req, res) => {
 app.get("/getQuestions", (req, res) => {
   const queries = req.query;
 
-  fs.readFile(path.join(__dirname, "src", "questions.json"), { encoding: "utf-8" }, (err, data) => {
-      if (err) {
-        console.log(err);
-      }
-
-      const questions = JSON.parse(data)[queries.subject][`year_${queries.year}`][queries.test];
-
-			res.send(JSON.stringify(questions));
-    }
-  );
+	res.send(questions[queries.subject][`year_${queries.year}`][queries.test]);
 });
 
 // получаем результат, обрабатываем его и отправляем назад

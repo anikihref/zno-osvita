@@ -26,7 +26,7 @@ mathRouter.get("/", (req, res) => {
 	});
 
 	res.render("pages/subject.ejs", {
-		title: "Math",
+		title: subjectNames.name,
 		name: subjectNames.name,
 		nameRodovuyVidminok: subjectNames.nameRodovuyVidminok,
 		linkName: subjectNames.linkName,
@@ -70,7 +70,7 @@ mathRouter.get("/2021_osnovna", (req, res) => {
 
 mathRouter.get("/2021_dodatkova", (req, res) => {
   const testsPath = questions.math.year_2021.dodatkova;
-	console.log(questions);
+
   res.render("pages/test.ejs", {
     title: "Math",
     questionNum: testsPath.length,

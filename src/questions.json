@@ -298,23 +298,13 @@
       ],
       "probniyTest": [
         {
-          "questions": [
-            "Сколько будет 2 + 10?",
-            "Сколько будет 15 + 10?",
-            "asda"
-          ],
-          "type": "write",
-          "expectedAnswer": ["12", "25", "asd"]
-        }
-      ],
-      "demonstration": [
-        {
-          "text": "Про мать было лишнее",
+					"text": "Обчисліть: 10!",
           "type": "radio",
-          "answerId": 3,
-          "variants": ["15", "12", "123", "124"]
+          "expectedAnswer": ["3628800"],
+          "variants": ["42520600", "100", "100000", "3628800"]
         }
       ]
+  
     }
   },
   "english-lang": {

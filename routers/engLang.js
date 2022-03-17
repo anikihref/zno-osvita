@@ -26,7 +26,7 @@ engLangRouter.get("/", (req, res) => {
 	})
 
   res.render("pages/subject.ejs", {
-    title: "English language",
+    title: subjectNames.name,
     name: subjectNames.name,
     nameRodovuyVidminok: subjectNames.nameRodovuyVidminok,
     linkName: subjectNames.linkName,
