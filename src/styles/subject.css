@@ -1,0 +1,44 @@
+.main__test-name {
+  padding: 24px 20px;
+  background-color: #35866e;
+}
+.test-name__pre-title {
+  font-size: 1.1428571429rem;
+  line-height: 162.5%;
+  color: #b2e2d3;
+}
+.test-name__title {
+  color: #fff;
+  font-size: 1.5714285714rem;
+  line-height: 118.1818181818%;
+}
+
+.categories {
+  margin-top: 25px;
+}
+
+.category__links:not(:last-child) {
+	margin-bottom: 50px;
+}
+
+.categories__name {
+  margin-bottom: 10px;
+  font-weight: 700;
+  font-size: 1.1428571429rem;
+}
+.categories__link {
+  display: block;
+  color: #1a5785;
+  font-size: 1.0714285714rem;
+}
+
+.categories__link:hover {
+	text-decoration: underline dotted;
+}
+
+.categories__link span {
+  font-weight: 700;
+}
+.categories__link:not(:last-child) {
+  margin-bottom: 12px;
+}

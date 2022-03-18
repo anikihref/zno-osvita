@@ -1,0 +1,206 @@
+@font-face {
+  font-family: "CenturyGothic";
+  font-display: swap;
+  src: url("/fonts/CenturyGothic.woff2") format("woff2"), url("/fonts/CenturyGothic.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+.header__link {
+  font-size: 1rem;
+  color: #fff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+:focus, :active {
+  outline: none;
+}
+
+a:focus, a:active {
+  outline: none;
+}
+
+nav, header, footer, aside {
+  display: block;
+}
+
+html, body {
+  background-color: #dddddd;
+  height: 100%;
+  width: 100%;
+  line-height: 1;
+  font-size: 14px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+}
+
+body {
+  font-family: "CenturyGothic";
+}
+
+input, button, textarea {
+  font-family: inherit;
+}
+
+input::-ms-clear {
+  display: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
+a, a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+ul li {
+  list-style: none;
+}
+
+img {
+  vertical-align: top;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: 400;
+} 
+
+main {
+  flex: 1 1 auto;
+}
+
+.wrapper {
+	/* background-image: url('img/arman.jpg'); */
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position-y: center;
+  margin: 0 auto;
+	padding-bottom: 50px;
+  background-color: #fff;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  max-width: 980px;
+	
+}
+
+.header {
+  border-bottom: 1px solid #b7c7c2;
+}
+.header_breadcrump {
+  border-bottom: none;
+}
+.header__main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #b7c7c2;
+}
+.header__title-block {
+  padding: 13px 20px;
+}
+.header__title-block p {
+  font-size: 1.2142857143rem;
+  line-height: 152.9411764706%;
+}
+.header__title {
+  color: #167b5f;
+  font-size: 2.2857142857rem;
+}
+.header__nav {
+  font-size: 0;
+}
+.header__link {
+  font-size: 14px;
+  background-color: #35866e;
+  padding: 0 16px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+}
+.header__link:not(:last-child) {
+  border-right: 1px solid #a9e5d3;
+}
+.header__link:hover {
+  background-color: #41a88a;
+}
+
+.authorization {
+  padding-right: 20px;
+  cursor: default;
+}
+.authorization span {
+  color: #000;
+}
+.authorization a {
+  color: #0c4169;
+}
+
+.active__link {
+  background-color: #41a88a;
+}
+
+.breadcrump {
+  padding: 7px 20px;
+  background-color: #ebe6e6;
+  display: inline-block;
+  width: 100%;
+  height: fit-content;
+  cursor: default;
+  color: #727272;
+}
+.breadcrump__item {
+  position: relative;
+  color: #727272;
+}
+.breadcrump__item:not(:first-child)::before {
+  content: "/";
+  cursor: default;
+  position: absolute;
+  left: -10px;
+}
+.breadcrump__item:not(:first-child) {
+  margin-left: 10px;
+}
+.breadcrump__item:not(:last-child):hover {
+  text-decoration: dotted underline;
+}
+.breadcrump__item:last-child {
+  cursor: default;
+}
+
+.main {
+  display: flex;
+}
+.main__body {
+  width: 68%;
+  padding: 20px 10px 0 20px;
+	overflow: hidden;
+}
+.main__advertising {
+  padding: 20px 20px 0 10px;
+  display: grid;
+  width: 32%;
+}

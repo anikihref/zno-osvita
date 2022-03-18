@@ -1,0 +1,48 @@
+.test {
+  font-size: 0;
+}
+
+.test__subjects {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.test__item {
+  padding: 10px;
+  border-right: 1px solid #a9e5d3;
+  border-bottom: 1px solid #a9e5d3;
+  height: 75px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 14px;
+  background-color: #35866e;
+  text-align: center;
+}
+.test__item:hover {
+  background-color: #41a88a;
+}
+.test__levels {
+  margin-top: 35px;
+  width: 100%;
+}
+.test__levels > .test__item {
+  width: 50%;
+}
+
+
+.main__text {
+  margin-top: 30px;
+  font-size: 1rem;
+}
+.main__text p:not(:last-child) {
+  display: inline-block;
+  margin-bottom: 20px;
+}
+.main__text-link {
+  color: #1a5785;
+}
+.main__text-link:hover {
+  text-decoration: underline;
+}
