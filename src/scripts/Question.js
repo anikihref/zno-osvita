@@ -198,7 +198,7 @@ export class RadioQuestion extends Question {
 
       const $parent = document.querySelector(`.radio__form-row${i + 1}`);
 
-      const inputs = [...$parent.querySelectorAll(".radio__input")];
+      const inputs = [...$parent.querySelectorAll("input.radio__input")];
       const id = this.questionObj.variants.findIndex(
         (variant) => variant === answer
       );
@@ -211,30 +211,34 @@ export class RadioQuestion extends Question {
   getAnswer() {
     const checkedInputs = [];
     const answers = [];
-
+		const inputs = {}
+		
     if (this.questionObj.questions) {
       this.questionObj.questions.forEach((question, i) => {
         const $parent = document.querySelector(`.radio__form-row${i + 1}`);
         const currentInputs = [
           ...$parent.querySelectorAll(`input.radio__input`),
-        ]; // из коллекции делаем массив
+        ]; // из коллекции делаем массив инпутов
+				inputs[`row${i + 1}`] = currentInputs
         checkedInputs.push(currentInputs.find((el) => el.checked));
+
       });
     } else if (this.questionObj.text) {
       const $parent = document.querySelector(`.radio__form-row1`);
       const currentInputs = [...$parent.querySelectorAll(`input.radio__input`)]; // из коллекции делаем массив
+			inputs[`row1`] = currentInputs
       checkedInputs.push(currentInputs.find((el) => el.checked));
     }
 
-    // console.log(checkedInputs);
 
-    checkedInputs.forEach((input) => {
+    checkedInputs.forEach((input, i) => {
       // если ответа нет то ответ null
       if (!input) {
         return answers.push(null);
       }
-      // поскольку у каждого инпута последний символ id его индекс то вытаскивем его оттуда
-      const id = input.id.split("").at(-1);
+
+      // получаем из ряда инпутов index выдбраного инпута
+      const id = inputs[`row${i + 1}`].indexOf(input)
       // получаем ответ по индексу из массива ответов
       const result = this.questionObj.variants[id];
 
@@ -314,39 +318,42 @@ export class RadioQuestion extends Question {
 
   // создаёт блок с вопросами ответов
   _createQuestion() {
-    let resultingHtml = `
-			<div class="radio__questions-block">
-				<div class="question__form-text_help">Початок речення:</div>
-			`;
+		const $questionBlocksText = createHtmlBlock('div', 'Початок речення:')
+		const $questionBlocks = createHtmlBlock('div', [$questionBlocksText])
+
+		addClass($questionBlocks, 'radio__questions-block')
+		addClass($questionBlocksText, 'question__form-text_help')
 
     this.questionObj.questions.forEach((question, i) => {
-      resultingHtml += `
-				<div class="radio__question">
-					<div class="radio__question-num">${i + 1}</div>
-					<div class="radio__question-text">${question}</div>
-				</div>`;
+			const $questionRow = createHtmlBlock('div', `
+				<div class="radio__question-num">${i + 1}</div>
+				<div class="radio__question-text">${question}</div>
+			`)
+			appendElements($questionBlocks, [$questionRow])
+			addClass($questionRow, 'radio__question')
     });
 
-    resultingHtml += `</div>`;
-    return resultingHtml;
+		return $questionBlocks
   }
 
   // создаёт блок с вариантами ответов
   _createFormVariants() {
-    let resultingHtml = `
-			<div class="radio__variants-block">
-				<div class="question__form-text_help">Закінчення речення:</div>
-			`;
+		const $questionBlocksText = createHtmlBlock('div', 'Закінчення речення:')
+		const $variantBlocks = createHtmlBlock('div', [$questionBlocksText])
+
+		addClass($variantBlocks, 'radio__variants-block')
+		addClass($questionBlocksText, 'question__form-text_help')
 
     this.questionObj.variants.forEach((variant, i) => {
-      resultingHtml += `
-				<div class="radio__variant">
-					<div class="radio__variant-letter">${this.letters[i]}</div>
-					<div class="radio__variant-text" id="answer${i}">${variant}</div>
-				</div>`;
+			const $questionRow = createHtmlBlock('div', `
+				<div class="radio__variant-letter">${this.letters[i]}</div>
+				<div class="radio__variant-text">${variant}</div>
+			`)
+
+			appendElements($variantBlocks, [$questionRow])
+			addClass($questionRow, 'radio__variant')
     });
 
-    resultingHtml += `</div>`;
-    return resultingHtml;
+    return $variantBlocks
   }
 }

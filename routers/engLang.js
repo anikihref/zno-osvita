@@ -33,16 +33,18 @@ engLangRouter.get("/", (req, res) => {
     years: years,
     links: links,
     testNames: testNames,
+		styleFile: 'subject.css'
   });
 });
 
 engLangRouter.get("/2021_demonstration", (req, res) => {
   const testsPath = questions['english-lang'].year_2021.demonstration;
 	res.render("pages/test.ejs", {
-		title: "Math",
+		title: subjectNames.name,
 		questionNum: testsPath.length,
 		pageName: "демонстраційний варіант",
-		subjectNames: subjectNames
+		subjectNames: subjectNames,
+		styleFile: 'test.css'
 	})
 });
 
@@ -51,10 +53,11 @@ engLangRouter.get("/2021_probniyTest", (req, res) => {
   const testsPath = questions['english-lang'].year_2021.probniyTest;
 	
 	res.render("pages/test.ejs", {
-		title: "Math",
+		title: subjectNames.name,
 		questionNum: testsPath.length,
 		pageName: "пробний тест",
-		subjectNames: subjectNames
+		subjectNames: subjectNames,
+		styleFile: 'test.css'
 	})
 });
 
@@ -63,10 +66,11 @@ engLangRouter.get("/2021_osnovna", (req, res) => {
   const testsPath = questions['english-lang'].year_2021.osnovna;
 
 	res.render("pages/test.ejs", {
-		title: "Math",
+		title: subjectNames.name,
 		questionNum: testsPath.length,
 		pageName: "основна сесія",
-		subjectNames: subjectNames
+		subjectNames: subjectNames,
+		styleFile: 'test.css'
 	})
 });
 
@@ -75,10 +79,11 @@ engLangRouter.get("/2021_dodatkova", (req, res) => {
   const testsPath = questions['english-lang'].year_2021.dodatkova;
 
 	res.render("pages/test.ejs", {
-		title: "Math",
+		title: subjectNames.name,
 		questionNum: testsPath.length,
 		pageName: "додаткова сесія",
-		subjectNames: subjectNames
+		subjectNames: subjectNames,
+		styleFile: 'test.css'
 	})
 });
 
@@ -89,10 +94,11 @@ engLangRouter.get("/2021_dodatkova", (req, res) => {
 engLangRouter.get("/2020_demonstration", (req, res) => {
   const testsPath = questions['english-lang'].year_2020.demonstration;
 	res.render("pages/test.ejs", {
-		title: "Math",
+		title: subjectNames.name,
 		questionNum: testsPath.length,
 		pageName: "демонстраційний варіант",
-		subjectNames: subjectNames
+		subjectNames: subjectNames,
+		styleFile: 'test.css'
 	})
 });
 
@@ -101,10 +107,11 @@ engLangRouter.get("/2020_probniyTest", (req, res) => {
   const testsPath = questions['english-lang'].year_2020.probniyTest;
 	
 	res.render("pages/test.ejs", {
-		title: "Math",
+		title: subjectNames.name,
 		questionNum: testsPath.length,
 		pageName: "пробний тест",
-		subjectNames: subjectNames
+		subjectNames: subjectNames,
+		styleFile: 'test.css'
 	})
 });
 
@@ -113,10 +120,11 @@ engLangRouter.get("/2020_osnovna", (req, res) => {
   const testsPath = questions['english-lang'].year_2020.osnovna;
 
 	res.render("pages/test.ejs", {
-		title: "Math",
+		title: subjectNames.name,
 		questionNum: testsPath.length,
 		pageName: "основна сесія",
-		subjectNames: subjectNames
+		subjectNames: subjectNames,
+		styleFile: 'test.css'
 	})
 });
 
@@ -125,10 +133,11 @@ engLangRouter.get("/2020_dodatkova", (req, res) => {
   const testsPath = questions['english-lang'].year_2020.dodatkova;
 
 	res.render("pages/test.ejs", {
-		title: "Math",
+		title: subjectNames.name,
 		questionNum: testsPath.length,
 		pageName: "додаткова сесія",
-		subjectNames: subjectNames
+		subjectNames: subjectNames,
+		styleFile: 'test.css'
 	})
 });
 

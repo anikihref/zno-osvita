@@ -33,6 +33,7 @@ fs.readFile(path.join(__dirname, "src", "questions.json"), { encoding: "utf-8" }
 app.get("/", (req, res) => {
   res.render("pages/main", {
     title: "ЗНО освіта ремейк",
+		styleFile: 'main.css'
   });
 });
 

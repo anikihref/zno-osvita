@@ -61,20 +61,20 @@ export const questionsActions = {
   // перемещает активную ссылку на вопрост
   moveActiveLink(nextQuestionId) {
     // элемент ссылки на вопрос который станет активным
-    const $nextActiveBlock = htmlElements.$questionBlocks.querySelector(
+    const $nextActiveBlock = app.$questionLinksBlock.querySelector(
       `[data-id="${nextQuestionId}"]`
     );
     // текущий активный элемент ссылки на вопрос
-    const $activeBlock = htmlElements.$questionBlocks.querySelector(
-      ".question__block_active"
+    const $activeBlock = app.$questionLinksBlock.querySelector(
+      ".question__link_active"
     );
 
     if ($nextActiveBlock.dataset.id === $activeBlock.dataset.id) {
       return;
     }
 
-    addClass($nextActiveBlock, "question__block_active");
-    removeClass($activeBlock, "question__block_active");
+    addClass($nextActiveBlock, "question__link_active");
+    removeClass($activeBlock, "question__link_active");
   },
 
   // увидеть сразу все вопросы (только после завершения теста)

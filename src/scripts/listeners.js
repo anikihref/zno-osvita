@@ -68,8 +68,8 @@ export const listeners = {
 	
 						
 						addClass(
-							document.querySelector(".question__block_active"), 
-							"question__block_done"
+							document.querySelector(".question__link_active"), 
+							"question__link_done"
 						);
 					}
 	
@@ -106,7 +106,7 @@ export const listeners = {
 		}
 	},
 	questionLinksListener(e) {
-    const target = e.target.closest(".question__block");
+    const target = e.target.closest(".question__link");
     if (target == null) {
       return;
     }
