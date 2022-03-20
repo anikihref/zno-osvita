@@ -5,7 +5,6 @@ import { RadioQuestion, WriteQuestion } from "../Question.js";
 
 import {
   appendElements,
-  
   prependElements,
 } from "./elementActions.js";
 
@@ -88,10 +87,8 @@ export const questionsActions = {
         formObj.createQuestionWrapper(),
         formObj.createAnswerWrapper(),
       ]);
-      // создаём div с номером вопроса
-      const $questionNumber = createQuestionNumber(question.id + 1);
       // вставляем div с номером вопроса в блок вопроса
-      prependElements($question, [$questionNumber]);
+      prependElements($question, [createQuestionNumber(question.id + 1)]);
       // добавляем классы блоку вопроса
       addClass(
         $question,
@@ -108,33 +105,5 @@ export const questionsActions = {
         "question__answer-wrapper_all"
       );
     });
-  },
-
-  // переключатель вопроса
-  turnQuestion(question, parent = htmlElements.$questionWrapper) {
-    const formObj = this.getQuestionObj(question);
-    // удаляем контент родительского блока
-    parent.innerHTML = ''
-
-    appendElements(parent, [
-      createQuestionNumber(question.id + 1),
-      formObj.createQuestionWrapper(),
-    ]);
-    // вставляем html вопроса в родительский блок
-		
-    if (app.questionsConfig.isFinished) {
-      appendElements(parent, [
-        formObj.createAnswerWrapper(),
-      ]);
-    } else {
-      appendElements(parent, [
-        formObj.createAnswerForm(),
-      ]);
-      // вставляем ответ
-      formObj.insertAnswer();
-    }
-
-    // перемещаем активную ссылку на вопрос
-    questionsActions.moveActiveLink(question.id);
   },
 };

@@ -1,6 +1,8 @@
 import { addClass } from "./functions/attributes.js";
-import { createHtmlBlock } from "./functions/createElement.js";
-import { appendElements } from "./functions/elementActions.js";
+import { createHtmlBlock, createQuestionNumber } from "./functions/createElement.js";
+import { appendElements, prependElements } from "./functions/elementActions.js";
+import { questionsActions } from "./functions/questionsActions.js";
+import { app } from "./main.js";
 
 export class Question {
   constructor(questionObj) {
@@ -81,7 +83,7 @@ export class Question {
     return $answerBlock;
   }
 
-  // создаёт оболочку для текста вопроса
+  // создаёт текста вопроса
   createQuestionText() {
     const $questionTextWrapper = createHtmlBlock(
       "div",
@@ -102,6 +104,31 @@ export class Question {
 
     return $imageWrapper;
   }
+
+	render() {
+		app.$questionWrapper.innerHTML = ''
+
+  
+		appendElements(app.$questionWrapper, [
+			createQuestionNumber(this.questionObj.id + 1),
+      this.createQuestionWrapper(),
+    ]);
+
+		if (app.questionsConfig.isFinished) {
+      appendElements(app.$questionWrapper, [
+        this.createAnswerWrapper(),
+      ]);
+    } else {
+      appendElements(app.$questionWrapper, [
+        this.createAnswerForm(),
+      ]);
+      // вставляем ответ
+      this.insertAnswer();
+    }
+
+		// перемещаем активную ссылку на вопрос
+		questionsActions.moveActiveLink(this.questionObj.id);
+	}
 }
 
 // для type: 'write'
@@ -151,6 +178,7 @@ export class WriteQuestion extends Question {
     }
 
     const $questions = createHtmlBlock("div", outerHtml);
+
     addClass($questions, "question__write-questions");
     return $questions;
   }
@@ -282,9 +310,7 @@ export class RadioQuestion extends Question {
             resultingHtml += `<div class="radio__form-letter">${this.letters[j]}</div>`;
           }
           resultingHtml += `
-						<input class="radio__input" type="radio" name="answer${i}" id="answer${j}" data-id="${
-            j + 1
-          }">
+						<input class="radio__input" type="radio" name="answer${i}" id="answer${j}" data-id="${j + 1}">
 						<div class="radio__button"></div>
 					</label>
 					`;

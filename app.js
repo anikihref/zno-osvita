@@ -4,6 +4,7 @@ import fs from "fs";
 import { mathRouter } from "./routers/math.js";
 import { engLangRouter } from "./routers/engLang.js";
 import { ukrLangRouter } from "./routers/ukrLang.js";
+import { log } from "console";
 
 const PORT = 5000;
 const __dirname = path.resolve();
@@ -47,6 +48,7 @@ app.get("/getQuestions", (req, res) => {
 // получаем результат, обрабатываем его и отправляем назад
 app.post("/result", jsonParser, (req, res) => {
 	const allQuestions = req.body;
+	let dpaScore = 0;
 
   const answers = allQuestions.reduce((acc, obj) => {
 		// если нет ответа на вопрос
@@ -78,6 +80,10 @@ app.post("/result", jsonParser, (req, res) => {
       obj.result = "mistake";
     }
 
+		if (obj.vrahovyietiaDpa) {
+			dpaScore += mark
+		}
+
     return acc += mark;
   }, 0);
 
@@ -86,6 +92,8 @@ app.post("/result", jsonParser, (req, res) => {
     succesfulAnswersNum: answers.toFixed(0), // количество правильных ответов
     allQuestionsNum: allQuestions.length, // количество вопросов
     percentage: ((answers.toFixed(0) / allQuestions.length) * 100).toFixed(1), // процент правильных ответов
+		dpaScore: dpaScore,
+		dpaPercentage: ((dpaScore.toFixed(0) / allQuestions.filter(question => question.vrahovyietiaDpa).length) * 100).toFixed(1)
   });
 })
 

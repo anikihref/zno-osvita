@@ -6,7 +6,9 @@ export function addClass(element, ...classNames) {
 }
 
 // удаляет element класс className
-export function removeClass(element, className) {
-	element.classList.remove(className);
+export function removeClass(element, ...classNames) {
+	classNames.forEach(className => {
+		element.classList.remove(className);
+	})
 }
 

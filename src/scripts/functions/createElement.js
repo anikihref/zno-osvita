@@ -1,8 +1,6 @@
 import { app } from "../main.js";
-import { htmlElements } from "../htmlElements.js";
 import { addClass } from "./attributes.js";
 import { appendElements } from "./elementActions.js";
-import { questionsActions } from "./questionsActions.js";	
 
 /*
 создаёт элемент parent c Html контентом - content(может быть и html элементом и простым текстом) внутри. 
@@ -41,19 +39,6 @@ export function createHtmlBlock(parent, content) {
 	}
 
   return $element;
-}
-
-// пересоздаёт обёртку для вопроса, нужно присвоить переменной $questionWrapper
-export function recreateQuestionWrapper(question) {
-	const $questionWrapper = createHtmlBlock('div')
-	addClass($questionWrapper, 'question__wrapper')
-	// удаляем контент
-	htmlElements.$answerForm.innerHTML = ''
-	appendElements(htmlElements.$answerForm, [$questionWrapper])
-  // переключаем на этот же вопрос
-  questionsActions.turnQuestion(question, $questionWrapper);
-
-	return $questionWrapper
 }
 
 export function createQuestionNumber(questionNum) {

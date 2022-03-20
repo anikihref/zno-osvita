@@ -3,7 +3,6 @@ import { createHtmlBlock } from "./functions/createElement.js";
 import {
   appendElements,
   hideElement,
-  prependElements,
   showElement,
 } from "./functions/elementActions.js";
 import { questionsActions } from "./functions/questionsActions.js";
@@ -22,16 +21,17 @@ class App {
   constructor() {
     this.allQuestionsList = [];
     this.questionsConfig = {};
+		this.currentQuestion = {};
+		this.currentQuestionInfo = {}
 		this.result = {};
     this.$questionLinksBlock = createHtmlBlock("div");
 		this.$resultingBlock = createHtmlBlock("div");
+		this.$questionWrapper = createHtmlBlock('div');
 		this.startTime = Date.now();
-		this.testTimeMinutes = 0;
+		this.testMinutes = 0;
   }
 
   finishTest() {
-		this.testTimeMinutes = Math.trunc((Date.now() - this.startTime) / 1000 / 60)
-
     fetch("/result", {
       method: "POST",
       headers: {
@@ -44,20 +44,25 @@ class App {
       .then((data) => {
 				// записываем результат
         this.result = data
+
+				//! переопределяем значение
+				this.questionsConfig.isFinished = true;
+
 				// создаём блок с результатом
 				this.createResultBlock()
-
-        //! переопределяем значение
-        this.questionsConfig.isFinished = true;
-
+				// удаляем содержимое ссылок на вопросы
+				this.$questionLinksBlock.innerHTML = ''
+				// создаём ссылки на вопросы
+				this.createQuestionLinks()
+      
+				// определяем врема потраченое на тест
+				this.testMinutes = Math.trunc((Date.now() - this.startTime) / 1000 / 60)
+				
         showElement(htmlElements.$seeAllQuestionsBtn);
         // удаляем кнопки 'ответить' и 'завершить'
         [htmlElements.$btn, htmlElements.$endBtn].forEach((el) => el.remove());
 				
-        questionsActions.turnQuestion(
-          this.questionsConfig.currentQuestion,
-          htmlElements.$questionWrapper
-        );
+				this.currentQuestion.render();
 
         // для проверяем правильный ответ или нет и в зависимости от этого добавляе класс
         [...document.querySelectorAll(".question__link")].forEach(
@@ -106,8 +111,6 @@ class App {
           // single по одному вопросу или
           // seeAll смотреть все сразу (только после завершения теста)
           questionSwitchLogic: "single",
-          //			текущий вопрос
-          currentQuestion: this.allQuestionsList[0],
 
           checkAnswersNumber() {
 						// проверяем количество вопросов без ответа
@@ -122,6 +125,8 @@ class App {
             }
           },
         };
+				this.currentQuestionInfo = this.allQuestionsList[0]
+				this.currentQuestion = questionsActions.getQuestionObj(this.allQuestionsList[0])
       });
   }
 
@@ -134,11 +139,10 @@ class App {
 			// добавляем слушатели для переключениям на вопросы
 			this.addQuestionChangeListeners()
 
+			addClass(this.$questionWrapper, 'question__wrapper')
+			appendElements(htmlElements.$answerForm, [this.$questionWrapper])
       // вставляем первый вопрос
-      questionsActions.turnQuestion(
-        this.questionsConfig.currentQuestion,
-        htmlElements.$questionWrapper
-      );
+			this.currentQuestion.render()
 
       // прячем кнопку смотреть все вопросы
       hideElement(htmlElements.$seeAllQuestionsBtn); // прячем кнопку смотреть все
@@ -152,7 +156,16 @@ class App {
 
     // создаём блоки-ссылки на вопросы
     for (let i = 1; i <= this.allQuestionsList.length; i++) {
-      const $questionLink = createHtmlBlock("div", [`<span>${i}</span>`]);
+      let $questionLink = createHtmlBlock("div");
+			let number;
+
+			if (!this.questionsConfig.isFinished || this.allQuestionsList[i - 1].vrahovyietiaDpa) {
+				number = createHtmlBlock('b', i)
+			} else {
+				number = createHtmlBlock('span', i)
+			}
+
+			appendElements($questionLink, [number])
 
       appendElements(this.$questionLinksBlock, [$questionLink]);
       addClass($questionLink, "question__link");
@@ -166,12 +179,20 @@ class App {
     );
   }
 
+	recreateQuestionWrapper() {
+		this.$questionWrapper = createHtmlBlock('div')
+		addClass(this.$questionWrapper, 'question__wrapper')
+		// удаляем контент
+		htmlElements.$answerForm.innerHTML = ''
+		appendElements(htmlElements.$answerForm, [this.$questionWrapper])
+	}
+	
 	createResultBlock() {
 		//TODO: вычислить тестовый бал и макс количество этих балов и вычислить бал зно
 		const $testScore = createHtmlBlock('div', `Ваш тестовий бал: <b>?</b> з <b>?</b> можливих.`)
 		const $ratingScore = createHtmlBlock('div', 'Ваш рейтинговий бал: <b>?</b> з 200 можливих.')
-		const $dpaScore = createHtmlBlock('div', `Ваш бал ДПА: <b>${Math.trunc(12 * this.result.percentage / 100)}</b> з 12 можливих.`)
-		const $time = createHtmlBlock('div', `Витрачено часу: <b>${this.testTimeMinutes} хв.</b> з 180 запропонованих`)
+		const $dpaScore = createHtmlBlock('div', `Ваш бал ДПА: <b>${Math.trunc(12 * this.result.dpaPercentage / 100)}</b> з 12 можливих.`)
+		const $time = createHtmlBlock('div', `Витрачено часу: <b>${this.testMinutes} хв.</b> з 180 запропонованих`)
 
 		
 		appendElements(this.$resultingBlock, [$testScore, $ratingScore, $dpaScore, $time])

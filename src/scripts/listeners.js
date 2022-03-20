@@ -2,21 +2,19 @@ import { app } from './main.js'
 import { questionsActions } from './functions/questionsActions.js';
 import { htmlElements } from './htmlElements.js';
 import { hideElement, showElement } from './functions/elementActions.js';
-import { recreateQuestionWrapper } from './functions/createElement.js';
 import { addClass } from './functions/attributes.js';
 
 export const listeners = {
 	buttonsListener(e) {
 		//! проверяем количество неотвеченных вопросов
 		app.questionsConfig.checkAnswersNumber();
-		// либо пропускаем вопрос, либо отвечаем на него, либо завершаем тест
 		const target = e.target;
 		// текущий вопрос
-		let question = app.questionsConfig.currentQuestion;
+		let questionInfo = app.currentQuestionInfo;
 		// получаем следующий вопрос
 		const nextQuestion = app.questionsConfig.isLastUnanswered
-			? question
-			: questionsActions.findNextQuestion(question, "default");
+			? questionInfo
+			: questionsActions.findNextQuestion(questionInfo, "default");
 	
 		if (target === htmlElements.$seeAllQuestionsBtn) {
 			// если логика переключения - одие вопрос
@@ -31,9 +29,11 @@ export const listeners = {
 			else if (app.questionsConfig.questionSwitchLogic === "seeAll") {
 				//! изменяем логику переключения между вопросами
 				app.questionsConfig.questionSwitchLogic = "single";
-				// обновляем значение обёртки вопроса
-				htmlElements.$questionWrapper = recreateQuestionWrapper(question);
-	
+				// пересоздаём обёртку вопроса
+				app.recreateQuestionWrapper();
+				// создаём текущий вопрос
+				app.currentQuestion.render()
+
 				htmlElements.$seeAllQuestionsBtn.textContent = "Смотреть все"
 				// показываем кнопку "следующий"
 				showElement(htmlElements.$nextBtn);
@@ -46,7 +46,7 @@ export const listeners = {
 				if (target === htmlElements.$nextBtn || target === htmlElements.$btn) {
 					if (target === htmlElements.$btn) {
 						// получаем объект формы и затем получаем ответ
-						const answer = questionsActions.getQuestionObj(question).getAnswer();
+						const answer = app.currentQuestion.getAnswer();
 	
 						// проверяем дал ли пользователь ответ
 						if (
@@ -55,7 +55,7 @@ export const listeners = {
 							})
 						) {
 							//! добавляем поле ответа в объект вопроса
-							app.questionsConfig.currentQuestion.answer = answer;
+							app.currentQuestionInfo.answer = answer;
 						} else {
 							return;
 						}
@@ -72,17 +72,22 @@ export const listeners = {
 							"question__link_done"
 						);
 					}
-	
-					// переключаем вопрос
-					questionsActions.turnQuestion(nextQuestion, htmlElements.$questionWrapper);
-	
+				
 					//! переопределяем текущий вопрос
-					app.questionsConfig.currentQuestion = nextQuestion;
+					app.currentQuestionInfo = nextQuestion;
+					app.currentQuestion = questionsActions.getQuestionObj(nextQuestion)
+					// переключаем вопрос
+					app.currentQuestion.render()
+					// questionsActions.turnQuestion(nextQuestion);
+	
+					
 				} else if (target === htmlElements.$endBtn) {
 					// если есть хоть один объект с полем answer
-					if (!!app.allQuestionsList.find((obj) => obj.hasOwnProperty("answer"))) {
+					if (app.allQuestionsList.find((obj) => obj.hasOwnProperty("answer"))) {
 						// завершаем тест
 						app.finishTest();
+					} else {
+						console.log('дайте відповідь хоча б на одне питання');
 					}
 				}
 			}
@@ -90,11 +95,11 @@ export const listeners = {
 			// если тест уже завершен
 			if (app.questionsConfig.isFinished) {
 				if (target === htmlElements.$nextBtn) {
-					// переключаем вопрос
-					questionsActions.turnQuestion(nextQuestion, htmlElements.$questionWrapper);
-	
 					//! переопределяем текущий вопрос
-					app.questionsConfig.currentQuestion = nextQuestion;
+					app.currentQuestionInfo = nextQuestion;
+					app.currentQuestion = questionsActions.getQuestionObj(nextQuestion)
+
+					app.currentQuestion.render()
 				}
 			}
 		}
@@ -105,6 +110,8 @@ export const listeners = {
 			}
 		}
 	},
+
+
 	questionLinksListener(e) {
     const target = e.target.closest(".question__link");
     if (target == null) {
@@ -112,14 +119,15 @@ export const listeners = {
     }
 
     // определяем вопрос на который нужно переключится
-    const nextQuestion = app.allQuestionsList[target.dataset.id];
+    const nextQuestionInfo = app.allQuestionsList[target.dataset.id];
 
     //! переопределяем текущий вопрос
-    app.questionsConfig.currentQuestion = nextQuestion;
+    app.currentQuestionInfo = nextQuestionInfo;
+		app.currentQuestion = questionsActions.getQuestionObj(nextQuestionInfo)
 
     if (app.questionsConfig.questionSwitchLogic === "single") {
-      // переключаем вопрос
-      questionsActions.turnQuestion(nextQuestion, htmlElements.$questionWrapper);
+			app.currentQuestion.render()
+
     } else if (app.questionsConfig.questionSwitchLogic === "seeAll") {
       // получаем data-id элемента по которому кликнули
       const targetId = target.dataset.id;
