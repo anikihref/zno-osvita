@@ -10,29 +10,7 @@
 <body>
 	<div class="wrapper">
 		<header class="header header_breadcrump">
-			<div class="header__content">
-				<div class="header__main">
-					<nav class="header__nav">
-						<a href="#" class="header__link active__link">ЗНО-онлайн</a>
-						<a href="#" class="header__link">ОСВІТА.UA</a>
-						<a href="#" class="header__link">Все про вступ</a>
-						<a href="#" class="header__link">Все про ЗНО</a>
-						<a href="#" class="header__link">Вступ.ОСВІТА.UA</a>
-						<a href="#" class="header__link">Рейтинги ВНЗ</a>
-					</nav>
-
-					<div class="authorization">
-						<a href="#" class="authorization__log-in" id="log-in">Вхід</a>
-						<span>/</span>
-						<a href="#" class="authorization__register" id="register">Реєстрація</a>
-					</div>
-				</div>
-				<div class="header__title-block">
-					<h1 class="header__title">ЗНО-ОНЛАЙН</h1>
-					<p>Онлайн — тести зовнішнього оцінювання</p>
-				</div>
-
-			</div>
+			<%- include("../partials/header.ejs") %>
 			<div class="breadcrump">
 				<a class="breadcrump__first breadcrump__item" href="/">Тести ЗНО онлайн </a>
 				<a class="breadcrump__second breadcrump__item" href="/<%= subjectNames.linkName %>"><%= subjectNames.name %></a>

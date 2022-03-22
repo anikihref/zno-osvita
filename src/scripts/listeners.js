@@ -1,8 +1,8 @@
 import { app } from './main.js'
-import { questionsActions } from './functions/questionsActions.js';
 import { htmlElements } from './htmlElements.js';
 import { hideElement, showElement } from './functions/elementActions.js';
-import { addClass } from './functions/attributes.js';
+import { addClass, removeClass } from './functions/attributes.js';
+import { Question } from './Question.js';
 
 export const listeners = {
 	buttonsListener(e) {
@@ -14,7 +14,7 @@ export const listeners = {
 		// получаем следующий вопрос
 		const nextQuestion = app.questionsConfig.isLastUnanswered
 			? questionInfo
-			: questionsActions.findNextQuestion(questionInfo, "default");
+			: Question.questionActions.findNextQuestion(questionInfo, "default");
 	
 		if (target === htmlElements.$seeAllQuestionsBtn) {
 			// если логика переключения - одие вопрос
@@ -23,7 +23,7 @@ export const listeners = {
 				app.questionsConfig.questionSwitchLogic = "seeAll";
 	
 				hideElement(htmlElements.$nextBtn);
-				htmlElements.$seeAllQuestionsBtn.textContent =  "Смотреть один"
+				htmlElements.$seeAllQuestionsBtn.textContent =  "Дивитись один"
 			}
 			// если логика переключения - все вопросы
 			else if (app.questionsConfig.questionSwitchLogic === "seeAll") {
@@ -34,7 +34,7 @@ export const listeners = {
 				// создаём текущий вопрос
 				app.currentQuestion.render()
 
-				htmlElements.$seeAllQuestionsBtn.textContent = "Смотреть все"
+				htmlElements.$seeAllQuestionsBtn.textContent = "Дивитись усі"
 				// показываем кнопку "следующий"
 				showElement(htmlElements.$nextBtn);
 			}
@@ -75,11 +75,9 @@ export const listeners = {
 				
 					//! переопределяем текущий вопрос
 					app.currentQuestionInfo = nextQuestion;
-					app.currentQuestion = questionsActions.getQuestionObj(nextQuestion)
+					app.currentQuestion = Question.questionActions.getQuestionObj(nextQuestion)
 					// переключаем вопрос
 					app.currentQuestion.render()
-					// questionsActions.turnQuestion(nextQuestion);
-	
 					
 				} else if (target === htmlElements.$endBtn) {
 					// если есть хоть один объект с полем answer
@@ -97,7 +95,7 @@ export const listeners = {
 				if (target === htmlElements.$nextBtn) {
 					//! переопределяем текущий вопрос
 					app.currentQuestionInfo = nextQuestion;
-					app.currentQuestion = questionsActions.getQuestionObj(nextQuestion)
+					app.currentQuestion = Question.questionActions.getQuestionObj(nextQuestion)
 
 					app.currentQuestion.render()
 				}
@@ -106,7 +104,7 @@ export const listeners = {
 	
 		if (app.questionsConfig.questionSwitchLogic === "seeAll") {
 			if (target === htmlElements.$seeAllQuestionsBtn) {
-				questionsActions.seeAllQuestions();
+				Question.questionActions.seeAllQuestions()
 			}
 		}
 	},
@@ -123,7 +121,7 @@ export const listeners = {
 
     //! переопределяем текущий вопрос
     app.currentQuestionInfo = nextQuestionInfo;
-		app.currentQuestion = questionsActions.getQuestionObj(nextQuestionInfo)
+		app.currentQuestion = Question.questionActions.getQuestionObj(nextQuestionInfo)
 
     if (app.questionsConfig.questionSwitchLogic === "single") {
 			app.currentQuestion.render()

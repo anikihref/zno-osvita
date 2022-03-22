@@ -5,9 +5,9 @@ import {
   hideElement,
   showElement,
 } from "./functions/elementActions.js";
-import { questionsActions } from "./functions/questionsActions.js";
 import { htmlElements } from "./htmlElements.js";
 import { listeners } from "./listeners.js";
+import { Question } from "./Question.js";
 
 const pathName = document.location.pathname.split("/");
 const testPath = {
@@ -126,7 +126,7 @@ class App {
           },
         };
 				this.currentQuestionInfo = this.allQuestionsList[0]
-				this.currentQuestion = questionsActions.getQuestionObj(this.allQuestionsList[0])
+				this.currentQuestion = Question.questionActions.getQuestionObj(this.allQuestionsList[0])
       });
   }
 

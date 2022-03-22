@@ -1,5 +1,3 @@
-import { app } from "../main.js";
-import { addClass } from "./attributes.js";
 import { appendElements } from "./elementActions.js";
 
 /*
@@ -41,12 +39,3 @@ export function createHtmlBlock(parent, content) {
   return $element;
 }
 
-export function createQuestionNumber(questionNum) {
-	const $questionNumber = createHtmlBlock("div", `
-		Завдання ${questionNum} з ${app.allQuestionsList.length}
-	`);
-
-	addClass($questionNumber, 'question__num_all')
-
-	return $questionNumber
-}
