@@ -24,8 +24,8 @@ class App {
 		this.currentQuestion = {};
 		this.currentQuestionInfo = {}
 		this.result = {};
-    this.$questionLinksBlock = createHtmlBlock("div");
-		this.$resultingBlock = createHtmlBlock("div");
+    this.$questionLinksBlock = createHtmlBlock('div');
+		this.$resultingBlock = createHtmlBlock('div');
 		this.$questionWrapper = createHtmlBlock('div');
 		this.startTime = Date.now();
 		this.testMinutes = 0;
@@ -81,7 +81,7 @@ class App {
           }
         );
 
-				appendElements(htmlElements.$questionControls, [this.$resultingBlock])
+				appendElements(htmlElements.$questionControls, this.$resultingBlock)
       });
   }
 
@@ -140,7 +140,7 @@ class App {
 			this.addQuestionChangeListeners()
 
 			addClass(this.$questionWrapper, 'question__wrapper')
-			appendElements(htmlElements.$answerForm, [this.$questionWrapper])
+			appendElements(htmlElements.$answerForm, this.$questionWrapper)
       // вставляем первый вопрос
 			this.currentQuestion.render()
 
@@ -151,9 +151,9 @@ class App {
 
 	// создаёт ссылки на вопросы
   createQuestionLinks() {
-    appendElements(htmlElements.$questionControls, [this.$questionLinksBlock]);
+    appendElements(htmlElements.$questionControls, this.$questionLinksBlock);
     addClass(this.$questionLinksBlock, "question__links-block");
-
+    // console.log(this.$questionLinksBlock);
     // создаём блоки-ссылки на вопросы
     for (let i = 1; i <= this.allQuestionsList.length; i++) {
       let $questionLink = createHtmlBlock("div");
@@ -165,9 +165,9 @@ class App {
 				number = createHtmlBlock('span', i)
 			}
 
-			appendElements($questionLink, [number])
+			appendElements($questionLink, number)
+      appendElements(this.$questionLinksBlock, $questionLink);
 
-      appendElements(this.$questionLinksBlock, [$questionLink]);
       addClass($questionLink, "question__link");
       $questionLink.dataset.id = i - 1;
     }
@@ -184,7 +184,7 @@ class App {
 		addClass(this.$questionWrapper, 'question__wrapper')
 		// удаляем контент
 		htmlElements.$answerForm.innerHTML = ''
-		appendElements(htmlElements.$answerForm, [this.$questionWrapper])
+		appendElements(htmlElements.$answerForm, this.$questionWrapper)
 	}
 	
 	createResultBlock() {
@@ -195,7 +195,7 @@ class App {
 		const $time = createHtmlBlock('div', `Витрачено часу: <b>${this.testMinutes} хв.</b> з 180 запропонованих`)
 
 		
-		appendElements(this.$resultingBlock, [$testScore, $ratingScore, $dpaScore, $time])
+		appendElements(this.$resultingBlock, $testScore, $ratingScore, $dpaScore, $time)
 		addClass(this.$resultingBlock, 'result')
 	}
 
