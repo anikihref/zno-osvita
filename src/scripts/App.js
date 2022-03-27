@@ -6,7 +6,7 @@ import {
   showElement,
 } from "./functions/elementActions.js";
 import { htmlElements } from "./htmlElements.js";
-import { listeners } from "./listeners.js";
+import { app } from "./main.js";
 import { Question } from "./Question.js";
 
 const pathName = document.location.pathname.split("/");
@@ -18,6 +18,135 @@ const testPath = {
 
 
 class App {
+  static listeners = {
+    buttonsListener(e) {
+      //! проверяем количество неотвеченных вопросов
+      app.questionsConfig.checkAnswersNumber();
+      const target = e.target;
+      // текущий вопрос
+      let questionInfo = app.currentQuestionInfo;
+      // получаем следующий вопрос
+      const nextQuestion = app.questionsConfig.isLastUnanswered
+        ? questionInfo
+        : Question.questionActions.findNextQuestion(questionInfo);
+  
+  
+      switch (target) {
+        case htmlElements.$seeAllQuestionsBtn: {
+          switch (app.questionsConfig.questionSwitchLogic) {
+            case 'single': {
+              //! изменяем логику переключения между вопросами
+              app.questionsConfig.questionSwitchLogic = "seeAll";
+  
+              hideElement(htmlElements.$nextBtn);
+              htmlElements.$seeAllQuestionsBtn.textContent = "Дивитись один"
+  
+              Question.questionActions.seeAllQuestions()
+  
+              break;
+            }
+  
+            case 'seeAll': {
+              //! изменяем логику переключения между вопросами
+              app.questionsConfig.questionSwitchLogic = "single";
+              // пересоздаём обёртку вопроса
+              app.recreateQuestionWrapper();
+              // создаём текущий вопрос
+              app.currentQuestion.render()
+  
+              htmlElements.$seeAllQuestionsBtn.textContent = "Дивитись усі"
+              // показываем кнопку "следующий"
+              showElement(htmlElements.$nextBtn);
+              break;
+            }
+          }
+  
+          break;
+        }
+  
+        case htmlElements.$btn: {
+          // получаем объект формы и затем получаем ответ
+          const answer = app.currentQuestion.getAnswer();
+  
+          // проверяем дал ли пользователь ответ
+          if (answer.some(answer => answer)) {
+            //! добавляем поле ответа в объект вопроса
+            app.currentQuestionInfo.answer = answer;
+          } else {
+            return;
+          }
+  
+          // если мы на последнем вопросе
+          if (app.questionsConfig.isLastUnanswered) {
+            //! Завершаем тест
+            app.finishTest();
+          }
+  
+  
+          addClass(
+            document.querySelector(".question__link_active"),
+            "question__link_done"
+          );
+  
+          // break не пишем чтобы сразу переключить вопрос
+        }
+  
+        case htmlElements.$nextBtn: {
+          //! переопределяем текущий вопрос
+          app.currentQuestionInfo = nextQuestion;
+          app.currentQuestion = Question.questionActions.getQuestionObj(nextQuestion)
+          // переключаем вопрос
+          app.currentQuestion.render()
+  
+          break;
+        }
+  
+        case htmlElements.$endBtn: {
+          if (app.allQuestionsList.find((obj) => obj.answer)) {
+            // завершаем тест
+            app.finishTest();
+          } else {
+            console.log('дайте відповідь хоча б на одне питання');
+          }
+  
+          break;
+        }
+      }
+    },
+
+    questionLinksListener(e) {
+      const target = e.target.closest(".question__link");
+      if (target == null) {
+        return;
+      }
+  
+      // определяем вопрос на который нужно переключится
+      const nextQuestionInfo = app.allQuestionsList[target.dataset.id];
+  
+      //! переопределяем текущий вопрос
+      app.currentQuestionInfo = nextQuestionInfo;
+      app.currentQuestion = Question.questionActions.getQuestionObj(nextQuestionInfo)
+  
+      if (app.questionsConfig.questionSwitchLogic === "single") {
+        app.currentQuestion.render()
+  
+      } else if (app.questionsConfig.questionSwitchLogic === "seeAll") {
+        // получаем data-id элемента по которому кликнули
+        const targetId = target.dataset.id;
+        // получаем html объект по этому же id
+        const $targetQuestion = document.querySelector(`.question__wrapper${targetId}`)
+  
+  
+        // получаем Y координаты html элемента вопроса
+        const yPos =
+          $targetQuestion.getBoundingClientRect().y + window.pageYOffset;
+        // скроллим окно к этим координатам
+        window.scrollTo(0, yPos);
+        // изменяем номер вопроса
+      }
+    }
+  }
+
   constructor() {
     this.allQuestionsList = [];
     this.questionsConfig = {};
@@ -203,12 +332,12 @@ class App {
   addQuestionChangeListeners() {
     this.$questionLinksBlock.addEventListener(
       "click",
-      listeners.questionLinksListener
+      App.listeners.questionLinksListener
     );
 
     htmlElements.$btnBlock.addEventListener(
 			"click", 
-			listeners.buttonsListener
+			App.listeners.buttonsListener
 		);
   }
 
