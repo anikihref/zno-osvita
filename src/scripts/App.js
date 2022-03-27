@@ -158,9 +158,12 @@ class App {
 		this.$questionWrapper = createHtmlBlock('div');
 		this.startTime = Date.now();
 		this.testMinutes = 0;
+
   }
 
   finishTest() {
+    console.log(this.currentQuestionInfo);
+
     fetch("/result", {
       method: "POST",
       headers: {

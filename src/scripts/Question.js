@@ -241,7 +241,7 @@ export class WriteQuestion extends Question {
   getAnswer() {
     const inputs = [...document.querySelectorAll(`.form__inputText > input`)];
     const values = inputs.map((elem) => elem.value);
-
+    console.log(values);
     return values;
   }
 
