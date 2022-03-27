@@ -1,13 +1,13 @@
-import { addClass } from "./functions/attributes";
-import { createHtmlBlock } from "./functions/createElements";
+import { addClass } from "./functions/attributes.js";
+import { createHtmlBlock } from "./functions/createElements.js";
 import {
     appendElements,
     hideElement,
     showElement,
-} from "./functions/elementActions";
-import { htmlElements } from "./htmlElements";
-import { app } from "./main";
-import { Question } from "./Question";
+} from "./functions/elementActions.js";
+import { htmlElements } from "./htmlElements.js";
+import { app } from "./main.js";
+import { Question } from "./Question.js";
 
 const pathName = document.location.pathname.split("/");
 const testPath = {
@@ -22,9 +22,9 @@ export class App {
     public questionInfo: QuestionInfo = {} as QuestionInfo;
     public question = {} as Question;
     public result = {} as { dpaPercentage: number };
-    public $questionLinksBlock: HTMLElement;
-    public $resultingBlock: HTMLElement;
-    public $questionWrapper: HTMLElement;
+    public $questionLinksBlock: HTMLElement = createHtmlBlock('div');
+    public $resultingBlock: HTMLElement = createHtmlBlock('div');
+    public $questionWrapper: HTMLElement = createHtmlBlock('div');
     public startTime: number = Date.now();
     public testMinutes: number = 0;
 

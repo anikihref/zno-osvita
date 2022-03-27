@@ -1,5 +1,5 @@
 export const htmlElements: Record<string, HTMLElement | null> = {
-    $submitBtn: document.querySelector('#submitBtn'),
+    $btn: document.querySelector('#submitBtn'),
     $nextBtn: document.querySelector('#nextBtn'),
     $endBtn: document.querySelector('.form__end-btn'),
     $seeAllQuestionsBtn: document.querySelector('.question__seeall-btn'),

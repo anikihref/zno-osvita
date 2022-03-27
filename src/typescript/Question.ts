@@ -1,14 +1,17 @@
-import { addClass, removeClass } from "./functions/attributes";
-import { createHtmlBlock } from "./functions/createElements";
-import { appendElements, prependElements } from "./functions/elementActions";
-import { htmlElements } from "./htmlElements";
-import { app } from "./main";
+import { addClass, removeClass } from "./functions/attributes.js";
+import { createHtmlBlock } from "./functions/createElements.js";
+import { appendElements, prependElements } from "./functions/elementActions.js";
+import { htmlElements } from "./htmlElements.js";
+import { app } from "./main.js";
 
 export class Question {
-    private formObj = Question.questionActions.getQuestionObj(this.question);
+    constructor(
+        protected question: QuestionInfo
+        
+        
+    ) {}
 
-    constructor(protected question: QuestionInfo) {}
-
+    
     static questionActions = {
         getQuestionObj(obj: QuestionInfo): RadioQuestion | WriteQuestion {
             const type = obj.type;
@@ -89,6 +92,7 @@ export class Question {
     };
 
     render(): void {
+        const formObj = Question.questionActions.getQuestionObj(this.question)
         app.$questionWrapper.innerHTML = "";
 
         appendElements(
@@ -102,10 +106,10 @@ export class Question {
         } else {
             appendElements(
                 app.$questionWrapper,
-                this.formObj.createAnswerForm()
+                formObj.createAnswerForm()
             );
             // вставляем ответ
-            this.formObj.insertAnswer();
+            formObj.insertAnswer();
         }
 
         // перемещаем активную ссылку на вопрос
@@ -113,6 +117,7 @@ export class Question {
     }
 
     createQuestionWrapper() {
+        const formObj = Question.questionActions.getQuestionObj(this.question)
         const $questionWrapper = createHtmlBlock("div");
         addClass($questionWrapper, "question__text-wrapper");
 
@@ -120,7 +125,7 @@ export class Question {
             appendElements($questionWrapper, this.createQuestionText());
         }
         if (this.question.questions) {
-            appendElements($questionWrapper, this.formObj.createQuestions());
+            appendElements($questionWrapper, formObj.createQuestions());
         }
         if (this.question.questionImage) {
             appendElements($questionWrapper, this.createQuestionImageBlock());
@@ -216,86 +221,12 @@ export class Question {
     }
 }
 
-export class WriteQuestion extends Question implements QuestionForm {
-    constructor(question: QuestionInfo) {
-        super(question);
-    }
-
-    insertAnswer(): void {
-        if (!this.question.answer) {
-            return;
-        }
-        // получаем массив input'ов
-        const inputs = [
-            ...document.querySelectorAll(
-                `.form${this.question.id} .writeInput`
-            ),
-        ] as HTMLInputElement[];
-
-        // вставляем каждый ответ в соответствующую форму
-        this.question.answer.forEach((answer, i) => {
-            inputs[i].value = answer;
-        });
-    }
-
-    getAnswer(): string[] {
-        const inputs = [
-            ...document.querySelectorAll(`.form__inputText > input`),
-        ] as HTMLInputElement[];
-        const values = inputs.map((elem) => elem.value);
-
-        return values;
-    }
-
-    createQuestions(): HTMLElement {
-        let outerHtml: string = "";
-
-        if (!this.question.questions) {
-            return createHtmlBlock("div");
-        }
-
-        this.question.questions.forEach((question, i) => {
-            outerHtml += `
-					<p class="question__text-multiple"> ${i + 1}. ${question}</p>
-				`;
-        });
-
-        const $questions = createHtmlBlock("div", outerHtml);
-
-        addClass($questions, "question__write-questions");
-        return $questions;
-    }
-
-    createAnswerForm(): HTMLElement {
-        let innerHtml: string =
-            "<div class='question__write-text'>Впишіть відповідь:</div>";
-
-        if (!this.question.questions) {
-            return createHtmlBlock("div");
-        }
-
-        // создаёт элементы input для ответа на вопрос
-        for (let i = 1; i <= this.question.questions.length; i++) {
-            innerHtml += `
-				<div class="form__inputText">
-					<p class="form__write-num">${i}.</p>
-					<input type="text" class="writeInput" id="input${i}">
-				</div>`;
-        }
-
-        const $form = createHtmlBlock("div", innerHtml);
-
-        $form.id = "question";
-        addClass($form, "form__multipleWrite", `form${this.question.id}`);
-
-        return $form;
-    }
-}
-
-export class RadioQuestion extends Question implements QuestionForm {
-    private letters: string[] = ["А", "Б", "В", "Г", "Д", "Є"];
-
-    constructor(question: QuestionInfo) {
+export class RadioQuestion extends Question  {
+    
+    constructor(
+        protected question: QuestionInfo,
+        private letters: string[] = ["А", "Б", "В", "Г", "Д", "Є"]
+    ) {
         super(question);
     }
 
@@ -410,8 +341,8 @@ export class RadioQuestion extends Question implements QuestionForm {
 
 	createQuestions() {
 		const $questions = createHtmlBlock("div", 
-		  this._createQuestion(),
-		  this._createFormVariants(),
+		  this.createQuestion(),
+		  this.createFormVariants(),
 		);
 		addClass($questions, "question__radio-questions");
 	
@@ -419,7 +350,7 @@ export class RadioQuestion extends Question implements QuestionForm {
 	  }
 
     // создаёт блок с вопросами ответов
-    _createQuestion() {
+    private createQuestion() {
 		if(!this.question.questions) { return createHtmlBlock('div') }
 
         const $questionBlocksText = createHtmlBlock("div", "Початок речення:");
@@ -444,7 +375,7 @@ export class RadioQuestion extends Question implements QuestionForm {
     }
 
     // создаёт блок с вариантами ответов
-    _createFormVariants() {
+    private createFormVariants() {
         const $questionBlocksText = createHtmlBlock(
             "div",
             "Закінчення речення:"
@@ -471,3 +402,81 @@ export class RadioQuestion extends Question implements QuestionForm {
     }
 
 }
+
+export class WriteQuestion extends Question implements QuestionForm {
+    constructor(protected question: QuestionInfo) {
+        super(question);
+    }
+
+    insertAnswer(): void {
+        if (!this.question.answer) {
+            return;
+        }
+        // получаем массив input'ов
+        const inputs = [
+            ...document.querySelectorAll(
+                `.form${this.question.id} .writeInput`
+            ),
+        ] as HTMLInputElement[];
+
+        // вставляем каждый ответ в соответствующую форму
+        this.question.answer.forEach((answer, i) => {
+            inputs[i].value = answer;
+        });
+    }
+
+    getAnswer(): string[] {
+        const inputs = [
+            ...document.querySelectorAll(`.form__inputText > input`),
+        ] as HTMLInputElement[];
+        const values = inputs.map((elem) => elem.value);
+
+        return values;
+    }
+
+    createQuestions(): HTMLElement {
+        let outerHtml: string = "";
+
+        if (!this.question.questions) {
+            return createHtmlBlock("div");
+        }
+
+        this.question.questions.forEach((question, i) => {
+            outerHtml += `
+					<p class="question__text-multiple"> ${i + 1}. ${question}</p>
+				`;
+        });
+
+        const $questions = createHtmlBlock("div", outerHtml);
+
+        addClass($questions, "question__write-questions");
+        return $questions;
+    }
+
+    createAnswerForm(): HTMLElement {
+        let innerHtml: string =
+            "<div class='question__write-text'>Впишіть відповідь:</div>";
+
+        if (!this.question.questions) {
+            return createHtmlBlock("div");
+        }
+
+        // создаёт элементы input для ответа на вопрос
+        for (let i = 1; i <= this.question.questions.length; i++) {
+            innerHtml += `
+				<div class="form__inputText">
+					<p class="form__write-num">${i}.</p>
+					<input type="text" class="writeInput" id="input${i}">
+				</div>`;
+        }
+
+        const $form = createHtmlBlock("div", innerHtml);
+
+        $form.id = "question";
+        addClass($form, "form__multipleWrite", `form${this.question.id}`);
+
+        return $form;
+    }
+}
+
+

@@ -1,4 +1,4 @@
-import App from "./App.js";
-
-export const app = new App()
-app.run()
+import { App } from "./App.js";
+export const app = new App();
+app.run();
+//# sourceMappingURL=main.js.map
