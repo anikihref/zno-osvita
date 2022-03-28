@@ -15,8 +15,6 @@ interface QuestionForm {
     getAnswer: () =>  string[];
     createAnswerForm: () => HTMLElement;  
     createQuestions: () => HTMLElement;
-    // question: QuestionInfo
-    // [key: string]: (arg?: any) => any
 }
 
 interface QuestionsConfig {

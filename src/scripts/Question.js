@@ -217,10 +217,10 @@ export class RadioQuestion extends Question {
             this.question.questions = [];
             this.question.questions.push(this.question.text);
         }
-        const $questionBlocksText = createHtmlBlock("div", "Початок речення:");
-        const $questionBlocks = createHtmlBlock("div", $questionBlocksText);
+        const $questionHint = createHtmlBlock("div", "Початок речення:");
+        const $questionBlocks = createHtmlBlock("div", $questionHint);
         addClass($questionBlocks, "radio__questions-block");
-        addClass($questionBlocksText, "question__form-text_help");
+        addClass($questionHint, "hint");
         this.question.questions.forEach((question, i) => {
             const $questionRow = createHtmlBlock("div");
             const $radioQuestionNum = createHtmlBlock("div", i + 1);
@@ -237,7 +237,7 @@ export class RadioQuestion extends Question {
         const $questionBlocksText = createHtmlBlock("div", "Закінчення речення:");
         const $variantBlocks = createHtmlBlock("div", $questionBlocksText);
         addClass($variantBlocks, "radio__variants-block");
-        addClass($questionBlocksText, "question__form-text_help");
+        addClass($questionBlocksText, "hint");
         this.question.variants.forEach((variant, i) => {
             const $questionRow = createHtmlBlock("div", `
 					<div class="radio__variant-letter">${this.letters[i]}</div>

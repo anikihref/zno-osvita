@@ -16,7 +16,7 @@ const testPath = {
     test: pathName[2].split("_")[1],
 };
 
-export class App {
+class App {
     public allQuestionsList: QuestionInfo[] = [];
     public questionsConfig = {} as QuestionsConfig;
     public questionInfo: QuestionInfo = {} as QuestionInfo;
@@ -246,53 +246,48 @@ export class App {
             });
     }
 
-    getQuestions() {
-        return fetch(
+    async getQuestions(): Promise<void> {
+        const res = await fetch(
             `/getQuestions?subject=${testPath.subject}&year=${testPath.year}&test=${testPath.test}`
-        )
-            .then((res) => res.json())
-            .then((questions) => {
-                const appContext = this;
+        );
+        const questions = await res.json();
+        const appContext = this;
+        //! записываем полученые вопросы в переменную
+        this.allQuestionsList = questions;
+        // добавляем поле id с его index'ом каждому вопросу
+        this.allQuestionsList.forEach((question, index) => {
+            question.id = index;
+        });
+        //! определяем объект со вспомагательными методами и переменными
+        this.questionsConfig = {
+            // закончен ли тест
+            isFinished: false,
+            isLastUnanswered: false,
+            //количество неотвеченых вопросов
+            unsweredQuestionsNum: this.allQuestionsList.length,
+            // single по одному вопросу или
+            // seeAll смотреть все сразу (только после завершения теста)
+            questionSwitchLogic: "single",
 
-                //! записываем полученые вопросы в переменную
-                this.allQuestionsList = questions;
+            checkAnswersNumber() {
+                // проверяем количество вопросов без ответа
+                const unanseredNum = appContext.allQuestionsList.filter(
+                    (obj) => {
+                        return !obj.answer;
+                    }
+                ).length;
+                // записываем это количество в переменную
+                this.unsweredQuestionsNum = unanseredNum;
 
-                // добавляем поле id с его index'ом каждому вопросу
-                this.allQuestionsList.forEach((question, index) => {
-                    question.id = index;
-                });
-
-                //! определяем объект со вспомагательными методами и переменными
-                this.questionsConfig = {
-                    // закончен ли тест
-                    isFinished: false,
-                    isLastUnanswered: false,
-                    //количество неотвеченых вопросов
-                    unsweredQuestionsNum: this.allQuestionsList.length,
-                    // single по одному вопросу или
-                    // seeAll смотреть все сразу (только после завершения теста)
-                    questionSwitchLogic: "single",
-
-                    checkAnswersNumber() {
-                        // проверяем количество вопросов без ответа
-                        const unanseredNum = appContext.allQuestionsList.filter(
-                            (obj) => {
-                                return !obj.answer;
-                            }
-                        ).length;
-                        // записываем это количество в переменную
-                        this.unsweredQuestionsNum = unanseredNum;
-
-                        if (unanseredNum == 1) {
-                            this.isLastUnanswered = true;
-                        }
-                    },
-                };
-                this.questionInfo = this.allQuestionsList[0];
-                this.question = Question.questionActions.getQuestionObj(
-                    this.allQuestionsList[0]
-                );
-            });
+                if (unanseredNum == 1) {
+                    this.isLastUnanswered = true;
+                }
+            },
+        };
+        this.questionInfo = this.allQuestionsList[0];
+        this.question = Question.questionActions.getQuestionObj(
+            this.allQuestionsList[0]
+        );
     }
 
     createQuestionLinks() {
@@ -332,18 +327,28 @@ export class App {
 
     createResultBlock() {
         const $dpaScore = createHtmlBlock(
-            "div",
+            'div',
             `Ваш бал ДПА: <b>${Math.trunc(
                 (12 * this.result.dpaPercentage) / 100
             )}</b> з 12 можливих.`
         );
+
+        
+        const $dpaQuestionHint = createHtmlBlock(
+            'div',
+            `Завдання виділені жирним враховуються в бал ДПА`
+        );
+
         const $time = createHtmlBlock(
-            "div",
+            'div',
             `Витрачено часу: <b>${this.testMinutes} хв.</b> з 180 запропонованих`
         );
 
-        appendElements(this.$resultingBlock, $dpaScore, $time);
         addClass(this.$resultingBlock, "result");
+        addClass($dpaQuestionHint, 'hint')
+
+
+        appendElements(this.$resultingBlock, $dpaScore, $dpaQuestionHint, $time);
     }
 
     recreateQuestionWrapper() {
@@ -367,3 +372,5 @@ export class App {
         );
     }
 }
+
+export default App

@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import { addClass } from "./functions/attributes.js";
 import { createHtmlBlock } from "./functions/createElements.js";
 import { appendElements, hideElement, showElement, } from "./functions/elementActions.js";
@@ -10,7 +19,7 @@ const testPath = {
     year: pathName[2].split("_")[0],
     test: pathName[2].split("_")[1],
 };
-export class App {
+class App {
     constructor() {
         this.allQuestionsList = [];
         this.questionsConfig = {};
@@ -75,9 +84,9 @@ export class App {
         });
     }
     getQuestions() {
-        return fetch(`/getQuestions?subject=${testPath.subject}&year=${testPath.year}&test=${testPath.test}`)
-            .then((res) => res.json())
-            .then((questions) => {
+        return __awaiter(this, void 0, void 0, function* () {
+            const res = yield fetch(`/getQuestions?subject=${testPath.subject}&year=${testPath.year}&test=${testPath.test}`);
+            const questions = yield res.json();
             const appContext = this;
             this.allQuestionsList = questions;
             this.allQuestionsList.forEach((question, index) => {
@@ -123,10 +132,12 @@ export class App {
         addClass(document.querySelector(".question__link"), "question__link_active");
     }
     createResultBlock() {
-        const $dpaScore = createHtmlBlock("div", `Ваш бал ДПА: <b>${Math.trunc((12 * this.result.dpaPercentage) / 100)}</b> з 12 можливих.`);
-        const $time = createHtmlBlock("div", `Витрачено часу: <b>${this.testMinutes} хв.</b> з 180 запропонованих`);
-        appendElements(this.$resultingBlock, $dpaScore, $time);
+        const $dpaScore = createHtmlBlock('div', `Ваш бал ДПА: <b>${Math.trunc((12 * this.result.dpaPercentage) / 100)}</b> з 12 можливих.`);
+        const $dpaQuestionHint = createHtmlBlock('div', `Завдання виділені жирним враховуються в бал ДПА`);
+        const $time = createHtmlBlock('div', `Витрачено часу: <b>${this.testMinutes} хв.</b> з 180 запропонованих`);
         addClass(this.$resultingBlock, "result");
+        addClass($dpaQuestionHint, 'hint');
+        appendElements(this.$resultingBlock, $dpaScore, $dpaQuestionHint, $time);
     }
     recreateQuestionWrapper() {
         this.$questionWrapper = createHtmlBlock("div");
@@ -224,4 +235,5 @@ App.listeners = {
         }
     },
 };
+export default App;
 //# sourceMappingURL=App.js.map

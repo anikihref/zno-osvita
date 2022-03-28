@@ -105,7 +105,7 @@ export class Question {
         Question.questionActions.moveActiveLink(this.question.id);
     }
 
-    createQuestionWrapper() {
+    createQuestionWrapper(): HTMLElement {
         const formObj = Question.questionActions.getQuestionObj(this.question);
         const $questionWrapper = createHtmlBlock("div");
         addClass($questionWrapper, "question__text-wrapper");
@@ -156,7 +156,7 @@ export class Question {
     }
 
     // создаёт блок с ответами правильными ответами и ответами пользователя
-    createAnswerWrapper() {
+    createAnswerWrapper(): HTMLElement {
         const $qestionAnswerWrapper = createHtmlBlock(
             "div",
             // создаём элемент с правильными ответами
@@ -246,7 +246,7 @@ export class RadioQuestion extends Question {
     }
 
     // получает ответ пользователя
-    getAnswer() {
+    getAnswer(): string[] {
         const checkedInputs: HTMLInputElement[] = [];
         const answers: string[] = [];
         const inputs = {};
@@ -345,11 +345,11 @@ export class RadioQuestion extends Question {
             this.question.questions.push(this.question.text!);
         }
 
-        const $questionBlocksText = createHtmlBlock("div", "Початок речення:");
-        const $questionBlocks = createHtmlBlock("div", $questionBlocksText);
+        const $questionHint = createHtmlBlock("div", "Початок речення:");
+        const $questionBlocks = createHtmlBlock("div", $questionHint);
 
         addClass($questionBlocks, "radio__questions-block");
-        addClass($questionBlocksText, "question__form-text_help");
+        addClass($questionHint, "hint");
 
         this.question.questions.forEach((question, i) => {
             const $questionRow = createHtmlBlock("div");
@@ -368,7 +368,7 @@ export class RadioQuestion extends Question {
     }
 
     // создаёт блок с вариантами ответов
-    private createFormVariants() {
+    private createFormVariants(): HTMLElement {
         const $questionBlocksText = createHtmlBlock(
             "div",
             "Закінчення речення:"
@@ -376,7 +376,7 @@ export class RadioQuestion extends Question {
         const $variantBlocks = createHtmlBlock("div", $questionBlocksText);
 
         addClass($variantBlocks, "radio__variants-block");
-        addClass($questionBlocksText, "question__form-text_help");
+        addClass($questionBlocksText, "hint");
 
         this.question.variants!.forEach((variant, i) => {
             const $questionRow = createHtmlBlock(
