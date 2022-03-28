@@ -5,13 +5,8 @@ import { htmlElements } from "./htmlElements.js";
 import { app } from "./main.js";
 
 export class Question {
-    constructor(
-        protected question: QuestionInfo
-        
-        
-    ) {}
+    constructor(protected question: QuestionInfo) {}
 
-    
     static questionActions = {
         getQuestionObj(obj: QuestionInfo): RadioQuestion | WriteQuestion {
             const type = obj.type;
@@ -45,9 +40,6 @@ export class Question {
             removeClass($activeBlock, "question__link_active");
         },
         findNextQuestion(question: QuestionInfo): QuestionInfo {
-            // делаем копию массива вопросов
-            // const allQuesitonsCopy = [...app.allQuestionsList];
-
             // если мы на последнем вопросе то переходим на первый
             if (app.allQuestionsList.length - 1 == question.id) {
                 return app.allQuestionsList[0];
@@ -92,7 +84,7 @@ export class Question {
     };
 
     render(): void {
-        const formObj = Question.questionActions.getQuestionObj(this.question)
+        const formObj = Question.questionActions.getQuestionObj(this.question);
         app.$questionWrapper.innerHTML = "";
 
         appendElements(
@@ -104,10 +96,7 @@ export class Question {
         if (app.questionsConfig.isFinished) {
             appendElements(app.$questionWrapper, this.createAnswerWrapper());
         } else {
-            appendElements(
-                app.$questionWrapper,
-                formObj.createAnswerForm()
-            );
+            appendElements(app.$questionWrapper, formObj.createAnswerForm());
             // вставляем ответ
             formObj.insertAnswer();
         }
@@ -117,19 +106,19 @@ export class Question {
     }
 
     createQuestionWrapper() {
-        const formObj = Question.questionActions.getQuestionObj(this.question)
+        const formObj = Question.questionActions.getQuestionObj(this.question);
         const $questionWrapper = createHtmlBlock("div");
         addClass($questionWrapper, "question__text-wrapper");
 
         if (this.question.text) {
             appendElements($questionWrapper, this.createQuestionText());
         }
-        if (this.question.questions) {
-            appendElements($questionWrapper, formObj.createQuestions());
-        }
+
         if (this.question.questionImage) {
             appendElements($questionWrapper, this.createQuestionImageBlock());
         }
+
+        appendElements($questionWrapper, formObj.createQuestions());
 
         return $questionWrapper;
     }
@@ -221,8 +210,7 @@ export class Question {
     }
 }
 
-export class RadioQuestion extends Question  {
-    
+export class RadioQuestion extends Question {
     constructor(
         protected question: QuestionInfo,
         private letters: string[] = ["А", "Б", "В", "Г", "Д", "Є"]
@@ -339,19 +327,23 @@ export class RadioQuestion extends Question  {
         return $form;
     }
 
-	createQuestions() {
-		const $questions = createHtmlBlock("div", 
-		  this.createQuestion(),
-		  this.createFormVariants(),
-		);
-		addClass($questions, "question__radio-questions");
-	
-		return $questions;
-	  }
+    createQuestions(): HTMLElement {
+        const $questions = createHtmlBlock(
+            "div",
+            this.createQuestion(),
+            this.createFormVariants()
+        );
+        addClass($questions, "question__radio-questions");
+
+        return $questions;
+    }
 
     // создаёт блок с вопросами ответов
-    private createQuestion() {
-		if(!this.question.questions) { return createHtmlBlock('div') }
+    private createQuestion(): HTMLElement {
+        if (!this.question.questions) {
+            this.question.questions = [];
+            this.question.questions.push(this.question.text!);
+        }
 
         const $questionBlocksText = createHtmlBlock("div", "Початок речення:");
         const $questionBlocks = createHtmlBlock("div", $questionBlocksText);
@@ -360,18 +352,19 @@ export class RadioQuestion extends Question  {
         addClass($questionBlocksText, "question__form-text_help");
 
         this.question.questions.forEach((question, i) => {
-            const $questionRow = createHtmlBlock(
-                "div",
-                `
-					<div class="radio__question-num">${i + 1}</div>
-					<div class="radio__question-text">${question}</div>
-				`
-            );
-            appendElements($questionBlocks, $questionRow);
+            const $questionRow = createHtmlBlock("div");
+            const $radioQuestionNum = createHtmlBlock("div", i + 1);
+            const $radioQuestionText = createHtmlBlock("div", question);
+
+            addClass($radioQuestionNum, "radio__question-num");
+            addClass($radioQuestionText, "radio__question-text");
             addClass($questionRow, "radio__question");
+
+            appendElements($questionRow, $radioQuestionNum, $radioQuestionText);
+            appendElements($questionBlocks, $questionRow);
         });
 
-        return $questionBlocks;
+        return this.question.questions[0] === this.question.text ? createHtmlBlock('div') : $questionBlocks;
     }
 
     // создаёт блок с вариантами ответов
@@ -400,7 +393,6 @@ export class RadioQuestion extends Question  {
 
         return $variantBlocks;
     }
-
 }
 
 export class WriteQuestion extends Question implements QuestionForm {
@@ -478,5 +470,3 @@ export class WriteQuestion extends Question implements QuestionForm {
         return $form;
     }
 }
-
-

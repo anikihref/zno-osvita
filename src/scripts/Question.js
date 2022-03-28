@@ -27,12 +27,10 @@ export class Question {
         if (this.question.text) {
             appendElements($questionWrapper, this.createQuestionText());
         }
-        if (this.question.questions) {
-            appendElements($questionWrapper, formObj.createQuestions());
-        }
         if (this.question.questionImage) {
             appendElements($questionWrapper, this.createQuestionImageBlock());
         }
+        appendElements($questionWrapper, formObj.createQuestions());
         return $questionWrapper;
     }
     createQuestionText() {
@@ -216,21 +214,24 @@ export class RadioQuestion extends Question {
     }
     createQuestion() {
         if (!this.question.questions) {
-            return createHtmlBlock('div');
+            this.question.questions = [];
+            this.question.questions.push(this.question.text);
         }
         const $questionBlocksText = createHtmlBlock("div", "Початок речення:");
         const $questionBlocks = createHtmlBlock("div", $questionBlocksText);
         addClass($questionBlocks, "radio__questions-block");
         addClass($questionBlocksText, "question__form-text_help");
         this.question.questions.forEach((question, i) => {
-            const $questionRow = createHtmlBlock("div", `
-					<div class="radio__question-num">${i + 1}</div>
-					<div class="radio__question-text">${question}</div>
-				`);
-            appendElements($questionBlocks, $questionRow);
+            const $questionRow = createHtmlBlock("div");
+            const $radioQuestionNum = createHtmlBlock("div", i + 1);
+            const $radioQuestionText = createHtmlBlock("div", question);
+            addClass($radioQuestionNum, "radio__question-num");
+            addClass($radioQuestionText, "radio__question-text");
             addClass($questionRow, "radio__question");
+            appendElements($questionRow, $radioQuestionNum, $radioQuestionText);
+            appendElements($questionBlocks, $questionRow);
         });
-        return $questionBlocks;
+        return this.question.questions[0] === this.question.text ? createHtmlBlock('div') : $questionBlocks;
     }
     createFormVariants() {
         const $questionBlocksText = createHtmlBlock("div", "Закінчення речення:");
