@@ -7,6 +7,7 @@ import {
 } from "./functions/elementActions.js";
 import { htmlElements } from "./htmlElements.js";
 import { app } from "./main.js";
+import { InfoModal, SuccessModal } from "./Modal.js";
 import { Question } from "./Question.js";
 
 const pathName = document.location.pathname.split("/");
@@ -16,17 +17,30 @@ const testPath = {
     test: pathName[2].split("_")[1],
 };
 
+interface QuestionsConfig {
+    isFinished: boolean;
+    isLastUnanswered: boolean;
+    unsweredQuestionsNum: number;
+    questionSwitchLogic: "seeAll" | "single";
+    checkAnswersNumber: () => void;
+}
+
 class App {
+    static modals: Record<string, IModal> = {};
+
     public allQuestionsList: QuestionInfo[] = [];
     public questionsConfig = {} as QuestionsConfig;
     public questionInfo: QuestionInfo = {} as QuestionInfo;
     public question = {} as Question;
     public result = {} as { dpaPercentage: number };
-    public $questionLinksBlock: HTMLElement = createHtmlBlock('div');
-    public $resultingBlock: HTMLElement = createHtmlBlock('div');
-    public $questionWrapper: HTMLElement = createHtmlBlock('div');
+    public $questionLinksBlock: HTMLElement = createHtmlBlock("div");
+    public $resultingBlock: HTMLElement = createHtmlBlock("div");
+    public $questionWrapper: HTMLElement = createHtmlBlock("div");
     public startTime: number = Date.now();
     public testMinutes: number = 0;
+    public finishTimeout = setTimeout(() => {
+        this.finishTest()
+    }, 1000 * 60 * 60 * 3);
 
     static listeners = {
         questionLinksListener(e): void {
@@ -161,7 +175,7 @@ class App {
         },
     };
 
-    run() {
+    run(): void {
         // получаем вопросы
         this.getQuestions().then(() => {
             // создаём ссылки на вопросы
@@ -178,9 +192,25 @@ class App {
             // прячем кнопку смотреть все вопросы
             hideElement(htmlElements.$seeAllQuestionsBtn!); // прячем кнопку смотреть все
         });
+
+        const modal = (App.modals.startModal = new InfoModal({
+            width: "500px",
+            height: "400px",
+            content: "Тест автоматично завершиться через 180 хвилин",
+            title: "Щасти!",
+            transition: 800,
+            closable: false,
+            modalName: "startModal",
+        }));
+
+        modal.render(modal.color);
+
+        modal.close(3500, true);
     }
 
     finishTest(): void {
+        clearTimeout(this.finishTimeout)
+        
         fetch("/result", {
             method: "POST",
             headers: {
@@ -244,6 +274,19 @@ class App {
                     this.$resultingBlock
                 );
             });
+
+        const modal = (App.modals.finishModal = new SuccessModal({
+            width: "500px",
+            height: "400px",
+            content: " Ви завершили тест. Перегляньте результати.",
+            title: "Вітаю!",
+            transition: 800,
+            closable: false,
+            modalName: "finishModal",
+        }));
+
+        modal.render(modal.color);
+        modal.close(3500, true);
     }
 
     async getQuestions(): Promise<void> {
@@ -290,7 +333,7 @@ class App {
         );
     }
 
-    createQuestionLinks() {
+    createQuestionLinks(): void {
         appendElements(
             htmlElements.$questionControls!,
             this.$questionLinksBlock
@@ -325,33 +368,39 @@ class App {
         );
     }
 
-    createResultBlock() {
+    createResultBlock(): void {
         const $dpaScore = createHtmlBlock(
-            'div',
+            "div",
             `Ваш бал ДПА: <b>${Math.trunc(
                 (12 * this.result.dpaPercentage) / 100
             )}</b> з 12 можливих.`
         );
 
-        
         const $dpaQuestionHint = createHtmlBlock(
-            'div',
+            "div",
             `Завдання виділені жирним враховуються в бал ДПА`
         );
 
         const $time = createHtmlBlock(
-            'div',
+            "div",
             `Витрачено часу: <b>${this.testMinutes} хв.</b> з 180 запропонованих`
         );
 
         addClass(this.$resultingBlock, "result");
-        addClass($dpaQuestionHint, 'hint')
+        addClass($dpaQuestionHint, "hint");
 
+        appendElements(
+            this.$resultingBlock,
+            $dpaScore,
+            $dpaQuestionHint,
+            $time
+        );
 
-        appendElements(this.$resultingBlock, $dpaScore, $dpaQuestionHint, $time);
+        console.log(App.modals);
+        
     }
 
-    recreateQuestionWrapper() {
+    recreateQuestionWrapper(): void {
         this.$questionWrapper = createHtmlBlock("div");
         addClass(this.$questionWrapper, "question__wrapper");
         // удаляем контент
@@ -360,7 +409,7 @@ class App {
     }
 
     // ставит слушатели для кнопок и ссылок на вопросы
-    addQuestionChangeListeners() {
+    addQuestionChangeListeners(): void {
         this.$questionLinksBlock.addEventListener(
             "click",
             App.listeners.questionLinksListener
@@ -373,4 +422,4 @@ class App {
     }
 }
 
-export default App
+export default App;

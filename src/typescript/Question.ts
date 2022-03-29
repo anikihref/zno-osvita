@@ -4,6 +4,14 @@ import { appendElements, prependElements } from "./functions/elementActions.js";
 import { htmlElements } from "./htmlElements.js";
 import { app } from "./main.js";
 
+
+interface QuestionForm {
+    insertAnswer: () => void;
+    getAnswer: () =>  string[];
+    createAnswerForm: () => HTMLElement;  
+    createQuestions: () => HTMLElement;
+}
+
 export class Question {
     constructor(protected question: QuestionInfo) {}
 

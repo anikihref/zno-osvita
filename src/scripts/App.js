@@ -12,6 +12,7 @@ import { createHtmlBlock } from "./functions/createElements.js";
 import { appendElements, hideElement, showElement, } from "./functions/elementActions.js";
 import { htmlElements } from "./htmlElements.js";
 import { app } from "./main.js";
+import { InfoModal, SuccessModal } from "./Modal.js";
 import { Question } from "./Question.js";
 const pathName = document.location.pathname.split("/");
 const testPath = {
@@ -26,11 +27,14 @@ class App {
         this.questionInfo = {};
         this.question = {};
         this.result = {};
-        this.$questionLinksBlock = createHtmlBlock('div');
-        this.$resultingBlock = createHtmlBlock('div');
-        this.$questionWrapper = createHtmlBlock('div');
+        this.$questionLinksBlock = createHtmlBlock("div");
+        this.$resultingBlock = createHtmlBlock("div");
+        this.$questionWrapper = createHtmlBlock("div");
         this.startTime = Date.now();
         this.testMinutes = 0;
+        this.finishTimeout = setTimeout(() => {
+            this.finishTest();
+        }, 1000 * 60 * 60 * 3);
     }
     run() {
         this.getQuestions().then(() => {
@@ -41,8 +45,20 @@ class App {
             this.question.render();
             hideElement(htmlElements.$seeAllQuestionsBtn);
         });
+        const modal = (App.modals.startModal = new InfoModal({
+            width: "500px",
+            height: "400px",
+            content: "Тест автоматично завершиться через 180 хвилин",
+            title: "Щасти!",
+            transition: 800,
+            closable: false,
+            modalName: "startModal",
+        }));
+        modal.render(modal.color);
+        modal.close(3500, true);
     }
     finishTest() {
+        clearTimeout(this.finishTimeout);
         fetch("/result", {
             method: "POST",
             headers: {
@@ -82,6 +98,17 @@ class App {
             });
             appendElements(htmlElements.$questionControls, this.$resultingBlock);
         });
+        const modal = (App.modals.finishModal = new SuccessModal({
+            width: "500px",
+            height: "400px",
+            content: " Ви завершили тест. Перегляньте результати.",
+            title: "Вітаю!",
+            transition: 800,
+            closable: false,
+            modalName: "finishModal",
+        }));
+        modal.render(modal.color);
+        modal.close(3500, true);
     }
     getQuestions() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -132,12 +159,13 @@ class App {
         addClass(document.querySelector(".question__link"), "question__link_active");
     }
     createResultBlock() {
-        const $dpaScore = createHtmlBlock('div', `Ваш бал ДПА: <b>${Math.trunc((12 * this.result.dpaPercentage) / 100)}</b> з 12 можливих.`);
-        const $dpaQuestionHint = createHtmlBlock('div', `Завдання виділені жирним враховуються в бал ДПА`);
-        const $time = createHtmlBlock('div', `Витрачено часу: <b>${this.testMinutes} хв.</b> з 180 запропонованих`);
+        const $dpaScore = createHtmlBlock("div", `Ваш бал ДПА: <b>${Math.trunc((12 * this.result.dpaPercentage) / 100)}</b> з 12 можливих.`);
+        const $dpaQuestionHint = createHtmlBlock("div", `Завдання виділені жирним враховуються в бал ДПА`);
+        const $time = createHtmlBlock("div", `Витрачено часу: <b>${this.testMinutes} хв.</b> з 180 запропонованих`);
         addClass(this.$resultingBlock, "result");
-        addClass($dpaQuestionHint, 'hint');
+        addClass($dpaQuestionHint, "hint");
         appendElements(this.$resultingBlock, $dpaScore, $dpaQuestionHint, $time);
+        console.log(App.modals);
     }
     recreateQuestionWrapper() {
         this.$questionWrapper = createHtmlBlock("div");
@@ -150,6 +178,7 @@ class App {
         htmlElements.$btnBlock.addEventListener("click", App.listeners.buttonsListener);
     }
 }
+App.modals = {};
 App.listeners = {
     questionLinksListener(e) {
         const target = e.target.closest(".question__link");

@@ -166,9 +166,7 @@
 	width: fit-content;
 	font-size: 1.2rem;
 	padding: 10px;
-	position: relative;
 	transform: translateY(-50%);
-	z-index: 1000;
 }
 
 .form__question-all-text {
@@ -398,4 +396,59 @@
 
 .result > div:not(:last-child) {
 	margin-bottom: 10px;
+}
+
+.modal {
+	overflow: hidden;
+	border-radius: 10px;
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: #fff;
+	top: -50%;
+}
+
+
+.modal-layer {
+	position: fixed;
+	height: 100vh;
+	width: 100vw;
+	z-index: 1000;
+	background-color: rgba(0, 0, 0, 0);
+
+}
+
+.modal-layer_active {
+	background-color: rgba(0, 0, 0, .5);
+}
+
+.modal-layer_active .modal {
+	top: 50%;
+}
+
+.modal__title {
+	height: 33%;
+	min-height: 80px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #fff;
+	font-size: 2rem;
+}
+
+.modal__body {
+	padding: 20px 10px 10px 10px;
+	text-align: center;
+	font-size: 1.1rem;
+	font-weight: bold;
+}
+
+.modal__close-btn {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	height: 20px;
+	width: 20px;
+	background-color: #000;
+	cursor: pointer;
 }

@@ -10,17 +10,10 @@ interface QuestionInfo {
     questionImage?: string
 }
 
-interface QuestionForm {
-    insertAnswer: () => void;
-    getAnswer: () =>  string[];
-    createAnswerForm: () => HTMLElement;  
-    createQuestions: () => HTMLElement;
+interface IModal {
+    close: (time: number, deleteModal: boolean) => void;
+    delete: () => void
+    open: () => void
+    render: (color: string) => void
 }
 
-interface QuestionsConfig {
-    isFinished: boolean;
-    isLastUnanswered: boolean;
-    unsweredQuestionsNum: number;
-    questionSwitchLogic: 'seeAll' | 'single';
-    checkAnswersNumber: () => void
-}
