@@ -7,7 +7,7 @@ import {
 } from "./functions/elementActions.js";
 import { htmlElements } from "./htmlElements.js";
 import { app } from "./main.js";
-import { InfoModal, SuccessModal } from "./Modal.js";
+import { LogInModal, SuccessModal } from "./Modal.js";
 import { Question } from "./Question.js";
 
 const pathName = document.location.pathname.split("/");
@@ -193,19 +193,19 @@ class App {
             hideElement(htmlElements.$seeAllQuestionsBtn!); // прячем кнопку смотреть все
         });
 
-        const modal = (App.modals.startModal = new InfoModal({
-            width: "500px",
-            height: "400px",
-            content: "Тест автоматично завершиться через 180 хвилин",
-            title: "Щасти!",
-            transition: 800,
-            closable: false,
-            modalName: "startModal",
-        }));
+        // const modal = (App.modals.startModal = new SuccessModal({
+        //     width: "500px",
+        //     height: "400px",
+        //     content: "Тест автоматично завершиться через 180 хвилин",
+        //     title: "Щасти!",
+        //     transition: 800,
+        //     closable: true,
+        //     modalName: "startModal",
+        // }));
+        const modal = (App.modals.startModal) = new LogInModal('startModal')
+        modal.render();
+        // modal.close(3500, true);
 
-        modal.render(modal.color);
-
-        modal.close(3500, true);
     }
 
     finishTest(): void {
@@ -285,7 +285,7 @@ class App {
             modalName: "finishModal",
         }));
 
-        modal.render(modal.color);
+        modal.render();
         modal.close(3500, true);
     }
 

@@ -11,160 +11,293 @@ import {
 interface ModalConfig {
     width: string;
     height: string;
-    content: string;
+    content: string | HTMLElement;
     title: string;
     transition: number;
     closable: boolean;
     modalName: string;
 }
 
+type ModalElements = {
+    $modal: HTMLElement;
+    $modalTitle: HTMLElement;
+    [key: string]: HTMLElement;
+};
+
 enum Colors {
-    RED = '#9d0208',
-    BlUE = '#00b4d8',
-    GREEN = '#208b3a',
-    YELLOW = '#fca311'
+    RED = "#9d0208",
+    BlUE = "#00b4d8",
+    GREEN = "#41a88a",
+    YELLOW = "#fca311",
 }
 
-class Modal implements IModal {
-
+export class Modal implements IModal {
     constructor(
         protected modalConfig: ModalConfig,
-        protected $modalLayer: HTMLElement = createHtmlBlock('div'),
-        protected $modal: HTMLElement = createHtmlBlock('div'),
-        protected $modalTitle: HTMLElement = createHtmlBlock('div', modalConfig.title),
-        protected $modalBody: HTMLElement = createHtmlBlock('div', modalConfig.content),
-        protected $closeBtn: HTMLElement = createHtmlBlock('div'),
+        protected $modalLayer: HTMLElement = createHtmlBlock("div"),
+        protected $modal: HTMLElement = createHtmlBlock("div"),
+        protected $modalTitle: HTMLElement = createHtmlBlock(
+            "div",
+            modalConfig.title
+        ),
+        protected $modalBody: HTMLElement = createHtmlBlock("div"),
+        protected $closeBtn: HTMLElement = createHtmlBlock("div"),
         private listeners = {
             closeModal() {
-                App.modals[modalConfig.modalName].close(0, false)
-            }
-        },
-        private closed: boolean = false,
+                console.log(1);
+
+                App.modals[modalConfig.modalName].close(0, false);
+            },
+        } //TODO: private closed: boolean = false,
     ) {
         const modalStyle = this.$modal.style;
 
-        addClass(this.$modal, "modal");
-        addClass(this.$modalLayer, "modal-layer");
-        addClass(this.$modalTitle, 'modal__title')
-        addClass(this.$modalBody, 'modal__body')
-        addClass(this.$closeBtn, 'modal__close-btn')
-
-
-
-        this.$closeBtn.dataset.modal = this.modalConfig.modalName
-
-
-        appendElements($modalLayer, $modal);
-
         // Style assigning
-        ([
+        [
             modalStyle.width,
             modalStyle.height,
             modalStyle.transitionDuration,
             this.$modalLayer.style.transitionDuration,
         ] = [
-            this.modalConfig.width, 
-            this.modalConfig.height, 
+            this.modalConfig.width,
+            this.modalConfig.height,
             `${this.modalConfig.transition}ms`,
             `${this.modalConfig.transition}ms`,
-        ])
+        ];
     }
 
-    render(color: string): void {
-    
+    public render(): ModalElements {
+        // add classes for every element
+        addClass(this.$modal, "modal");
+        addClass(this.$modalLayer, "modal-layer");
+        addClass(this.$modalTitle, "modal__title");
+        addClass(this.$modalBody, "modal__body");
 
-        this.$modalTitle.style.backgroundColor = color
-
-        appendElements(this.$modal, this.$modalTitle, this.$modalBody)
-        
+        appendElements(this.$modalBody, this.modalConfig.content as HTMLElement)
+        appendElements(this.$modal, this.$modalTitle, this.$modalBody);
+        appendElements(this.$modalLayer, this.$modal);
         prependElements(document.body, this.$modalLayer);
 
+        // open modal
         this.open();
+
+        return {
+            $modalTitle: this.$modalTitle,
+            $modal: this.$modal,
+        };
     }
 
-    open(): void {
+    public open(): void {
+        //TODO: if (!this.closed) { return }
+
         if (this.modalConfig.closable) {
-            this.$closeBtn.addEventListener('click', this.listeners.closeModal)
-            appendElements(this.$modalTitle, this.$closeBtn)
+            addClass(this.$closeBtn, "modal__close-btn");
+
+            appendElements(this.$modalTitle, this.$closeBtn);
+
+            this.$closeBtn.addEventListener("click", this.listeners.closeModal);
+            this.$closeBtn.innerHTML = `<img src="/img/svg/close.svg">`;
         }
 
-        showElement(this.$modalLayer)
+        showElement(this.$modalLayer);
 
         setTimeout(() => {
             addClass(this.$modalLayer, "modal-layer_active");
-            document.body.style.overflow = 'hidden'
+            document.body.style.overflow = "hidden";
         }, 0);
-
     }
 
-    close(time: number = 0, deleteModal: boolean = false): void {
-        this.$closeBtn.removeEventListener('click', this.listeners.closeModal)
-        
-        this.closed = true
+    public close(time: number, deleteModal: boolean): void {
+        this.$closeBtn.removeEventListener("click", this.listeners.closeModal);
+        //TODO: this.closed = true
 
-
-         // close modal after time(ms) arg
-         setTimeout(() => {
+        // close modal after time(ms) arg
+        setTimeout(() => {
             removeClass(this.$modalLayer, "modal-layer_active");
             // wait till the transition ends and hiding modal
             setTimeout(() => {
                 hideElement(this.$modalLayer);
-                document.body.style.overflow = 'visible'
+                document.body.style.overflow = "visible";
                 // execute callback
                 if (deleteModal) {
-                    App.modals[this.modalConfig.modalName].delete()
+                    App.modals[this.modalConfig.modalName].delete();
                 }
             }, this.modalConfig.transition);
         }, time);
-       
     }
 
-    delete(): void {
-        if (!this.closed) {
-            App.modals[this.modalConfig.modalName].close(0, false)
-        }
+    public delete(): void {
+        //TODO: if (!this.closed) {
+        //TODO:     App.modals[this.modalConfig.modalName].close(0, false)
+        //TODO: }
 
         setTimeout(() => {
-            this.$modalLayer.remove()
+            this.$modalLayer.remove();
             delete App.modals[this.modalConfig.modalName];
-            
-        }, this.modalConfig.transition); 
+        }, this.modalConfig.transition);
     }
 }
 
 export class SuccessModal extends Modal {
-    constructor(
-        protected modalConfig: ModalConfig,
-        public color: string = Colors.GREEN
-    ) {
+    constructor(protected modalConfig: ModalConfig) {
         super(modalConfig);
-        
+    }
+
+    public render(): ModalElements {
+        const modalElements = super.render();
+
+        modalElements.$modalTitle.style.backgroundColor = Colors.GREEN;
+
+        return {
+            $modalTitle: this.$modalTitle,
+            $modal: this.$modal,
+        };
     }
 }
 
 export class DangerModal extends Modal {
-    constructor(
-        protected modalConfig: ModalConfig,
-        public color: string = Colors.YELLOW
-    ) {
+    constructor(protected modalConfig: ModalConfig) {
         super(modalConfig);
+    }
+
+    public render(): ModalElements {
+        const modalElements = super.render();
+
+        modalElements.$modalTitle.style.backgroundColor = Colors.YELLOW;
+
+        return {
+            $modalTitle: this.$modalTitle,
+            $modal: this.$modal,
+        };
     }
 }
 
 export class FatalModal extends Modal {
-    constructor(
-        protected modalConfig: ModalConfig,
-        public color: string = Colors.RED
-    ) {
+    constructor(protected modalConfig: ModalConfig) {
         super(modalConfig);
+    }
+
+    public render(): ModalElements {
+        const modalElements = super.render();
+
+        modalElements.$modalTitle.style.backgroundColor = Colors.RED;
+
+        return {
+            $modalTitle: this.$modalTitle,
+            $modal: this.$modal,
+        };
     }
 }
 
 export class InfoModal extends Modal {
-    constructor(
-        protected modalConfig: ModalConfig,
-        public color: string = Colors.BlUE
-    ) {
+    constructor(protected modalConfig: ModalConfig) {
         super(modalConfig);
+    }
+
+    public render(): ModalElements {
+        const modalElements = super.render();
+
+        modalElements.$modalTitle.style.backgroundColor = Colors.BlUE;
+
+        return {
+            $modalTitle: this.$modalTitle,
+            $modal: this.$modal,
+        };
+    }
+}
+
+class AuthModal extends Modal {
+    constructor(public modalName: string) {
+        super({
+            width: "500px",
+            height: "500px",
+            content: `abc`,
+            title: `АВТОРИЗАЦІЯ`,
+            transition: 700,
+            closable: true,
+            modalName,
+        });
+    }
+
+    public render(): ModalElements {
+        // make authorization modal blue color
+        super.render().$modalTitle.style.backgroundColor = Colors.BlUE;
+
+        return {
+            $modal: createHtmlBlock("div"),
+            $modalTitle: createHtmlBlock("div"),
+        };
+    }
+
+    // create form
+    protected createForm(): HTMLFormElement {
+        const $form = createHtmlBlock("form") as HTMLFormElement;
+        return $form;
+    }
+}
+
+export class RegisterModal extends AuthModal {
+    constructor(public modalName: string) {
+        super(modalName)
+    }
+
+    public render(): ModalElements {
+        // create modal body
+        const $form = super.createForm();
+        const $content = this.createContent();
+
+        this.modalConfig.content = $form;
+        console.log(this.modalConfig.content);
+        
+        // inherit modal
+        const modalElements = super.render();
+
+        appendElements($form, $content);
+
+        return modalElements;
+    }
+
+    private createContent(): HTMLElement {
+        const $content = createHtmlBlock(
+            "div",
+            `
+            Register
+        `
+        );
+
+        return $content;
+    }
+}
+
+export class LogInModal extends AuthModal {
+    constructor(public modalName: string) {
+        super(modalName)
+    }
+
+    public render(): ModalElements {
+        // create modal body
+        const $form = super.createForm();
+        const $content = this.createContent();
+
+        this.modalConfig.content = $form;
+        console.log(this.modalConfig.content);
+        
+        // inherit modal
+        const modalElements = super.render();
+
+        appendElements($form, $content);
+
+        return modalElements;
+    }
+
+    private createContent(): HTMLElement {
+        const $content = createHtmlBlock(
+            "div",
+            `
+            Log In
+        `
+        );
+
+        return $content;
     }
 }

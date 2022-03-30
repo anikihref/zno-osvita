@@ -427,6 +427,7 @@
 }
 
 .modal__title {
+	position: relative;
 	height: 33%;
 	min-height: 80px;
 	display: flex;
@@ -434,6 +435,18 @@
 	align-items: center;
 	color: #fff;
 	font-size: 2rem;
+}
+
+.modal__title::before {
+	position: absolute;
+	content: 'modal';
+	color: #fff;
+	font-size: 2rem;
+	text-transform: uppercase;
+	letter-spacing: 10px;
+	bottom: 10px;
+	left: 10px;
+	opacity: .1;
 }
 
 .modal__body {
@@ -445,10 +458,13 @@
 
 .modal__close-btn {
 	position: absolute;
-	top: 20px;
-	right: 20px;
-	height: 20px;
-	width: 20px;
-	background-color: #000;
+	top: 10px;
+	right: 10px;
+	height: 30px;
+	width: 30px;
 	cursor: pointer;
+}
+
+.modal__close-btn > img {
+	max-width: 100%;
 }
