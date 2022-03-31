@@ -7,7 +7,7 @@ import {
 } from "./functions/elementActions.js";
 import { htmlElements } from "./htmlElements.js";
 import { app } from "./main.js";
-import { LogInModal, SuccessModal } from "./Modal.js";
+import { RegisterModal, SuccessModal } from "./Modal.js";
 import { Question } from "./Question.js";
 
 const pathName = document.location.pathname.split("/");
@@ -26,8 +26,6 @@ interface QuestionsConfig {
 }
 
 class App {
-    static modals: Record<string, IModal> = {};
-
     public allQuestionsList: QuestionInfo[] = [];
     public questionsConfig = {} as QuestionsConfig;
     public questionInfo: QuestionInfo = {} as QuestionInfo;
@@ -193,18 +191,28 @@ class App {
             hideElement(htmlElements.$seeAllQuestionsBtn!); // прячем кнопку смотреть все
         });
 
-        // const modal = (App.modals.startModal = new SuccessModal({
+        const modal = new RegisterModal('startModal')
+        modal.initialize(modal)        
+        modal.render();
+
+        
+        // const modal2 = new LogInModal('startModal2');
+        // modal2.initialize(modal2);
+        // modal2.render();
+
+        // const modal3 = new InfoModal('newModal', {
         //     width: "500px",
         //     height: "400px",
-        //     content: "Тест автоматично завершиться через 180 хвилин",
-        //     title: "Щасти!",
+        //     content: " re.",
+        //     title: "Вітаю!",
         //     transition: 800,
-        //     closable: true,
-        //     modalName: "startModal",
-        // }));
-        const modal = (App.modals.startModal) = new LogInModal('startModal')
-        modal.render();
-        // modal.close(3500, true);
+        //     closable: false,
+        // }) 
+        // modal3.initialize(modal3)
+        // modal3.render()
+        // modal3.close(3000, false)
+        // console.log(Modal.openedModal);
+        
 
     }
 
@@ -275,16 +283,17 @@ class App {
                 );
             });
 
-        const modal = (App.modals.finishModal = new SuccessModal({
+        const modal =  new SuccessModal('finishModal' ,{
             width: "500px",
             height: "400px",
             content: " Ви завершили тест. Перегляньте результати.",
             title: "Вітаю!",
             transition: 800,
             closable: false,
-            modalName: "finishModal",
-        }));
-
+        });
+        modal.initialize(modal)
+        
+        
         modal.render();
         modal.close(3500, true);
     }
@@ -339,7 +348,7 @@ class App {
             this.$questionLinksBlock
         );
         addClass(this.$questionLinksBlock, "question__links-block");
-        // console.log(this.$questionLinksBlock);
+
         // создаём блоки-ссылки на вопросы
         for (let i = 1; i <= this.allQuestionsList.length; i++) {
             let $questionLink: HTMLElement = createHtmlBlock("div");
@@ -395,9 +404,6 @@ class App {
             $dpaQuestionHint,
             $time
         );
-
-        console.log(App.modals);
-        
     }
 
     recreateQuestionWrapper(): void {

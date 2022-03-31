@@ -439,22 +439,23 @@
 
 .modal__title::before {
 	position: absolute;
-	content: 'modal';
+	content: 'ЗНО освіта';
 	color: #fff;
 	font-size: 2rem;
-	text-transform: uppercase;
-	letter-spacing: 10px;
-	bottom: 10px;
+	letter-spacing: 2px;
+	bottom: 5px;
 	left: 10px;
-	opacity: .1;
+	opacity: .15;
 }
 
 .modal__body {
+	height: 67%;
 	padding: 20px 10px 10px 10px;
 	text-align: center;
 	font-size: 1.1rem;
 	font-weight: bold;
 }
+
 
 .modal__close-btn {
 	position: absolute;
@@ -467,4 +468,59 @@
 
 .modal__close-btn > img {
 	max-width: 100%;
+}
+
+.auth-input {
+	padding: 10px;
+	min-width: 200px;
+	width: 100%;
+}
+
+.auth-input__container {
+	border: 2px solid #1c1c1c;
+	position: relative;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	width: 70%;
+}
+
+.auth-input__container:not(:last-child) {
+	margin-bottom: 20px;
+}
+
+.auth-input__eye-img {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+	margin-right: 10px;
+}
+
+.auth-input__eye-img > img {
+	max-width: 100%;
+
+}
+
+.auth-btn-block__send {
+	max-width: 140px;
+	min-width: 80px;
+	padding: 20px 20px;
+	transform: translate(-15px, 15px);
+	border-radius: 0 10px 0 0;
+	color: #fff;
+	font-size: 1rem;
+	font-weight: normal;
+	cursor: pointer;
+}
+
+
+.auth__form {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 100%;
+
 }

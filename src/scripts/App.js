@@ -12,7 +12,7 @@ import { createHtmlBlock } from "./functions/createElements.js";
 import { appendElements, hideElement, showElement, } from "./functions/elementActions.js";
 import { htmlElements } from "./htmlElements.js";
 import { app } from "./main.js";
-import { LogInModal, SuccessModal } from "./Modal.js";
+import { InfoModal, Modal, RegisterModal, SuccessModal } from "./Modal.js";
 import { Question } from "./Question.js";
 const pathName = document.location.pathname.split("/");
 const testPath = {
@@ -45,8 +45,10 @@ class App {
             this.question.render();
             hideElement(htmlElements.$seeAllQuestionsBtn);
         });
-        const modal = (App.modals.startModal) = new LogInModal('startModal');
+        const modal = new RegisterModal('startModal');
+        modal.initialize(modal);
         modal.render();
+
     }
     finishTest() {
         clearTimeout(this.finishTimeout);
@@ -89,15 +91,16 @@ class App {
             });
             appendElements(htmlElements.$questionControls, this.$resultingBlock);
         });
-        const modal = (App.modals.finishModal = new SuccessModal({
+        const modal = new SuccessModal('finishModal', {
             width: "500px",
             height: "400px",
             content: " Ви завершили тест. Перегляньте результати.",
             title: "Вітаю!",
             transition: 800,
             closable: false,
-            modalName: "finishModal",
-        }));
+        });
+        modal.initialize(modal);
+        console.log(Modal.modalsList);
         modal.render();
         modal.close(3500, true);
     }
@@ -156,7 +159,6 @@ class App {
         addClass(this.$resultingBlock, "result");
         addClass($dpaQuestionHint, "hint");
         appendElements(this.$resultingBlock, $dpaScore, $dpaQuestionHint, $time);
-        console.log(App.modals);
     }
     recreateQuestionWrapper() {
         this.$questionWrapper = createHtmlBlock("div");
@@ -169,7 +171,6 @@ class App {
         htmlElements.$btnBlock.addEventListener("click", App.listeners.buttonsListener);
     }
 }
-App.modals = {};
 App.listeners = {
     questionLinksListener(e) {
         const target = e.target.closest(".question__link");
