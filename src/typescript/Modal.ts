@@ -1,12 +1,3 @@
-import { addClass, removeClass } from "./functions/attributes.js";
-import { createHtmlBlock } from "./functions/createElements.js";
-import {
-    appendElements,
-    hideElement,
-    prependElements,
-    showElement,
-} from "./functions/elementActions.js";
-
 interface ModalConfig {
     width: string;
     height: string;
@@ -16,11 +7,23 @@ interface ModalConfig {
     closable: boolean;
 }
 
+interface IModal {
+    close: (time: number, deleteModal: boolean) => void;
+    delete: () => void;
+    open: () => void;
+    initialize: (modal: IModal) => void
+}
+
 type ModalElements = {
     $modal: HTMLElement;
     $modalTitle: HTMLElement;
     [key: string]: HTMLElement;
 };
+
+type AuthFieldElements = {
+    $fieldContainer: HTMLElement,
+    $field: HTMLInputElement,
+}
 
 enum Colors {
     RED = "#9d0208",
@@ -29,24 +32,24 @@ enum Colors {
     YELLOW = "#fca311",
 }
 
-class Modal implements IModal {
+class Modal {
     static modalsList: Record<string, IModal> = {};
     static openedModal: IModal | null = null;
 
     constructor(
         public modalName: string,
         protected modalConfig: ModalConfig,
-        protected $modalLayer: HTMLElement = createHtmlBlock("div"),
-        protected $modal: HTMLElement = createHtmlBlock("div"),
-        protected $modalTitle: HTMLElement = createHtmlBlock("div"),
-        protected $modalBody: HTMLElement = createHtmlBlock("div"),
-        protected $closeBtn: HTMLElement = createHtmlBlock("div"),
+        protected $modalLayer: HTMLElement = document.createElement("div"),
+        protected $modal: HTMLElement = document.createElement("div"),
+        protected $modalTitle: HTMLElement = document.createElement("div"),
+        protected $modalBody: HTMLElement = document.createElement("div"),
+        protected $closeBtn: HTMLElement = document.createElement("div"),
         private initialized: boolean = false,
         protected listeners = {
             closeModal() {
                 Modal.modalsList[modalName].close(0, false);
             },
-        } //TODO: private closed: boolean = false,
+        }
     ) {
         const modalStyle = this.$modal.style;
 
@@ -67,29 +70,25 @@ class Modal implements IModal {
     public initialize(modal: IModal): void {
         this.initialized = true;
         Modal.modalsList[this.modalName] = modal;
+
+        this.render()
     }
 
-    public render(): ModalElements {
+    protected render(): ModalElements {
         if (this.initialized) {
             // add classes for every element
-            addClass(this.$modal, "modal");
-            addClass(this.$modalLayer, "modal-layer");
-            addClass(this.$modalTitle, "modal__title");
-            addClass(this.$modalBody, "modal__body");
+            this.$modal.classList.add("modal");
+            this.$modalLayer.classList.add("modal-layer");
+            this.$modalTitle.classList.add("modal__title");
+            this.$modalBody.classList.add("modal__body");
 
-            appendElements(
-                this.$modalBody,
-                this.modalConfig.content as HTMLElement
-            );
+            this.$modalBody.append(this.modalConfig.content);
+            this.$modal.append(this.$modalTitle, this.$modalBody);
+            this.$modalLayer.append(this.$modal);
 
-            appendElements(this.$modal, this.$modalTitle, this.$modalBody);
-            appendElements(this.$modalLayer, this.$modal);
-            prependElements(document.body, this.$modalLayer);
 
             this.$modalTitle.innerHTML = this.modalConfig.title;
 
-            // open modal
-            this.open();
         } else {
             console.error(
                 "Initialize modal to start work: modal.initialize(modal) "
@@ -103,16 +102,17 @@ class Modal implements IModal {
     }
 
     public open(): void {
-        //TODO: if (!this.closed) { return }
+        document.body.prepend(this.$modalLayer);
+
         // if some modal is opened than we`ll close it
         if (Modal.openedModal) {
             Modal.openedModal.close(0, false);
             Modal.openedModal = null;
         }
         if (this.modalConfig.closable) {
-            addClass(this.$closeBtn, "modal__close-btn");
+            this.$closeBtn.classList.add("modal__close-btn");
 
-            appendElements(this.$modalTitle, this.$closeBtn);
+            this.$modalTitle.append(this.$closeBtn);
 
             this.$closeBtn.addEventListener("click", this.listeners.closeModal);
             this.$closeBtn.innerHTML = `<img src="/img/svg/close.svg">`;
@@ -120,10 +120,11 @@ class Modal implements IModal {
         // modal that we are opening is assigned to the openedModal
         Modal.openedModal = Modal.modalsList[this.modalName];
 
-        showElement(this.$modalLayer);
+        this.$modalLayer.style.display = "block";
 
         setTimeout(() => {
-            addClass(this.$modalLayer, "modal-layer_active");
+            this.$modalLayer.classList.add("modal-layer_active");
+
             document.body.style.overflow = "hidden";
         }, 0);
     }
@@ -131,14 +132,15 @@ class Modal implements IModal {
     public close(time: number, deleteModal: boolean): void {
         Modal.openedModal = null;
         this.$closeBtn.removeEventListener("click", this.listeners.closeModal);
-        //TODO: this.closed = true
 
         // close modal after time(ms) arg
         setTimeout(() => {
-            removeClass(this.$modalLayer, "modal-layer_active");
+            this.$modalLayer.classList.remove("modal-layer_active");
+
             // wait till the transition ends and hiding modal
             setTimeout(() => {
-                hideElement(this.$modalLayer);
+                this.$modalLayer.style.display = "none";
+
                 document.body.style.overflow = "visible";
                 // execute callback
                 if (deleteModal) {
@@ -149,10 +151,6 @@ class Modal implements IModal {
     }
 
     public delete(): void {
-        //TODO: if (!this.closed) {
-        //TODO:     App.modals[this.modalConfig.modalName].close(0, false)
-        //TODO: }
-
         setTimeout(() => {
             this.$modalLayer.remove();
             delete Modal.modalsList[this.modalName];
@@ -231,15 +229,11 @@ export class InfoModal extends Modal {
 class AuthModal extends Modal {
     constructor(
         public modalName: string,
-        protected $form = createHtmlBlock("form") as HTMLFormElement,
-        protected $passwordContainer: HTMLElement = createHtmlBlock("div"),
-        protected $seePasswordBtn = createHtmlBlock(
-            "div",
-            `
-            <img src="/img/svg/eye-crossed.svg">
-        `
-        ),
-        protected $buttonsBlock: HTMLElement = createHtmlBlock("div")
+        protected $form: HTMLElement = document.createElement("div"),
+        protected $seePasswordBtn: HTMLElement = document.createElement("div"),
+        protected $buttonsBlock: HTMLElement = document.createElement("div"),
+        protected $login = {} as AuthFieldElements,
+        protected $password = {} as AuthFieldElements
     ) {
         super(modalName, {
             width: "500px",
@@ -249,40 +243,41 @@ class AuthModal extends Modal {
             transition: 700,
             closable: true,
         });
-        this.$passwordContainer = this.createField(
-            "password",
-            "password",
-            true
-        ).$fieldContainer;
+
         this.$seePasswordBtn.dataset.view = "false";
+        this.$seePasswordBtn.innerHTML = '<img src="/img/svg/eye-crossed.svg">';
 
-        addClass(this.$form, "auth__form");
-        addClass(this.$seePasswordBtn, "auth-input__eye-img");
-        addClass(this.$buttonsBlock, "auth__btn-block");
+        this.$password = this.createField("password", "password", true);
+        this.$login = this.createField("login", "text", true);
 
-        appendElements(this.$buttonsBlock, this.createButtons());
+        this.$form.classList.add("auth__form");
+        this.$seePasswordBtn.classList.add("auth-input__eye-img");
+        this.$buttonsBlock.classList.add("auth__btn-block");
+
+        this.$buttonsBlock.append(this.createButtons());
     }
-
+    
     public render(): ModalElements {
         // make authorization modal blue color
         super.render().$modalTitle.style.backgroundColor = Colors.BlUE;
 
+        
         return {
             $modal: this.$modal,
             $modalTitle: this.$modalTitle,
         };
     }
 
-    protected createField(fieldName: string, type: string, required?: boolean) {
-        const $fieldContainer = createHtmlBlock("div");
-        const $field = createHtmlBlock("input") as HTMLInputElement;
+    protected createField(fieldName: string, type: string, required?: boolean): AuthFieldElements {
+        const $fieldContainer = document.createElement("div");
+        const $field = document.createElement("input") as HTMLInputElement;
         const capitalizedFieldName =
             fieldName[0].toUpperCase() + fieldName.substring(1);
 
-        addClass($field, `auth-input__${fieldName}`, "auth-input");
-        addClass($fieldContainer, "auth-input__container");
+        $field.classList.add(`auth-input__${fieldName}`, "auth-input");
+        $fieldContainer.classList.add("auth-input__container");
 
-        appendElements($fieldContainer, $field);
+        $fieldContainer.append($field);
 
         $field.placeholder = `${capitalizedFieldName}${required ? "*" : ""}`;
         $field.type = type;
@@ -296,10 +291,8 @@ class AuthModal extends Modal {
     protected seePasswordListener = (e) => {
         const $img: HTMLImageElement = e.target;
         const $btn: HTMLElement = this.$seePasswordBtn;
-        const $passwordField: HTMLInputElement =
-            this.$passwordContainer?.querySelector(
-                "input.auth-input__password"
-            )!;
+        const $passwordField: HTMLInputElement = this.$password.$field
+            
 
         if ($btn.dataset.view === "false") {
             $img.src = "/img/svg/eye.svg";
@@ -317,19 +310,14 @@ class AuthModal extends Modal {
         const $target: HTMLInputElement = e.target;
         const $parent: HTMLElement = $target.closest("div")!;
         const value: string = $target.value;
+        let $errorHint: HTMLElement = document.createElement('div');
         let pattern: RegExp;
-        let $errorHint: HTMLElement;
 
         switch ($target.dataset.fieldName) {
             case "login": {
                 pattern = /[\w\.]{3,16}/g;
-                $errorHint = createHtmlBlock(
-                    "div",
-                    `
-                    Помилка валідації. Уведіть валідний логін: Латинські букви, цифри та _
-                `
-                );
-
+                $errorHint.innerHTML = 'Validation error. You only may use Latin letters, numbers and _'
+                
                 break;
             }
 
@@ -341,24 +329,14 @@ class AuthModal extends Modal {
                     then any letter more than two
                 */
                 pattern = /[\w-]+@([\w]+\.)([a-zA-Z]){2,}/g;
-                $errorHint = createHtmlBlock(
-                    "div",
-                    `
-                    Помилка валідації. Уведіть правильний email адрес
-                `
-                );
+                $errorHint.innerHTML = 'Validation error. Enter your email'
 
                 break;
             }
 
             case "password": {
-                pattern = /\w{8,16}/g;
-                $errorHint = createHtmlBlock(
-                    "div",
-                    `
-                    Помилка валідації. Уведіть валідний пароль: Латинські букви, цифри та _
-                `
-                );
+                pattern = /\w{8,20}/g;
+                $errorHint.innerHTML = 'Validation error. You only may use Latin letters, numbers and _'
 
                 break;
             }
@@ -367,27 +345,32 @@ class AuthModal extends Modal {
         const matched = value.match(pattern!);
 
         if (matched?.length === 1 && matched[0].length == value.length) {
-            addClass($parent, "green-border");
-            removeClass($parent, "red-border");
+            $parent.classList.add("green-border");
+            $parent.classList.remove("red-border");
 
             $parent.querySelector(".auth__error-hint ")?.remove();
         } else if (!value) {
-            removeClass($parent, "red-border");
-            removeClass($parent, "green-border");
+            $parent.classList.remove("red-border");
+            $parent.classList.remove("green-border");
 
             $parent.querySelector(".auth__error-hint ")?.remove();
         } else {
-            addClass($errorHint!, "auth__error-hint");
-            addClass($parent, "red-border");
-            removeClass($parent, "green-border");
+            $errorHint!.classList.add("auth__error-hint");
+            $parent.classList.add("red-border");
 
-            !!$parent.querySelector(".auth__error-hint ") ?  void 0 : appendElements($parent, $errorHint!)
+            $parent.classList.remove("green-border");
+
+            !!$parent.querySelector(".auth__error-hint ")
+                ? void 0
+                : $parent.append($errorHint!);
         }
     }
 
     protected createButtons(): HTMLElement {
-        const $sendBtn = createHtmlBlock("div", "Відправити");
-        addClass($sendBtn, "auth-btn-block__send");
+        const $sendBtn: HTMLElement = document.createElement("div");
+
+        $sendBtn.innerHTML = "Send";
+        $sendBtn.classList.add("auth-btn-block__send");
         $sendBtn.style.backgroundColor = Colors.BlUE;
         return $sendBtn;
     }
@@ -396,15 +379,32 @@ class AuthModal extends Modal {
 export class RegisterModal extends AuthModal {
     constructor(
         public modalName: string,
-        private modalTitle: string = "Реєстрація"
+        private modalTitle: string = "Registration",
+        protected $email = {} as AuthFieldElements
     ) {
         super(modalName);
+
+        this.$email = super.createField("email", "email", true);
+    }
+
+    public close(time: number, deleteModal: boolean): void {
+        super.close(time, deleteModal);
+        
+          // remove listeners
+          [
+            this.$email.$field,
+            this.$login.$field,
+            this.$password.$field
+        ].forEach((el) => {
+            el?.removeEventListener("blur", this.checkValidListener);
+        });
     }
 
     public render(): ModalElements {
         // create modal body
         const $form = this.$form;
         const $content = this.createContent();
+
 
         // change modal content
         this.modalConfig.content = $form;
@@ -416,29 +416,28 @@ export class RegisterModal extends AuthModal {
         );
 
         // append content and buttons into block
-        appendElements($form, $content, this.$buttonsBlock);
+        $form.append($content, this.$buttonsBlock);
         return super.render();
     }
 
     private createContent(): HTMLElement {
         // create modal & insert content
-        const $login = super.createField("login", "text", true);
-        const $email = super.createField("email", "email", true);
-
-        const $content = createHtmlBlock(
-            "div",
-            $login.$fieldContainer,
-            $email.$fieldContainer,
-            this.$passwordContainer!
+        const $content: HTMLElement = document.createElement("div");
+        console.log(this.$email);
+        
+        $content.append(
+            this.$login.$fieldContainer,
+            this.$email.$fieldContainer,
+            this.$password.$fieldContainer
         );
         // append button to see password into the password container
-        appendElements(this.$passwordContainer!, this.$seePasswordBtn);
+        this.$password.$fieldContainer.append(this.$seePasswordBtn);
 
         // set listeners
         [
-            $email.$field,
-            $login.$field,
-            this.$passwordContainer.querySelector("input"),
+            this.$email.$field,
+            this.$login.$field,
+            this.$password.$field,
         ].forEach((el) => {
             el?.addEventListener("blur", this.checkValidListener);
         });
@@ -448,8 +447,22 @@ export class RegisterModal extends AuthModal {
 }
 
 export class LogInModal extends AuthModal {
-    constructor(public modalName: string, private modalTitle: string = "Вхід") {
+    constructor(public modalName: string, private modalTitle: string = "Log in") {
         super(modalName);
+    }
+
+
+    
+    public close(time: number, deleteModal: boolean): void {
+        super.close(time, deleteModal);
+        
+          // remove listeners
+          [
+            this.$login.$field,
+            this.$password.$field,
+        ].forEach((el) => {
+            el?.removeEventListener("blur", this.checkValidListener);
+        });
     }
 
     public render(): ModalElements {
@@ -467,28 +480,29 @@ export class LogInModal extends AuthModal {
         );
 
         // append content and buttons into block
-        appendElements($form, $content, this.$buttonsBlock);
+        $form.append($content, this.$buttonsBlock);
+
         return super.render();
     }
 
     private createContent(): HTMLElement {
         // create modal & insert content
-        const $login = super.createField("login", "text", true);
-        const $content = createHtmlBlock(
-            "div",
-            $login.$fieldContainer,
-            this.$passwordContainer
+        const $content: HTMLElement = document.createElement("div");
+        
+        $content.append(
+            this.$login.$fieldContainer,
+            this.$password.$fieldContainer
         );
 
         // set listeners
-        [$login.$field, this.$passwordContainer.querySelector("input")].forEach(
+        [this.$login.$field, this.$password.$field].forEach(
             (el) => {
                 el?.addEventListener("blur", this.checkValidListener);
             }
         );
 
         // append button to see password into the password container
-        appendElements(this.$passwordContainer!, this.$seePasswordBtn);
+        this.$password.$fieldContainer.append(this.$seePasswordBtn);
         return $content;
     }
 }

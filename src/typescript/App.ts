@@ -180,11 +180,11 @@ class App {
             if ($target === $registerLink) {
                 const modal = new RegisterModal('registerModal');
                 modal.initialize(modal);        
-                modal.render();
+                modal.open();
             } else if ($target === $loginLink) {
                 const modal = new LogInModal('logInModal');
                 modal.initialize(modal);        
-                modal.render();
+                modal.open();
             }
         }
     };
@@ -217,7 +217,7 @@ class App {
             closable: false,
         }) 
         modal.initialize(modal)        
-        modal.render();
+        modal.open()
         modal.close(3000, true)
     }
 
@@ -298,7 +298,7 @@ class App {
         });
 
         modal.initialize(modal)
-        modal.render();
+        modal.open();
         modal.close(3000, true);
     }
 

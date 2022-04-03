@@ -1,6 +1,3 @@
-import { addClass, removeClass } from "./functions/attributes.js";
-import { createHtmlBlock } from "./functions/createElements.js";
-import { appendElements, hideElement, prependElements, showElement, } from "./functions/elementActions.js";
 var Colors;
 (function (Colors) {
     Colors["RED"] = "#9d0208";
@@ -9,7 +6,7 @@ var Colors;
     Colors["YELLOW"] = "#fca311";
 })(Colors || (Colors = {}));
 class Modal {
-    constructor(modalName, modalConfig, $modalLayer = createHtmlBlock("div"), $modal = createHtmlBlock("div"), $modalTitle = createHtmlBlock("div"), $modalBody = createHtmlBlock("div"), $closeBtn = createHtmlBlock("div"), initialized = false, listeners = {
+    constructor(modalName, modalConfig, $modalLayer = document.createElement("div"), $modal = document.createElement("div"), $modalTitle = document.createElement("div"), $modalBody = document.createElement("div"), $closeBtn = document.createElement("div"), initialized = false, listeners = {
         closeModal() {
             Modal.modalsList[modalName].close(0, false);
         },
@@ -39,19 +36,18 @@ class Modal {
     initialize(modal) {
         this.initialized = true;
         Modal.modalsList[this.modalName] = modal;
+        this.render();
     }
     render() {
         if (this.initialized) {
-            addClass(this.$modal, "modal");
-            addClass(this.$modalLayer, "modal-layer");
-            addClass(this.$modalTitle, "modal__title");
-            addClass(this.$modalBody, "modal__body");
-            appendElements(this.$modalBody, this.modalConfig.content);
-            appendElements(this.$modal, this.$modalTitle, this.$modalBody);
-            appendElements(this.$modalLayer, this.$modal);
-            prependElements(document.body, this.$modalLayer);
+            this.$modal.classList.add("modal");
+            this.$modalLayer.classList.add("modal-layer");
+            this.$modalTitle.classList.add("modal__title");
+            this.$modalBody.classList.add("modal__body");
+            this.$modalBody.append(this.modalConfig.content);
+            this.$modal.append(this.$modalTitle, this.$modalBody);
+            this.$modalLayer.append(this.$modal);
             this.$modalTitle.innerHTML = this.modalConfig.title;
-            this.open();
         }
         else {
             console.error("Initialize modal to start work: modal.initialize(modal) ");
@@ -62,20 +58,21 @@ class Modal {
         };
     }
     open() {
+        document.body.prepend(this.$modalLayer);
         if (Modal.openedModal) {
             Modal.openedModal.close(0, false);
             Modal.openedModal = null;
         }
         if (this.modalConfig.closable) {
-            addClass(this.$closeBtn, "modal__close-btn");
-            appendElements(this.$modalTitle, this.$closeBtn);
+            this.$closeBtn.classList.add("modal__close-btn");
+            this.$modalTitle.append(this.$closeBtn);
             this.$closeBtn.addEventListener("click", this.listeners.closeModal);
             this.$closeBtn.innerHTML = `<img src="/img/svg/close.svg">`;
         }
         Modal.openedModal = Modal.modalsList[this.modalName];
-        showElement(this.$modalLayer);
+        this.$modalLayer.style.display = "block";
         setTimeout(() => {
-            addClass(this.$modalLayer, "modal-layer_active");
+            this.$modalLayer.classList.add("modal-layer_active");
             document.body.style.overflow = "hidden";
         }, 0);
     }
@@ -83,9 +80,9 @@ class Modal {
         Modal.openedModal = null;
         this.$closeBtn.removeEventListener("click", this.listeners.closeModal);
         setTimeout(() => {
-            removeClass(this.$modalLayer, "modal-layer_active");
+            this.$modalLayer.classList.remove("modal-layer_active");
             setTimeout(() => {
-                hideElement(this.$modalLayer);
+                this.$modalLayer.style.display = "none";
                 document.body.style.overflow = "visible";
                 if (deleteModal) {
                     Modal.modalsList[this.modalName].delete();
@@ -163,9 +160,7 @@ export class InfoModal extends Modal {
     }
 }
 class AuthModal extends Modal {
-    constructor(modalName, $form = createHtmlBlock("form"), $passwordContainer = createHtmlBlock("div"), $seePasswordBtn = createHtmlBlock("div", `
-            <img src="/img/svg/eye-crossed.svg">
-        `), $buttonsBlock = createHtmlBlock("div")) {
+    constructor(modalName, $form = document.createElement("div"), $seePasswordBtn = document.createElement("div"), $buttonsBlock = document.createElement("div"), $login = {}, $password = {}) {
         super(modalName, {
             width: "500px",
             height: "500px",
@@ -176,14 +171,14 @@ class AuthModal extends Modal {
         });
         this.modalName = modalName;
         this.$form = $form;
-        this.$passwordContainer = $passwordContainer;
         this.$seePasswordBtn = $seePasswordBtn;
         this.$buttonsBlock = $buttonsBlock;
+        this.$login = $login;
+        this.$password = $password;
         this.seePasswordListener = (e) => {
-            var _a;
             const $img = e.target;
             const $btn = this.$seePasswordBtn;
-            const $passwordField = (_a = this.$passwordContainer) === null || _a === void 0 ? void 0 : _a.querySelector("input.auth-input__password");
+            const $passwordField = this.$password.$field;
             if ($btn.dataset.view === "false") {
                 $img.src = "/img/svg/eye.svg";
                 $passwordField.type = "text";
@@ -195,12 +190,14 @@ class AuthModal extends Modal {
                 $btn.dataset.view = "false";
             }
         };
-        this.$passwordContainer = this.createField("password", "password", true).$fieldContainer;
         this.$seePasswordBtn.dataset.view = "false";
-        addClass(this.$form, "auth__form");
-        addClass(this.$seePasswordBtn, "auth-input__eye-img");
-        addClass(this.$buttonsBlock, "auth__btn-block");
-        appendElements(this.$buttonsBlock, this.createButtons());
+        this.$seePasswordBtn.innerHTML = '<img src="/img/svg/eye-crossed.svg">';
+        this.$password = this.createField("password", "password", true);
+        this.$login = this.createField("login", "text", true);
+        this.$form.classList.add("auth__form");
+        this.$seePasswordBtn.classList.add("auth-input__eye-img");
+        this.$buttonsBlock.classList.add("auth__btn-block");
+        this.$buttonsBlock.append(this.createButtons());
     }
     render() {
         super.render().$modalTitle.style.backgroundColor = Colors.BlUE;
@@ -210,12 +207,12 @@ class AuthModal extends Modal {
         };
     }
     createField(fieldName, type, required) {
-        const $fieldContainer = createHtmlBlock("div");
-        const $field = createHtmlBlock("input");
+        const $fieldContainer = document.createElement("div");
+        const $field = document.createElement("input");
         const capitalizedFieldName = fieldName[0].toUpperCase() + fieldName.substring(1);
-        addClass($field, `auth-input__${fieldName}`, "auth-input");
-        addClass($fieldContainer, "auth-input__container");
-        appendElements($fieldContainer, $field);
+        $field.classList.add(`auth-input__${fieldName}`, "auth-input");
+        $fieldContainer.classList.add("auth-input__container");
+        $fieldContainer.append($field);
         $field.placeholder = `${capitalizedFieldName}${required ? "*" : ""}`;
         $field.type = type;
         $field.dataset.fieldName = fieldName;
@@ -229,61 +226,70 @@ class AuthModal extends Modal {
         const $target = e.target;
         const $parent = $target.closest("div");
         const value = $target.value;
+        let $errorHint = document.createElement('div');
         let pattern;
-        let $errorHint;
         switch ($target.dataset.fieldName) {
             case "login": {
                 pattern = /[\w\.]{3,16}/g;
-                $errorHint = createHtmlBlock("div", `
-                    Помилка валідації. Уведіть валідний логін: Латинські букви, цифри та _
-                `);
+                $errorHint.innerHTML = 'Validation error. You only may use Latin letters, numbers and _';
                 break;
             }
             case "email": {
                 pattern = /[\w-]+@([\w]+\.)([a-zA-Z]){2,}/g;
-                $errorHint = createHtmlBlock("div", `
-                    Помилка валідації. Уведіть правильний email адрес
-                `);
+                $errorHint.innerHTML = 'Validation error. Enter your email';
                 break;
             }
             case "password": {
-                pattern = /\w{8,16}/g;
-                $errorHint = createHtmlBlock("div", `
-                    Помилка валідації. Уведіть валідний пароль: Латинські букви, цифри та _
-                `);
+                pattern = /\w{8,20}/g;
+                $errorHint.innerHTML = 'Validation error. You only may use Latin letters, numbers and _';
                 break;
             }
         }
         const matched = value.match(pattern);
         if ((matched === null || matched === void 0 ? void 0 : matched.length) === 1 && matched[0].length == value.length) {
-            addClass($parent, "green-border");
-            removeClass($parent, "red-border");
+            $parent.classList.add("green-border");
+            $parent.classList.remove("red-border");
             (_a = $parent.querySelector(".auth__error-hint ")) === null || _a === void 0 ? void 0 : _a.remove();
         }
         else if (!value) {
-            removeClass($parent, "red-border");
-            removeClass($parent, "green-border");
+            $parent.classList.remove("red-border");
+            $parent.classList.remove("green-border");
             (_b = $parent.querySelector(".auth__error-hint ")) === null || _b === void 0 ? void 0 : _b.remove();
         }
         else {
-            addClass($errorHint, "auth__error-hint");
-            addClass($parent, "red-border");
-            removeClass($parent, "green-border");
-            !!$parent.querySelector(".auth__error-hint ") ? void 0 : appendElements($parent, $errorHint);
+            $errorHint.classList.add("auth__error-hint");
+            $parent.classList.add("red-border");
+            $parent.classList.remove("green-border");
+            !!$parent.querySelector(".auth__error-hint ")
+                ? void 0
+                : $parent.append($errorHint);
         }
     }
     createButtons() {
-        const $sendBtn = createHtmlBlock("div", "Відправити");
-        addClass($sendBtn, "auth-btn-block__send");
+        const $sendBtn = document.createElement("div");
+        $sendBtn.innerHTML = "Send";
+        $sendBtn.classList.add("auth-btn-block__send");
         $sendBtn.style.backgroundColor = Colors.BlUE;
         return $sendBtn;
     }
 }
 export class RegisterModal extends AuthModal {
-    constructor(modalName, modalTitle = "Реєстрація") {
+    constructor(modalName, modalTitle = "Registration", $email = {}) {
         super(modalName);
         this.modalName = modalName;
         this.modalTitle = modalTitle;
+        this.$email = $email;
+        this.$email = super.createField("email", "email", true);
+    }
+    close(time, deleteModal) {
+        super.close(time, deleteModal);
+        [
+            this.$email.$field,
+            this.$login.$field,
+            this.$password.$field
+        ].forEach((el) => {
+            el === null || el === void 0 ? void 0 : el.removeEventListener("blur", this.checkValidListener);
+        });
     }
     render() {
         const $form = this.$form;
@@ -291,18 +297,18 @@ export class RegisterModal extends AuthModal {
         this.modalConfig.content = $form;
         this.modalConfig.title = this.modalTitle;
         this.$seePasswordBtn.addEventListener("click", this.seePasswordListener);
-        appendElements($form, $content, this.$buttonsBlock);
+        $form.append($content, this.$buttonsBlock);
         return super.render();
     }
     createContent() {
-        const $login = super.createField("login", "text", true);
-        const $email = super.createField("email", "email", true);
-        const $content = createHtmlBlock("div", $login.$fieldContainer, $email.$fieldContainer, this.$passwordContainer);
-        appendElements(this.$passwordContainer, this.$seePasswordBtn);
+        const $content = document.createElement("div");
+        console.log(this.$email);
+        $content.append(this.$login.$fieldContainer, this.$email.$fieldContainer, this.$password.$fieldContainer);
+        this.$password.$fieldContainer.append(this.$seePasswordBtn);
         [
-            $email.$field,
-            $login.$field,
-            this.$passwordContainer.querySelector("input"),
+            this.$email.$field,
+            this.$login.$field,
+            this.$password.$field,
         ].forEach((el) => {
             el === null || el === void 0 ? void 0 : el.addEventListener("blur", this.checkValidListener);
         });
@@ -310,10 +316,19 @@ export class RegisterModal extends AuthModal {
     }
 }
 export class LogInModal extends AuthModal {
-    constructor(modalName, modalTitle = "Вхід") {
+    constructor(modalName, modalTitle = "Log in") {
         super(modalName);
         this.modalName = modalName;
         this.modalTitle = modalTitle;
+    }
+    close(time, deleteModal) {
+        super.close(time, deleteModal);
+        [
+            this.$login.$field,
+            this.$password.$field,
+        ].forEach((el) => {
+            el === null || el === void 0 ? void 0 : el.removeEventListener("blur", this.checkValidListener);
+        });
     }
     render() {
         const $form = this.$form;
@@ -321,16 +336,16 @@ export class LogInModal extends AuthModal {
         this.modalConfig.content = $form;
         this.modalConfig.title = this.modalTitle;
         this.$seePasswordBtn.addEventListener("click", this.seePasswordListener);
-        appendElements($form, $content, this.$buttonsBlock);
+        $form.append($content, this.$buttonsBlock);
         return super.render();
     }
     createContent() {
-        const $login = super.createField("login", "text", true);
-        const $content = createHtmlBlock("div", $login.$fieldContainer, this.$passwordContainer);
-        [$login.$field, this.$passwordContainer.querySelector("input")].forEach((el) => {
+        const $content = document.createElement("div");
+        $content.append(this.$login.$fieldContainer, this.$password.$fieldContainer);
+        [this.$login.$field, this.$password.$field].forEach((el) => {
             el === null || el === void 0 ? void 0 : el.addEventListener("blur", this.checkValidListener);
         });
-        appendElements(this.$passwordContainer, this.$seePasswordBtn);
+        this.$password.$fieldContainer.append(this.$seePasswordBtn);
         return $content;
     }
 }

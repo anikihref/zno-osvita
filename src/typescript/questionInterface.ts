@@ -10,10 +10,3 @@ interface QuestionInfo {
     questionImage?: string
 }
 
-interface IModal {
-    close: (time: number, deleteModal: boolean) => void;
-    delete: () => void
-    open: () => void
-    render: (color: string) => void
-}
-
