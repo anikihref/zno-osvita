@@ -6,6 +6,7 @@ export const htmlElements = {
     $btnBlock: document.querySelector('.form__btn-block'),
     $answerForm: document.querySelector('#answer-form'),
     $questionControls: document.querySelector('.question__controls'),
-    $questionForm: document.querySelector('.question__form')
+    $questionForm: document.querySelector('.question__form'),
+    $authBlock: document.querySelector('.authorization')
 };
 //# sourceMappingURL=htmlElements.js.map

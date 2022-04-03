@@ -8,7 +8,7 @@ var Colors;
     Colors["GREEN"] = "#41a88a";
     Colors["YELLOW"] = "#fca311";
 })(Colors || (Colors = {}));
-export class Modal {
+class Modal {
     constructor(modalName, modalConfig, $modalLayer = createHtmlBlock("div"), $modal = createHtmlBlock("div"), $modalTitle = createHtmlBlock("div"), $modalBody = createHtmlBlock("div"), $closeBtn = createHtmlBlock("div"), initialized = false, listeners = {
         closeModal() {
             Modal.modalsList[modalName].close(0, false);
@@ -54,7 +54,7 @@ export class Modal {
             this.open();
         }
         else {
-            console.error('Initialize modal to start work: modal.initialize(modal) ');
+            console.error("Initialize modal to start work: modal.initialize(modal) ");
         }
         return {
             $modalTitle: this.$modalTitle,
@@ -218,10 +218,59 @@ class AuthModal extends Modal {
         appendElements($fieldContainer, $field);
         $field.placeholder = `${capitalizedFieldName}${required ? "*" : ""}`;
         $field.type = type;
+        $field.dataset.fieldName = fieldName;
         return {
             $fieldContainer,
             $field,
         };
+    }
+    checkValidListener(e) {
+        var _a, _b;
+        const $target = e.target;
+        const $parent = $target.closest("div");
+        const value = $target.value;
+        let pattern;
+        let $errorHint;
+        switch ($target.dataset.fieldName) {
+            case "login": {
+                pattern = /[\w\.]{3,16}/g;
+                $errorHint = createHtmlBlock("div", `
+                    Помилка валідації. Уведіть валідний логін: Латинські букви, цифри та _
+                `);
+                break;
+            }
+            case "email": {
+                pattern = /[\w-]+@([\w]+\.)([a-zA-Z]){2,}/g;
+                $errorHint = createHtmlBlock("div", `
+                    Помилка валідації. Уведіть правильний email адрес
+                `);
+                break;
+            }
+            case "password": {
+                pattern = /\w{8,16}/g;
+                $errorHint = createHtmlBlock("div", `
+                    Помилка валідації. Уведіть валідний пароль: Латинські букви, цифри та _
+                `);
+                break;
+            }
+        }
+        const matched = value.match(pattern);
+        if ((matched === null || matched === void 0 ? void 0 : matched.length) === 1 && matched[0].length == value.length) {
+            addClass($parent, "green-border");
+            removeClass($parent, "red-border");
+            (_a = $parent.querySelector(".auth__error-hint ")) === null || _a === void 0 ? void 0 : _a.remove();
+        }
+        else if (!value) {
+            removeClass($parent, "red-border");
+            removeClass($parent, "green-border");
+            (_b = $parent.querySelector(".auth__error-hint ")) === null || _b === void 0 ? void 0 : _b.remove();
+        }
+        else {
+            addClass($errorHint, "auth__error-hint");
+            addClass($parent, "red-border");
+            removeClass($parent, "green-border");
+            !!$parent.querySelector(".auth__error-hint ") ? void 0 : appendElements($parent, $errorHint);
+        }
     }
     createButtons() {
         const $sendBtn = createHtmlBlock("div", "Відправити");
@@ -246,10 +295,17 @@ export class RegisterModal extends AuthModal {
         return super.render();
     }
     createContent() {
-        const $login = super.createField("login", "text", true).$fieldContainer;
-        const $email = super.createField("email", "email", true).$fieldContainer;
-        const $content = createHtmlBlock("div", $login, $email, this.$passwordContainer);
+        const $login = super.createField("login", "text", true);
+        const $email = super.createField("email", "email", true);
+        const $content = createHtmlBlock("div", $login.$fieldContainer, $email.$fieldContainer, this.$passwordContainer);
         appendElements(this.$passwordContainer, this.$seePasswordBtn);
+        [
+            $email.$field,
+            $login.$field,
+            this.$passwordContainer.querySelector("input"),
+        ].forEach((el) => {
+            el === null || el === void 0 ? void 0 : el.addEventListener("blur", this.checkValidListener);
+        });
         return $content;
     }
 }
@@ -269,8 +325,11 @@ export class LogInModal extends AuthModal {
         return super.render();
     }
     createContent() {
-        const $login = super.createField("login", "text", true).$fieldContainer;
-        const $content = createHtmlBlock("div", $login, this.$passwordContainer);
+        const $login = super.createField("login", "text", true);
+        const $content = createHtmlBlock("div", $login.$fieldContainer, this.$passwordContainer);
+        [$login.$field, this.$passwordContainer.querySelector("input")].forEach((el) => {
+            el === null || el === void 0 ? void 0 : el.addEventListener("blur", this.checkValidListener);
+        });
         appendElements(this.$passwordContainer, this.$seePasswordBtn);
         return $content;
     }

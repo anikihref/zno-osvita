@@ -7,7 +7,7 @@ import {
 } from "./functions/elementActions.js";
 import { htmlElements } from "./htmlElements.js";
 import { app } from "./main.js";
-import { RegisterModal, SuccessModal } from "./Modal.js";
+import { LogInModal, RegisterModal, SuccessModal } from "./Modal.js";
 import { Question } from "./Question.js";
 
 const pathName = document.location.pathname.split("/");
@@ -171,6 +171,22 @@ class App {
                 }
             }
         },
+        authBlock(e) {
+            e.preventDefault()
+            const $target = e.target
+            const $loginLink = document.querySelector('.authorization__log-in')
+            const $registerLink = document.querySelector('.authorization__register')
+            
+            if ($target === $registerLink) {
+                const modal = new RegisterModal('registerModal');
+                modal.initialize(modal);        
+                modal.render();
+            } else if ($target === $loginLink) {
+                const modal = new LogInModal('logInModal');
+                modal.initialize(modal);        
+                modal.render();
+            }
+        }
     };
 
     run(): void {
@@ -190,30 +206,19 @@ class App {
             // прячем кнопку смотреть все вопросы
             hideElement(htmlElements.$seeAllQuestionsBtn!); // прячем кнопку смотреть все
         });
-
-        const modal = new RegisterModal('startModal')
+    
+    
+        const modal = new SuccessModal('startModal', {
+            width: "500px",
+            height: "400px",
+            content: "Тест розпочався та завершиться через 180 хвилин",
+            title: "Вітаю!",
+            transition: 800,
+            closable: false,
+        }) 
         modal.initialize(modal)        
         modal.render();
-
-        
-        // const modal2 = new LogInModal('startModal2');
-        // modal2.initialize(modal2);
-        // modal2.render();
-
-        // const modal3 = new InfoModal('newModal', {
-        //     width: "500px",
-        //     height: "400px",
-        //     content: " re.",
-        //     title: "Вітаю!",
-        //     transition: 800,
-        //     closable: false,
-        // }) 
-        // modal3.initialize(modal3)
-        // modal3.render()
-        // modal3.close(3000, false)
-        // console.log(Modal.openedModal);
-        
-
+        modal.close(3000, true)
     }
 
     finishTest(): void {
@@ -291,11 +296,10 @@ class App {
             transition: 800,
             closable: false,
         });
+
         modal.initialize(modal)
-        
-        
         modal.render();
-        modal.close(3500, true);
+        modal.close(3000, true);
     }
 
     async getQuestions(): Promise<void> {
@@ -425,6 +429,8 @@ class App {
             "click",
             App.listeners.buttonsListener
         );
+        htmlElements.$authBlock?.addEventListener('click', App.listeners.authBlock)
+
     }
 }
 

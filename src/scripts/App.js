@@ -12,7 +12,7 @@ import { createHtmlBlock } from "./functions/createElements.js";
 import { appendElements, hideElement, showElement, } from "./functions/elementActions.js";
 import { htmlElements } from "./htmlElements.js";
 import { app } from "./main.js";
-import { InfoModal, Modal, RegisterModal, SuccessModal } from "./Modal.js";
+import { LogInModal, RegisterModal, SuccessModal } from "./Modal.js";
 import { Question } from "./Question.js";
 const pathName = document.location.pathname.split("/");
 const testPath = {
@@ -45,10 +45,17 @@ class App {
             this.question.render();
             hideElement(htmlElements.$seeAllQuestionsBtn);
         });
-        const modal = new RegisterModal('startModal');
+        const modal = new SuccessModal('startModal', {
+            width: "500px",
+            height: "400px",
+            content: "Тест розпочався та завершиться через 180 хвилин",
+            title: "Вітаю!",
+            transition: 800,
+            closable: false,
+        });
         modal.initialize(modal);
         modal.render();
-
+        modal.close(3000, true);
     }
     finishTest() {
         clearTimeout(this.finishTimeout);
@@ -100,9 +107,8 @@ class App {
             closable: false,
         });
         modal.initialize(modal);
-        console.log(Modal.modalsList);
         modal.render();
-        modal.close(3500, true);
+        modal.close(3000, true);
     }
     getQuestions() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -167,8 +173,10 @@ class App {
         appendElements(htmlElements.$answerForm, this.$questionWrapper);
     }
     addQuestionChangeListeners() {
+        var _a;
         this.$questionLinksBlock.addEventListener("click", App.listeners.questionLinksListener);
         htmlElements.$btnBlock.addEventListener("click", App.listeners.buttonsListener);
+        (_a = htmlElements.$authBlock) === null || _a === void 0 ? void 0 : _a.addEventListener('click', App.listeners.authBlock);
     }
 }
 App.listeners = {
@@ -255,6 +263,22 @@ App.listeners = {
             }
         }
     },
+    authBlock(e) {
+        e.preventDefault();
+        const $target = e.target;
+        const $loginLink = document.querySelector('.authorization__log-in');
+        const $registerLink = document.querySelector('.authorization__register');
+        if ($target === $registerLink) {
+            const modal = new RegisterModal('registerModal');
+            modal.initialize(modal);
+            modal.render();
+        }
+        else if ($target === $loginLink) {
+            const modal = new LogInModal('logInModal');
+            modal.initialize(modal);
+            modal.render();
+        }
+    }
 };
 export default App;
 //# sourceMappingURL=App.js.map
