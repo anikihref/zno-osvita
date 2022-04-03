@@ -7,7 +7,10 @@ import {
 } from "./functions/elementActions.js";
 import { htmlElements } from "./htmlElements.js";
 import { app } from "./main.js";
-import { LogInModal, RegisterModal, SuccessModal } from "./Modal.js";
+import LogInModal from "./modal/log_in-moda.js";
+import RegisterModal from "./modal/register-modal.js";
+import SuccessModal from "./modal/success-modal.js";
+
 import { Question } from "./Question.js";
 
 const pathName = document.location.pathname.split("/");
