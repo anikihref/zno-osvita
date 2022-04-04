@@ -10,11 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { addClass, removeClass } from "../functions/attributes.js";
 import { createHtmlBlock } from "../functions/createElements.js";
 import { appendElements, hideElement, prependElements, showElement } from "../functions/elementActions.js";
-import { htmlElements } from "../htmlElements.js";
 import * as listeners from "./listeners-question.js";
 import * as createTestElements from "./create_func-question.js";
 import RadioQuestion from "./radio-question.js";
 import WriteQuestion from "./write-question.js";
+import SuccessModal from "../modal/success-modal.js";
 const pathName = document.location.pathname.split("/");
 const testPath = {
     subject: pathName[1],
@@ -25,7 +25,15 @@ class Test {
     constructor(info = {}, elements = {
         $questionLinksBlock: createHtmlBlock('div'),
         $resultingBlock: createHtmlBlock('div'),
-        $questionWrapper: createHtmlBlock('div')
+        $questionWrapper: createHtmlBlock('div'),
+        $btn: document.querySelector('#submitBtn'),
+        $nextBtn: document.querySelector('#nextBtn'),
+        $endBtn: document.querySelector('.form__end-btn'),
+        $seeAllQuestionsBtn: document.querySelector('.question__seeall-btn'),
+        $btnBlock: document.querySelector('.form__btn-block'),
+        $answerForm: document.querySelector('#answer-form'),
+        $questionControls: document.querySelector('.question__controls'),
+        $questionForm: document.querySelector('.question__form'),
     }, allQuestionsList = [], result = {}, finishTimeout = setTimeout(() => {
         this.finishTest();
     }, 1000 * 60 * 60 * 3)) {
@@ -47,8 +55,9 @@ class Test {
                 }
             },
             moveActiveLink: (questionId) => {
-                const $nextActiveBlock = this.elements.$questionLinksBlock.querySelector(`[data-id="${questionId}"]`);
-                const $activeBlock = this.elements.$questionLinksBlock.querySelector(".question__link_active");
+                var _a, _b;
+                const $nextActiveBlock = (_a = this.elements.$questionLinksBlock) === null || _a === void 0 ? void 0 : _a.querySelector(`[data-id="${questionId}"]`);
+                const $activeBlock = (_b = this.elements.$questionLinksBlock) === null || _b === void 0 ? void 0 : _b.querySelector(".question__link_active");
                 if ($nextActiveBlock.dataset.id === $activeBlock.dataset.id) {
                     return;
                 }
@@ -64,13 +73,13 @@ class Test {
                 }
             },
             seeAllQuestions: () => {
-                htmlElements.$answerForm.innerHTML = "";
+                (this.elements.$answerForm).innerHTML = "";
                 this.allQuestionsList.forEach((question) => {
                     const formObj = this.questionActions.getQuestionObj(question);
                     const $question = createHtmlBlock("div", formObj.createQuestionWrapper(), formObj.createAnswerWrapper());
                     prependElements($question, formObj.createQuestionNumber(question.id + 1));
                     addClass($question, "question__wrapper", "question__wrapper_all", `question__wrapper${question.id}`);
-                    appendElements(htmlElements.$answerForm, $question);
+                    appendElements(this.elements.$answerForm, $question);
                     addClass($question.querySelector(".question__answer-wrapper"), "question__answer-wrapper_all");
                 });
             },
@@ -123,8 +132,8 @@ class Test {
             this.elements.$questionLinksBlock.innerHTML = "";
             createTestElements.createQuestionLinks();
             this.info.testMinutes = Math.trunc((Date.now() - this.info.startTime) / 1000 / 60);
-            showElement(htmlElements.$seeAllQuestionsBtn);
-            [htmlElements.$btn, htmlElements.$endBtn].forEach((el) => el.remove());
+            showElement(this.elements.$seeAllQuestionsBtn);
+            [this.elements.$btn, this.elements.$endBtn].forEach((el) => el.remove());
             this.info.question.render();
             [
                 ...document.querySelectorAll(".question__link"),
@@ -144,22 +153,45 @@ class Test {
                     addClass(element, "question__link_succes");
                 }
             });
-            appendElements(htmlElements.$questionControls, this.elements.$resultingBlock);
+            appendElements(this.elements.$questionControls, this.elements.$resultingBlock);
         });
+        const modal = new SuccessModal('finishModal', {
+            width: '500px',
+            height: '500px',
+            transition: 800,
+            title: 'Ви завершили тест',
+            content: 'Тест завершився. Перегляньте результат.',
+            closable: false
+        });
+        modal.initialize(modal);
+        modal.open();
+        modal.close(3000, true);
     }
     run() {
         this.getQuestions().then(() => {
             createTestElements.createQuestionLinks();
             this.addQuestionChangeListeners();
             addClass(this.elements.$questionWrapper, "question__wrapper");
-            appendElements(htmlElements.$answerForm, this.elements.$questionWrapper);
+            appendElements(this.elements.$answerForm, this.elements.$questionWrapper);
             this.info.question.render();
-            hideElement(htmlElements.$seeAllQuestionsBtn);
+            hideElement(this.elements.$seeAllQuestionsBtn);
         });
+        const modal = new SuccessModal('startModal', {
+            width: '500px',
+            height: '500px',
+            transition: 800,
+            title: 'Вітаю!',
+            content: 'Тест завершиться через 180 хв. Щасти!',
+            closable: false
+        });
+        modal.initialize(modal);
+        modal.open();
+        modal.close(3000, true);
     }
     addQuestionChangeListeners() {
-        this.elements.$questionLinksBlock.addEventListener("click", listeners.questionLinksListener);
-        htmlElements.$btnBlock.addEventListener("click", listeners.buttonsListener);
+        var _a;
+        (_a = this.elements.$questionLinksBlock) === null || _a === void 0 ? void 0 : _a.addEventListener("click", listeners.questionLinksListener);
+        this.elements.$btnBlock.addEventListener("click", listeners.buttonsListener);
     }
 }
 export default Test;

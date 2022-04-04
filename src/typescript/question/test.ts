@@ -1,11 +1,11 @@
 import { addClass, removeClass } from "../functions/attributes.js";
 import { createHtmlBlock } from "../functions/createElements.js";
 import { appendElements, hideElement, prependElements, showElement } from "../functions/elementActions.js";
-import { htmlElements } from "../htmlElements.js";
 import * as listeners from "./listeners-question.js"
 import * as createTestElements from "./create_func-question.js"
 import RadioQuestion from "./radio-question.js";
 import WriteQuestion from "./write-question.js";
+import SuccessModal from "../modal/success-modal.js";
 
 
 
@@ -32,10 +32,18 @@ const testPath = {
 class Test {
     constructor(
         public info = {} as TestInfo,
-        public elements = {
+        public elements: Record<string, HTMLElement | null> = {
             $questionLinksBlock: createHtmlBlock('div'),
             $resultingBlock: createHtmlBlock('div'),
-            $questionWrapper: createHtmlBlock('div')
+            $questionWrapper: createHtmlBlock('div'),
+            $btn: document.querySelector('#submitBtn'),
+            $nextBtn: document.querySelector('#nextBtn'),
+            $endBtn: document.querySelector('.form__end-btn'),
+            $seeAllQuestionsBtn: document.querySelector('.question__seeall-btn'),
+            $btnBlock: document.querySelector('.form__btn-block'),
+            $answerForm: document.querySelector('#answer-form'),
+            $questionControls: document.querySelector('.question__controls'),
+            $questionForm: document.querySelector('.question__form'),
         },
         public allQuestionsList: QuestionInfo[] = [],
         public result = {} as { dpaPercentage: number },
@@ -62,12 +70,12 @@ class Test {
         moveActiveLink: (questionId: number) => {
             // элемент ссылки на вопрос который станет активным
             const $nextActiveBlock: HTMLElement =
-                this.elements.$questionLinksBlock.querySelector(
+                this.elements.$questionLinksBlock?.querySelector(
                     `[data-id="${questionId}"]`
                 )!;
             // текущий активный элемент ссылки на вопрос
             const $activeBlock: HTMLElement =
-                this.elements.$questionLinksBlock.querySelector(
+                this.elements.$questionLinksBlock?.querySelector(
                     ".question__link_active"
                 )!;
     
@@ -89,7 +97,7 @@ class Test {
         },
 
         seeAllQuestions: () => {
-            htmlElements.$answerForm!.innerHTML = "";
+            (this.elements.$answerForm!).innerHTML = "";
 
             this.allQuestionsList.forEach((question) => {
                 const formObj =
@@ -113,7 +121,7 @@ class Test {
                     `question__wrapper${question.id}`
                 );
                 // добавляем блок вопроса в блок со всеми вопросами
-                appendElements(htmlElements.$answerForm!, $question);
+                appendElements(this.elements.$answerForm!, $question);
 
                 // добавляем класс для блока с ответом
                 addClass(
@@ -185,7 +193,7 @@ class Test {
                 // создаём блок с результатом
                 createTestElements.createResultBlock();
                 // удаляем содержимое ссылок на вопросы
-                this.elements.$questionLinksBlock.innerHTML = "";
+                this.elements.$questionLinksBlock!.innerHTML = "";
                 // создаём ссылки на вопросы
                 createTestElements.createQuestionLinks();
 
@@ -194,9 +202,9 @@ class Test {
                     (Date.now() - this.info.startTime) / 1000 / 60
                 );
 
-                showElement(htmlElements.$seeAllQuestionsBtn!);
+                showElement(this.elements.$seeAllQuestionsBtn!);
                 // удаляем кнопки 'ответить' и 'завершить'
-                [htmlElements.$btn!, htmlElements.$endBtn!].forEach((el) =>
+                [this.elements.$btn!, this.elements.$endBtn!].forEach((el) =>
                     el.remove()
                 );
 
@@ -225,10 +233,22 @@ class Test {
                 });
 
                 appendElements(
-                    htmlElements.$questionControls!,
-                    this.elements.$resultingBlock
+                    this.elements.$questionControls!,
+                    this.elements.$resultingBlock!
                 );
             });
+
+        const modal = new SuccessModal('finishModal', {
+            width: '500px',
+            height: '500px',
+            transition: 800,
+            title: 'Ви завершили тест',
+            content: 'Тест завершився. Перегляньте результат.',
+            closable: false
+        })
+        modal.initialize(modal)
+        modal.open()
+        modal.close(3000, true)
     }
 
     run() {
@@ -239,24 +259,36 @@ class Test {
             // добавляем слушатели для переключениям на вопросы
             this.addQuestionChangeListeners();
 
-            addClass(this.elements.$questionWrapper, "question__wrapper");
-            appendElements(htmlElements.$answerForm!, this.elements.$questionWrapper);
+            addClass(this.elements.$questionWrapper!, "question__wrapper");
+            appendElements(this.elements.$answerForm!, this.elements.$questionWrapper!);
             // вставляем первый вопрос
             this.info.question.render();
 
             // прячем кнопку смотреть все вопросы
-            hideElement(htmlElements.$seeAllQuestionsBtn!); // прячем кнопку смотреть все
+            hideElement(this.elements.$seeAllQuestionsBtn!); // прячем кнопку смотреть все
         });
+
+        const modal = new SuccessModal('startModal', {
+            width: '500px',
+            height: '500px',
+            transition: 800,
+            title: 'Вітаю!',
+            content: 'Тест завершиться через 180 хв. Щасти!',
+            closable: false
+        })
+        modal.initialize(modal)
+        modal.open()
+        modal.close(3000, true)
     }
 
 
     addQuestionChangeListeners(): void {
-        this.elements.$questionLinksBlock.addEventListener(
+        this.elements.$questionLinksBlock?.addEventListener(
             "click",
             listeners.questionLinksListener
         );
 
-        htmlElements.$btnBlock!.addEventListener(
+        this.elements.$btnBlock!.addEventListener(
             "click",
             listeners.buttonsListener
         );

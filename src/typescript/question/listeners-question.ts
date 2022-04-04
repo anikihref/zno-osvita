@@ -1,6 +1,5 @@
 import { addClass } from "../functions/attributes.js";
 import { hideElement, showElement } from "../functions/elementActions.js";
-import { htmlElements } from "../htmlElements.js";
 import { test } from "../main.js";
 import { recreateQuestionWrapper } from "./create_func-question.js";
 
@@ -51,14 +50,14 @@ export const buttonsListener = (e) => {
         : test.questionActions.findNextQuestion(test.info.currentInfo);
 
     switch (target) {
-        case htmlElements.$seeAllQuestionsBtn: {
+        case test.elements.$seeAllQuestionsBtn: {
             switch (test.info.questionSwitchLogic) {
                 case "single": {
                     //! изменяем логику переключения между вопросами
                     test.info.questionSwitchLogic = "seeAll";
 
-                    hideElement(htmlElements.$nextBtn!);
-                    htmlElements.$seeAllQuestionsBtn!.textContent =
+                    hideElement(test.elements.$nextBtn!);
+                    test.elements.$seeAllQuestionsBtn!.textContent =
                         "Дивитись один";
 
                     test.questionActions.seeAllQuestions();
@@ -74,10 +73,10 @@ export const buttonsListener = (e) => {
                     // создаём текущий вопрос
                     test.info.question.render();
 
-                    htmlElements.$seeAllQuestionsBtn!.textContent =
+                    test.elements.$seeAllQuestionsBtn!.textContent =
                         "Дивитись усі";
                     // показываем кнопку "следующий"
-                    showElement(htmlElements.$nextBtn!);
+                    showElement(test.elements.$nextBtn!);
                     break;
                 }
             }
@@ -85,7 +84,7 @@ export const buttonsListener = (e) => {
             break;
         }
 
-        case htmlElements.$btn: {
+        case test.elements.$btn: {
             // получаем объект формы и затем получаем ответ
             const answer = test.questionActions
                 .getQuestionObj(test.info.currentInfo)
@@ -113,7 +112,7 @@ export const buttonsListener = (e) => {
             // break не пишем чтобы сразу переключить вопрос
         }
 
-        case htmlElements.$nextBtn: {
+        case test.elements.$nextBtn: {
             //! переопределяем текущий вопрос
             test.info.currentInfo = nextQuestion;
             test.info.question =
@@ -124,7 +123,7 @@ export const buttonsListener = (e) => {
             break;
         }
 
-        case htmlElements.$endBtn: {
+        case test.elements.$endBtn: {
             if (test.allQuestionsList.find((obj) => obj.answer)) {
                 // завершаем тест
                 test.finishTest();

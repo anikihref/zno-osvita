@@ -1,11 +1,13 @@
-import { htmlElements } from "./htmlElements.js";
 import LogInModal from "./modal/log_in-moda.js";
 import RegisterModal from "./modal/register-modal.js";
 
 
 class App {
+    public elements: Record<string, HTMLElement | null> = {
+        $authBlock: document.querySelector('.authorization')!
+    }
 
-    static listeners = {
+    public listeners = {
         authBlock(e) {
             e.preventDefault()
             const $target = e.target
@@ -26,11 +28,12 @@ class App {
 
     run() {
         this.addQuestionChangeListeners()
+        console.log('App started');
     }
 
     // ставит слушатели для кнопок и ссылок на вопросы
     addQuestionChangeListeners(): void {
-        htmlElements.$authBlock?.addEventListener('click', App.listeners.authBlock)
+        this.elements.$authBlock?.addEventListener('click', this.listeners.authBlock)
     }
 }
 

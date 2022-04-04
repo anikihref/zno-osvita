@@ -1,10 +1,9 @@
 import { addClass } from "../functions/attributes.js";
 import { createHtmlBlock } from "../functions/createElements.js";
 import { appendElements } from "../functions/elementActions.js";
-import { htmlElements } from "../htmlElements.js";
 import { test } from "../main.js";
 export function createQuestionLinks() {
-    appendElements(htmlElements.$questionControls, test.elements.$questionLinksBlock);
+    appendElements(test.elements.$questionControls, test.elements.$questionLinksBlock);
     addClass(test.elements.$questionLinksBlock, "question__links-block");
     for (let i = 1; i <= test.allQuestionsList.length; i++) {
         let $questionLink = createHtmlBlock("div");
@@ -34,7 +33,7 @@ export function createResultBlock() {
 export function recreateQuestionWrapper() {
     test.elements.$questionWrapper = createHtmlBlock("div");
     addClass(test.elements.$questionWrapper, "question__wrapper");
-    htmlElements.$answerForm.innerHTML = "";
-    appendElements(htmlElements.$answerForm, test.elements.$questionWrapper);
+    test.elements.$answerForm.innerHTML = "";
+    appendElements(test.elements.$answerForm, test.elements.$questionWrapper);
 }
 //# sourceMappingURL=create_func-question.js.map

@@ -1,15 +1,14 @@
 import { addClass } from "../functions/attributes.js";
 import { createHtmlBlock } from "../functions/createElements.js";
 import { appendElements } from "../functions/elementActions.js";
-import { htmlElements } from "../htmlElements.js";
 import { test } from "../main.js";
 
 export function createQuestionLinks(): void {
     appendElements(
-        htmlElements.$questionControls!,
-        test.elements.$questionLinksBlock
+        test.elements.$questionControls!,
+        test.elements.$questionLinksBlock!
     );
-    addClass(test.elements.$questionLinksBlock, "question__links-block");
+    addClass(test.elements.$questionLinksBlock!, "question__links-block");
 
     // создаём блоки-ссылки на вопросы
     for (let i = 1; i <= test.allQuestionsList.length; i++) {
@@ -26,7 +25,7 @@ export function createQuestionLinks(): void {
         }
 
         appendElements($questionLink, number);
-        appendElements(test.elements.$questionLinksBlock, $questionLink);
+        appendElements(test.elements.$questionLinksBlock!, $questionLink);
 
         addClass($questionLink, "question__link");
         $questionLink.dataset.id = i - 1 + "";
@@ -57,11 +56,11 @@ export function createResultBlock(): void {
         `Витрачено часу: <b>${test.info.testMinutes} хв.</b> з 180 запропонованих`
     );
 
-    addClass(test.elements.$resultingBlock, "result");
+    addClass(test.elements.$resultingBlock!, "result");
     addClass($dpaQuestionHint, "hint");
 
     appendElements(
-        test.elements.$resultingBlock,
+        test.elements.$resultingBlock!,
         $dpaScore,
         $dpaQuestionHint,
         $time
@@ -72,6 +71,6 @@ export function recreateQuestionWrapper(): void {
     test.elements.$questionWrapper = createHtmlBlock("div");
     addClass(test.elements.$questionWrapper, "question__wrapper");
     // удаляем контент
-    htmlElements.$answerForm!.innerHTML = "";
-    appendElements(htmlElements.$answerForm!, test.elements.$questionWrapper);
+    test.elements.$answerForm!.innerHTML = "";
+    appendElements(test.elements.$answerForm!, test.elements.$questionWrapper);
 }

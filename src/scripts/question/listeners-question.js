@@ -1,6 +1,5 @@
 import { addClass } from "../functions/attributes.js";
 import { hideElement, showElement } from "../functions/elementActions.js";
-import { htmlElements } from "../htmlElements.js";
 import { test } from "../main.js";
 import { recreateQuestionWrapper } from "./create_func-question.js";
 export const questionLinksListener = (e) => {
@@ -30,12 +29,12 @@ export const buttonsListener = (e) => {
         ? test.info.currentInfo
         : test.questionActions.findNextQuestion(test.info.currentInfo);
     switch (target) {
-        case htmlElements.$seeAllQuestionsBtn: {
+        case test.elements.$seeAllQuestionsBtn: {
             switch (test.info.questionSwitchLogic) {
                 case "single": {
                     test.info.questionSwitchLogic = "seeAll";
-                    hideElement(htmlElements.$nextBtn);
-                    htmlElements.$seeAllQuestionsBtn.textContent =
+                    hideElement(test.elements.$nextBtn);
+                    test.elements.$seeAllQuestionsBtn.textContent =
                         "Дивитись один";
                     test.questionActions.seeAllQuestions();
                     break;
@@ -44,15 +43,15 @@ export const buttonsListener = (e) => {
                     test.info.questionSwitchLogic = "single";
                     recreateQuestionWrapper();
                     test.info.question.render();
-                    htmlElements.$seeAllQuestionsBtn.textContent =
+                    test.elements.$seeAllQuestionsBtn.textContent =
                         "Дивитись усі";
-                    showElement(htmlElements.$nextBtn);
+                    showElement(test.elements.$nextBtn);
                     break;
                 }
             }
             break;
         }
-        case htmlElements.$btn: {
+        case test.elements.$btn: {
             const answer = test.questionActions
                 .getQuestionObj(test.info.currentInfo)
                 .getAnswer();
@@ -67,14 +66,14 @@ export const buttonsListener = (e) => {
             }
             addClass(document.querySelector(".question__link_active"), "question__link_done");
         }
-        case htmlElements.$nextBtn: {
+        case test.elements.$nextBtn: {
             test.info.currentInfo = nextQuestion;
             test.info.question =
                 test.questionActions.getQuestionObj(nextQuestion);
             test.info.question.render();
             break;
         }
-        case htmlElements.$endBtn: {
+        case test.elements.$endBtn: {
             if (test.allQuestionsList.find((obj) => obj.answer)) {
                 test.finishTest();
             }

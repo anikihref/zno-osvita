@@ -8,18 +8,18 @@ class Question {
 
     render(): void {
         const formObj = test.questionActions.getQuestionObj(this.question);
-        test.elements.$questionWrapper.innerHTML = "";
+        test.elements.$questionWrapper!.innerHTML = "";
 
         appendElements(
-            test.elements.$questionWrapper,
+            test.elements.$questionWrapper!,
             this.createQuestionNumber(this.question.id + 1),
             this.createQuestionWrapper()
         );
 
         if (test.info.isFinished) {
-            appendElements(test.elements.$questionWrapper, this.createAnswerWrapper());
+            appendElements(test.elements.$questionWrapper!, this.createAnswerWrapper());
         } else {
-            appendElements(test.elements.$questionWrapper, formObj.createAnswerForm());
+            appendElements(test.elements.$questionWrapper!, formObj.createAnswerForm());
             // вставляем ответ
             formObj.insertAnswer();
         }
