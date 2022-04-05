@@ -8,8 +8,13 @@ class Question {
 
     render(): void {
         const formObj = test.questionActions.getQuestionObj(this.question);
-        test.elements.$questionWrapper!.innerHTML = "";
+        const questionProgress: number =
+            ((test.info.currentInfo.id + 1) / test.allQuestionsList.length) *
+            100;
 
+        // move progress bar forward or backward 
+        test.elements.$progressBar!.style.width = `${questionProgress}%`
+        test.elements.$questionWrapper!.innerHTML = "";
         appendElements(
             test.elements.$questionWrapper!,
             this.createQuestionNumber(this.question.id + 1),
@@ -17,9 +22,15 @@ class Question {
         );
 
         if (test.info.isFinished) {
-            appendElements(test.elements.$questionWrapper!, this.createAnswerWrapper());
+            appendElements(
+                test.elements.$questionWrapper!,
+                this.createAnswerWrapper()
+            );
         } else {
-            appendElements(test.elements.$questionWrapper!, formObj.createAnswerForm());
+            appendElements(
+                test.elements.$questionWrapper!,
+                formObj.createAnswerForm()
+            );
             // вставляем ответ
             formObj.insertAnswer();
         }
@@ -133,4 +144,4 @@ class Question {
     }
 }
 
-export default Question
+export default Question;

@@ -8,6 +8,9 @@ class Question {
     }
     render() {
         const formObj = test.questionActions.getQuestionObj(this.question);
+        const questionProgress = ((test.info.currentInfo.id + 1) / test.allQuestionsList.length) *
+            100;
+        test.elements.$progressBar.style.width = `${questionProgress}%`;
         test.elements.$questionWrapper.innerHTML = "";
         appendElements(test.elements.$questionWrapper, this.createQuestionNumber(this.question.id + 1), this.createQuestionWrapper());
         if (test.info.isFinished) {

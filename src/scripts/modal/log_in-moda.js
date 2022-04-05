@@ -7,20 +7,15 @@ class LogInModal extends AuthModal {
     }
     close(time, deleteModal) {
         super.close(time, deleteModal);
-        [
-            this.$login.$field,
-            this.$password.$field,
-        ].forEach((el) => {
+        [this.$login.$field, this.$password.$field].forEach((el) => {
             el === null || el === void 0 ? void 0 : el.removeEventListener("blur", this.checkValidListener);
         });
     }
     render() {
-        const $form = this.$form;
-        const $content = this.createContent();
-        this.modalConfig.content = $form;
+        this.modalConfig.content = this.$form;
         this.modalConfig.title = this.modalTitle;
         this.$seePasswordBtn.addEventListener("click", this.seePasswordListener);
-        $form.append($content, this.$buttonsBlock);
+        this.$form.append(this.createContent(), this.$buttonsBlock);
         return super.render();
     }
     createContent() {

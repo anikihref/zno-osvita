@@ -34,6 +34,7 @@ class Test {
         $answerForm: document.querySelector('#answer-form'),
         $questionControls: document.querySelector('.question__controls'),
         $questionForm: document.querySelector('.question__form'),
+        $progressBar: createHtmlBlock('div')
     }, allQuestionsList = [], result = {}, finishTimeout = setTimeout(() => {
         this.finishTest();
     }, 1000 * 60 * 60 * 3)) {
@@ -170,7 +171,7 @@ class Test {
     run() {
         this.getQuestions().then(() => {
             createTestElements.createQuestionLinks();
-            this.addQuestionChangeListeners();
+            this.setListeners();
             addClass(this.elements.$questionWrapper, "question__wrapper");
             appendElements(this.elements.$answerForm, this.elements.$questionWrapper);
             this.info.question.render();
@@ -188,7 +189,7 @@ class Test {
         modal.open();
         modal.close(3000, true);
     }
-    addQuestionChangeListeners() {
+    setListeners() {
         var _a;
         (_a = this.elements.$questionLinksBlock) === null || _a === void 0 ? void 0 : _a.addEventListener("click", listeners.questionLinksListener);
         this.elements.$btnBlock.addEventListener("click", listeners.buttonsListener);

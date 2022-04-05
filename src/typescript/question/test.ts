@@ -44,6 +44,7 @@ class Test {
             $answerForm: document.querySelector('#answer-form'),
             $questionControls: document.querySelector('.question__controls'),
             $questionForm: document.querySelector('.question__form'),
+            $progressBar: createHtmlBlock('div')
         },
         public allQuestionsList: QuestionInfo[] = [],
         public result = {} as { dpaPercentage: number },
@@ -257,7 +258,7 @@ class Test {
             createTestElements.createQuestionLinks();
 
             // добавляем слушатели для переключениям на вопросы
-            this.addQuestionChangeListeners();
+            this.setListeners();
 
             addClass(this.elements.$questionWrapper!, "question__wrapper");
             appendElements(this.elements.$answerForm!, this.elements.$questionWrapper!);
@@ -282,7 +283,7 @@ class Test {
     }
 
 
-    addQuestionChangeListeners(): void {
+    setListeners(): void {
         this.elements.$questionLinksBlock?.addEventListener(
             "click",
             listeners.questionLinksListener

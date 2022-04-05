@@ -18,17 +18,15 @@ class RegisterModal extends AuthModal {
         });
     }
     render() {
-        const $form = this.$form;
-        const $content = this.createContent();
-        this.modalConfig.content = $form;
+        this.modalConfig.content = this.$form;
+        ;
         this.modalConfig.title = this.modalTitle;
         this.$seePasswordBtn.addEventListener("click", this.seePasswordListener);
-        $form.append($content, this.$buttonsBlock);
+        this.$form.append(this.createContent(), this.$buttonsBlock);
         return super.render();
     }
     createContent() {
         const $content = document.createElement("div");
-        console.log(this.$email);
         $content.append(this.$login.$fieldContainer, this.$email.$fieldContainer, this.$password.$fieldContainer);
         this.$password.$fieldContainer.append(this.$seePasswordBtn);
         [

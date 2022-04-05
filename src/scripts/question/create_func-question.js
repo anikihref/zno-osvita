@@ -3,23 +3,20 @@ import { createHtmlBlock } from "../functions/createElements.js";
 import { appendElements } from "../functions/elementActions.js";
 import { test } from "../main.js";
 export function createQuestionLinks() {
-    appendElements(test.elements.$questionControls, test.elements.$questionLinksBlock);
+    appendElements(test.elements.$questionControls, test.elements.$questionLinksBlock, test.elements.$progressBar);
     addClass(test.elements.$questionLinksBlock, "question__links-block");
     for (let i = 1; i <= test.allQuestionsList.length; i++) {
         let $questionLink = createHtmlBlock("div");
-        let number;
-        if (!test.info.isFinished ||
-            test.allQuestionsList[i - 1].vrahovyietiaDpa) {
-            number = createHtmlBlock("b", i);
-        }
-        else {
-            number = createHtmlBlock("span", i);
-        }
-        appendElements($questionLink, number);
+        let $questionNumber = !test.info.isFinished ||
+            test.allQuestionsList[i - 1].vrahovyietiaDpa
+            ? createHtmlBlock("b", i)
+            : createHtmlBlock("span", i);
+        appendElements($questionLink, $questionNumber);
         appendElements(test.elements.$questionLinksBlock, $questionLink);
         addClass($questionLink, "question__link");
         $questionLink.dataset.id = i - 1 + "";
     }
+    addClass(test.elements.$progressBar, 'question__progress-bar');
     addClass(document.querySelector(".question__link"), "question__link_active");
 }
 export function createResultBlock() {

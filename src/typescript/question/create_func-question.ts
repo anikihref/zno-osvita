@@ -6,30 +6,29 @@ import { test } from "../main.js";
 export function createQuestionLinks(): void {
     appendElements(
         test.elements.$questionControls!,
-        test.elements.$questionLinksBlock!
+        test.elements.$questionLinksBlock!,
+        test.elements.$progressBar!
     );
     addClass(test.elements.$questionLinksBlock!, "question__links-block");
 
     // создаём блоки-ссылки на вопросы
     for (let i = 1; i <= test.allQuestionsList.length; i++) {
         let $questionLink: HTMLElement = createHtmlBlock("div");
-        let number: HTMLElement;
-
-        if (
+        let $questionNumber: HTMLElement =
             !test.info.isFinished ||
             test.allQuestionsList[i - 1].vrahovyietiaDpa
-        ) {
-            number = createHtmlBlock("b", i);
-        } else {
-            number = createHtmlBlock("span", i);
-        }
+                ? createHtmlBlock("b", i)
+                : createHtmlBlock("span", i)
 
-        appendElements($questionLink, number);
+
+        appendElements($questionLink, $questionNumber);
         appendElements(test.elements.$questionLinksBlock!, $questionLink);
 
         addClass($questionLink, "question__link");
         $questionLink.dataset.id = i - 1 + "";
     }
+
+    addClass(test.elements.$progressBar!, 'question__progress-bar')
 
     // первой ссылке на вопрос добавляем активный класс
     addClass(

@@ -25,13 +25,8 @@ class RegisterModal extends AuthModal {
     }
 
     public render(): ModalElements {
-        // create modal body
-        const $form = this.$form;
-        const $content = this.createContent();
-
-
         // change modal content
-        this.modalConfig.content = $form;
+        this.modalConfig.content = this.$form;;
         this.modalConfig.title = this.modalTitle;
         // set listener to watch password text
         this.$seePasswordBtn.addEventListener(
@@ -40,14 +35,13 @@ class RegisterModal extends AuthModal {
         );
 
         // append content and buttons into block
-        $form.append($content, this.$buttonsBlock);
+        this.$form.append(this.createContent(), this.$buttonsBlock);
         return super.render();
     }
 
     private createContent(): HTMLElement {
         // create modal & insert content
         const $content: HTMLElement = document.createElement("div");
-        console.log(this.$email);
         
         $content.append(
             this.$login.$fieldContainer,
