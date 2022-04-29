@@ -1,7 +1,7 @@
 import { addClass } from "../functions/attributes.js";
 import { createHtmlBlock } from "../functions/createElements.js";
 import { appendElements } from "../functions/elementActions.js";
-import { test } from "../main.js";
+import { test } from "../pages/test.js";
 export function createQuestionLinks() {
     appendElements(test.elements.$questionControls, test.elements.$questionLinksBlock, test.elements.$progressBar);
     addClass(test.elements.$questionLinksBlock, "question__links-block");

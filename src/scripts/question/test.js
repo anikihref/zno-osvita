@@ -88,8 +88,8 @@ class Test {
     }
     getQuestions() {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield fetch(`/getQuestions?subject=${testPath.subject}&year=${testPath.year}&test=${testPath.test}`);
             const appContext = this;
+            const res = yield fetch(`/getQuestions?subject=${testPath.subject}&year=${testPath.year}&test=${testPath.test}`);
             this.allQuestionsList = yield res.json();
             this.allQuestionsList.forEach((question, index) => {
                 question.id = index;
@@ -170,6 +170,7 @@ class Test {
     }
     run() {
         this.getQuestions().then(() => {
+            console.log(1);
             createTestElements.createQuestionLinks();
             this.setListeners();
             addClass(this.elements.$questionWrapper, "question__wrapper");

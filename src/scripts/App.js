@@ -26,7 +26,6 @@ class App {
     }
     run() {
         this.addQuestionChangeListeners();
-        console.log('App started');
     }
     addQuestionChangeListeners() {
         var _a;

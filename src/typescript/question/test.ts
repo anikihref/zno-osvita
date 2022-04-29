@@ -134,10 +134,11 @@ class Test {
     }
     
     async getQuestions(): Promise<void> {
+        const appContext = this;
         const res = await fetch(
             `/getQuestions?subject=${testPath.subject}&year=${testPath.year}&test=${testPath.test}`
         );
-        const appContext = this;
+
         this.allQuestionsList = await res.json();
 
         // добавляем поле id с его index'ом каждому вопросу
@@ -255,6 +256,7 @@ class Test {
     run() {
         this.getQuestions().then(() => {
             // создаём ссылки на вопросы
+            console.log(1)
             createTestElements.createQuestionLinks();
 
             // добавляем слушатели для переключениям на вопросы

@@ -3,6 +3,7 @@
 
 <head>
 	<%- include("../partials/head.ejs") %>
+	<link rel="stylesheet" href="/styles/modal.css">
 </head>
 <body>
 	<div class="wrapper">
@@ -13,6 +14,7 @@
 				<a class="breadcrump__second breadcrump__item" href="#"> <%= name %> </a>
 			</div>
 		</header>
+		
 
 		<main class="main">
 			<div class="main__body">
@@ -29,13 +31,14 @@
 					<div class="categories__item">
 
 						<nav class="categories__links">
-							<% for(let i=0; i<(years.length); i++) {%>
+							<% for (let i = 0; i < years.length; i++) {%>
 							<h4 class="categories__name"><%= years[i] %></h4>
 
 							<div class="category__links">
-								<% for(let n=0; n<(links[years[i]].length); n++) { %>
+								<% for (let n=0; n < links[years[i]].length; n++) { %>
 
-									<a class="categories__link" href="/<%= linkName %>/<%= years[i] %>_<%= links[years[i]][n] %>">ЗНО онлайн <span><%= years[i] %> року</span> з <%= nameRodovuyVidminok %> – <span><%= testNames[links[years[i]][n]] %></span></a>
+									<a class="categories__link" href="/<%= linkName %>/<%= years[i] %>_<%= links[years[i]][n] %>">ЗНО онлайн 
+									<span><%= years[i] %> року</span> з <%= nameRodovuyVidminok %> – <span><%= testNames[links[years[i]][n]] %></span></a>
 								
 	
 	
@@ -52,8 +55,10 @@
 				Реклама 50 грн
 			</div>
 		</main>
+
 		<%- include("../partials/footer.ejs") %>
 	</div>
+	<script defer type="module" src="/scripts/pages/subject.js"></script>
 </body>
 
 </html>

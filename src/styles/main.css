@@ -7,6 +7,8 @@
   grid-template-columns: repeat(4, 1fr);
 }
 
+
+
 .test__item {
   padding: 10px;
   border-right: 1px solid #a9e5d3;
@@ -22,13 +24,6 @@
 }
 .test__item:hover {
   background-color: #41a88a;
-}
-.test__levels {
-  margin-top: 35px;
-  width: 100%;
-}
-.test__levels > .test__item {
-  width: 50%;
 }
 
 

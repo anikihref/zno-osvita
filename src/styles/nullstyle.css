@@ -87,17 +87,31 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 400;
 } 
 
-main {
-  flex: 1 1 auto;
+.wrapper {
+  display: flex;
+  flex-direction: column;
 }
 
+.footer {
+  margin-top: 100px;
+  background-color: #35866e;
+  min-height: 100px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  
+}
+
+.main {
+  flex: 1 1 auto;
+}
 .wrapper {
-	/* background-image: url('img/arman.jpg'); */
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position-y: center;
   margin: 0 auto;
-	padding-bottom: 50px;
   background-color: #fff;
   min-height: 100%;
   display: flex;
@@ -132,6 +146,7 @@ main {
 .header__nav {
   font-size: 0;
 }
+
 .header__link {
   font-size: 14px;
   background-color: #35866e;
@@ -209,3 +224,4 @@ main {
   font-style: italic;
   font-size: 1rem;
 }
+

@@ -28,7 +28,6 @@ class App {
 
     run() {
         this.addQuestionChangeListeners()
-        console.log('App started');
     }
 
     // ставит слушатели для кнопок и ссылок на вопросы

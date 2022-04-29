@@ -1,6 +1,6 @@
 import { addClass } from "../functions/attributes.js";
 import { hideElement, showElement } from "../functions/elementActions.js";
-import { test } from "../main.js";
+import { test } from "../pages/test.js";
 import { recreateQuestionWrapper } from "./create_func-question.js";
 
 
