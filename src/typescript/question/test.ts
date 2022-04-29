@@ -241,9 +241,6 @@ class Test {
             });
 
         const modal = new SuccessModal('finishModal', {
-            width: '500px',
-            height: '500px',
-            transition: 800,
             title: 'Ви завершили тест',
             content: 'Тест завершився. Перегляньте результат.',
             closable: false
@@ -271,17 +268,14 @@ class Test {
             hideElement(this.elements.$seeAllQuestionsBtn!); // прячем кнопку смотреть все
         });
 
-        // const modal = new SuccessModal('startModal', {
-        //     width: '500px',
-        //     height: '500px',
-        //     transition: 800,
-        //     title: 'Вітаю!',
-        //     content: 'Тест завершиться через 180 хв. Щасти!',
-        //     closable: false
-        // })
-        // modal.initialize(modal)
-        // modal.open()
-        // modal.close(3000, true)
+        const modal = new SuccessModal('startModal', {
+            title: 'Вітаю!',
+            content: 'Тест завершиться через 180 хв. Щасти!',
+            closable: false
+        })
+        modal.initialize(modal)
+        modal.open()
+        modal.close(3000, true)
     }
 
 

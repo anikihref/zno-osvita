@@ -114,7 +114,7 @@
 
 }
 .form__btn-block > div {
-	width: 25%;
+	width: 150px;
 	row-gap: 20px;
 }
 .form__btn-block-left {
@@ -124,6 +124,8 @@
 .form__btn {
 	color: #fff;
   min-height: 35px;
+	white-space: nowrap;
+	min-width: 100px;
 }
 
 .form__end-btn {
@@ -472,5 +474,9 @@
 
 	.radio__question-text {
 		font-size: .8rem;
+	}
+
+	.form__btn-block > div {
+		width: 110px;
 	}
 }

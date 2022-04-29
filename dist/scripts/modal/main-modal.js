@@ -13,18 +13,6 @@ export class Modal {
         this.$closeBtn = $closeBtn;
         this.initialized = initialized;
         this.listeners = listeners;
-        const modalStyle = this.$modal.style;
-        [
-            modalStyle.width,
-            modalStyle.height,
-            modalStyle.transitionDuration,
-            this.$modalLayer.style.transitionDuration,
-        ] = [
-            this.modalConfig.width,
-            this.modalConfig.height,
-            `${this.modalConfig.transition}ms`,
-            `${this.modalConfig.transition}ms`,
-        ];
     }
     initialize(modal) {
         this.initialized = true;
@@ -66,6 +54,7 @@ export class Modal {
         this.$modalLayer.style.display = "block";
         setTimeout(() => {
             this.$modalLayer.classList.add("modal-layer_active");
+            document.body.classList.add('body_hidden');
             document.body.style.overflow = "hidden";
         }, 0);
     }
@@ -76,18 +65,19 @@ export class Modal {
             this.$modalLayer.classList.remove("modal-layer_active");
             setTimeout(() => {
                 this.$modalLayer.style.display = "none";
-                document.body.style.overflow = "visible";
+                document.body.classList.remove('body_hidden');
+                document.body.style.overflow = '';
                 if (deleteModal) {
                     Modal.modalsList[this.modalName].delete();
                 }
-            }, this.modalConfig.transition);
+            }, 600);
         }, time);
     }
     delete() {
         setTimeout(() => {
             this.$modalLayer.remove();
             delete Modal.modalsList[this.modalName];
-        }, this.modalConfig.transition);
+        }, 600);
     }
 }
 Modal.modalsList = {};

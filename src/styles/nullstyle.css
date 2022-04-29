@@ -247,6 +247,19 @@ h6 {
   font-size: 1rem;
 }
 
+.body_hidden {
+  margin-right: calc(-1 * (100vw - 100%));
+}
+
+@media (max-width: 910px) {
+  .header__link {
+    font-size: 10px;
+    padding: 0 12px;
+    height: 30px;
+    align-items: center;
+  }
+}
+
 @media (max-width: 768px) {
   .main__advertising {
     display: none;
@@ -256,18 +269,7 @@ h6 {
     width: 100%;
   }
 
-  .header__link {
-    font-size: 10px;
-    padding: 0 12px;
-    height: 30px;
-    align-items: center;
-  }
-  .header__link:not(:last-child) {
-    border-right: 1px solid #a9e5d3;
-  }
-  .header__link:hover {
-    background-color: #41a88a;
-  }
+ 
   
   .authorization {
     padding-right: 10px;

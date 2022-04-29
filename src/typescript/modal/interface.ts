@@ -1,9 +1,6 @@
 interface ModalConfig {
-    width: string;
-    height: string;
     content: string | HTMLElement;
     title: string;
-    transition: number;
     closable: boolean;
 }
 

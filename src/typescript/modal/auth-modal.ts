@@ -10,11 +10,8 @@ class AuthModal extends Modal {
         protected $password = {} as AuthFieldElements
     ) {
         super(modalName, {
-            width: "500px",
-            height: "500px",
             content: `Do not create this modal`,
             title: `You can create LogInModal or RegisterModal instead`,
-            transition: 700,
             closable: true,
         });
 

@@ -2,11 +2,8 @@ import { Modal } from "./main-modal.js";
 class AuthModal extends Modal {
     constructor(modalName, $form = document.createElement("div"), $seePasswordBtn = document.createElement("div"), $buttonsBlock = document.createElement("div"), $login = {}, $password = {}) {
         super(modalName, {
-            width: "500px",
-            height: "500px",
             content: `Do not create this modal`,
             title: `You can create LogInModal or RegisterModal instead`,
-            transition: 700,
             closable: true,
         });
         this.modalName = modalName;
