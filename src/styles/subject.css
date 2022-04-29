@@ -29,6 +29,7 @@
 .categories__link {
   display: block;
   color: #1a5785;
+  line-height: 120%;
   font-size: 1.0714285714rem;
 }
 
@@ -41,4 +42,32 @@
 }
 .categories__link:not(:last-child) {
   margin-bottom: 12px;
+}
+
+@media (max-width: 425px) {
+  .main__test-name {
+    padding: 16px 10px;
+  }
+
+  .test-name__pre-title {
+    font-size: .9rem;
+  }
+
+  .test-name__title {
+    font-size: 1.2rem;
+  }
+  
+  .categories {
+    margin-top: 25px;
+  }
+  
+
+  
+  .categories__name {
+    font-size: 1rem;
+  }
+  .categories__link {
+    font-size: .8rem;
+  }
+
 }

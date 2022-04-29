@@ -178,17 +178,6 @@ class Test {
             this.info.question.render();
             hideElement(this.elements.$seeAllQuestionsBtn);
         });
-        const modal = new SuccessModal('startModal', {
-            width: '500px',
-            height: '500px',
-            transition: 800,
-            title: 'Вітаю!',
-            content: 'Тест завершиться через 180 хв. Щасти!',
-            closable: false
-        });
-        modal.initialize(modal);
-        modal.open();
-        modal.close(3000, true);
     }
     setListeners() {
         var _a;
