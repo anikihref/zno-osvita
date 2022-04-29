@@ -16,6 +16,7 @@ export let questions; // здесь все вопросы
 
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/src")); // делаем папку исходников статичной
+app.use(express.static(__dirname + "/dist")); // делаем папку исходников статичной
 
 
 app.use("/math", mathRouter);
