@@ -1,0 +1,16 @@
+.header {
+  display: none;
+  &__dropdown {
+  }
+
+  &__dropdown-btn {
+  }
+
+  &__dropdown-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  &__link {
+  }
+}

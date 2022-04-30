@@ -7,16 +7,54 @@
 </head>
 <body>
   <div class="wrapper">
-    @@include('partials/header.html')
+    <div class="header__content">
+      <div class="header__main">
+        <nav class="header__nav">
+          <a href="#" class="header__link active__link">ЗНО-онлайн</a>
+          <a href="#" class="header__link">ОСВІТА.UA</a>
+          <a href="#" class="header__link">Все про вступ</a>
+          <a href="#" class="header__link">Все про ЗНО</a>
+          <a href="#" class="header__link">Вступ.ОСВІТА.UA</a>
+          <a href="#" class="header__link">Рейтинги ВНЗ</a>
+        </nav>
+    
+        <div class="header__dropdown">
+          <button class="header__dropdown-btn">
+            vv
+          </button>
+    
+          <nav class="header__dropdown-nav">
+            <a href="#" class="header__link dropdown__link">ЗНО-онлайн</a>
+            <a href="#" class="header__link dropdown__link">ОСВІТА.UA</a>
+            <a href="#" class="header__link dropdown__link">Все про вступ</a>
+            <a href="#" class="header__link dropdown__link">Все про ЗНО</a>
+            <a href="#" class="header__link dropdown__link">Вступ.ОСВІТА.UA</a>
+            <a href="#" class="header__link dropdown__link">Рейтинги ВНЗ</a>
+          </nav>
+        </div>
+        
+    
+    
+        <div class="authorization">
+          <a href="" class="authorization__log-in" id="log-in">Вхід</a>
+          <span>/</span>
+          <a href="" class="authorization__register" id="register">Реєстрація</a>
+        </div>
+      </div>
+      <div class="header__title-block">
+        <h1 class="header__title">ЗНО-ОНЛАЙН</h1>
+        <p>Онлайн — тести зовнішнього оцінювання</p>
+      </div>
+    
+    
+    </div>
 
     <main class="main">
-
-      <h1>kasdasdffy</h1>
-
     </main>
 
     @@include('partials/footer.html')
   </div>
  
+  <script defer type="module" src="/static/script/pages/main.js"></script>
 </body>
 </html>
