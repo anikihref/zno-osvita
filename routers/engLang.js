@@ -33,7 +33,6 @@ engLangRouter.get("/", (req, res) => {
     years: years,
     links: links,
     testNames: testNames,
-		styleFile: 'subject.css'
   });
 });
 
@@ -44,7 +43,7 @@ engLangRouter.get("/2021_demonstration", (req, res) => {
 		questionNum: testsPath.length,
 		pageName: "демонстраційний варіант",
 		subjectNames: subjectNames,
-		styleFile: 'test.css'
+
 	})
 });
 
@@ -57,7 +56,7 @@ engLangRouter.get("/2021_probniyTest", (req, res) => {
 		questionNum: testsPath.length,
 		pageName: "пробний тест",
 		subjectNames: subjectNames,
-		styleFile: 'test.css'
+
 	})
 });
 
@@ -70,7 +69,7 @@ engLangRouter.get("/2021_osnovna", (req, res) => {
 		questionNum: testsPath.length,
 		pageName: "основна сесія",
 		subjectNames: subjectNames,
-		styleFile: 'test.css'
+
 	})
 });
 
@@ -83,7 +82,7 @@ engLangRouter.get("/2021_dodatkova", (req, res) => {
 		questionNum: testsPath.length,
 		pageName: "додаткова сесія",
 		subjectNames: subjectNames,
-		styleFile: 'test.css'
+
 	})
 });
 
@@ -98,7 +97,7 @@ engLangRouter.get("/2020_demonstration", (req, res) => {
 		questionNum: testsPath.length,
 		pageName: "демонстраційний варіант",
 		subjectNames: subjectNames,
-		styleFile: 'test.css'
+
 	})
 });
 
@@ -111,7 +110,7 @@ engLangRouter.get("/2020_probniyTest", (req, res) => {
 		questionNum: testsPath.length,
 		pageName: "пробний тест",
 		subjectNames: subjectNames,
-		styleFile: 'test.css'
+
 	})
 });
 
@@ -124,7 +123,7 @@ engLangRouter.get("/2020_osnovna", (req, res) => {
 		questionNum: testsPath.length,
 		pageName: "основна сесія",
 		subjectNames: subjectNames,
-		styleFile: 'test.css'
+
 	})
 });
 
@@ -137,7 +136,7 @@ engLangRouter.get("/2020_dodatkova", (req, res) => {
 		questionNum: testsPath.length,
 		pageName: "додаткова сесія",
 		subjectNames: subjectNames,
-		styleFile: 'test.css'
+
 	})
 });
 

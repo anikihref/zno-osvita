@@ -1,24 +1,26 @@
-.main__test-name {
+.test-name {
   padding: 24px 20px;
   background-color: #35866e;
 }
-.test-name__pre-title {
-  font-size: 1.1428571429rem;
-  line-height: 162.5%;
-  color: #b2e2d3;
-}
+
 .test-name__title {
   color: #fff;
   font-size: 1.5714285714rem;
   line-height: 118.1818181818%;
 }
 
-.categories {
-  margin-top: 25px;
+.test-name__pre-title {
+  font-size: 1.1428571429rem;
+  line-height: 162.5%;
+  color: #b2e2d3;
 }
 
 .category__links:not(:last-child) {
-	margin-bottom: 50px;
+  margin-bottom: 50px;
+}
+
+.categories {
+  margin-top: 25px;
 }
 
 .categories__name {
@@ -26,6 +28,7 @@
   font-weight: 700;
   font-size: 1.1428571429rem;
 }
+
 .categories__link {
   display: block;
   color: #1a5785;
@@ -34,40 +37,40 @@
 }
 
 .categories__link:hover {
-	text-decoration: underline dotted;
+  -webkit-text-decoration: underline dotted;
+          text-decoration: underline dotted;
 }
 
 .categories__link span {
   font-weight: 700;
 }
+
 .categories__link:not(:last-child) {
   margin-bottom: 12px;
 }
 
 @media (max-width: 425px) {
-  .main__test-name {
+  .test-name {
     padding: 16px 10px;
-  }
-
-  .test-name__pre-title {
-    font-size: .9rem;
   }
 
   .test-name__title {
     font-size: 1.2rem;
   }
-  
+
+  .test-name__pre-title {
+    font-size: 0.9rem;
+  }
+
   .categories {
     margin-top: 25px;
   }
-  
 
-  
   .categories__name {
     font-size: 1rem;
   }
-  .categories__link {
-    font-size: .8rem;
-  }
 
+  .categories__link {
+    font-size: 0.8rem;
+  }
 }

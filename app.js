@@ -4,7 +4,7 @@ import fs from "fs";
 import { mathRouter } from "./routers/math.js";
 import { engLangRouter } from "./routers/engLang.js";
 import { ukrLangRouter } from "./routers/ukrLang.js";
-import { log } from "console";
+
 
 const PORT = 5000;
 const __dirname = path.resolve();
@@ -14,9 +14,10 @@ const jsonParser = express.json();
 
 export let questions; // здесь все вопросы
 
+
 app.set("view engine", "ejs");
-app.use(express.static(__dirname + "/src")); // делаем папку исходников статичной
-app.use(express.static(__dirname + "/dist")); // делаем папку исходников статичной
+app.use(express.static(__dirname + "/dist/static"));
+app.use(express.static(__dirname + "/src"));
 
 
 app.use("/math", mathRouter);
@@ -32,15 +33,17 @@ fs.readFile(path.join(__dirname, "src", "questions.json"), { encoding: "utf-8" }
 });
 
 
+
 app.get("/", (req, res) => {
+
   res.render("pages/main", {
     title: "ЗНО освіта ремейк",
-		styleFile: 'main.css'
   });
 });
 
 // получаем вопросы
 app.get("/getQuestions", (req, res) => {
+
   const queries = req.query;
 
 	res.send(questions[queries.subject][`year_${queries.year}`][queries.test]);

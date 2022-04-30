@@ -6,8 +6,8 @@ export const paths = {
   },
   build: {
     html: './dist/',
-    scss: './dist/css/',
-    typescript: './dist/script/'
+    scss: './dist/static/css/',
+    typescript: './dist/static/script/'
   },
   watch: {
     html: './src/html/**/*.html',

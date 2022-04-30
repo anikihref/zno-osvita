@@ -35,7 +35,6 @@ ukrLangRouter.get("/", (req, res) => {
     years: years,
     links: links,
     testNames: testNames,
-		styleFile: 'subject.css'
   });
 });
 
@@ -50,7 +49,7 @@ ukrLangRouter.get("/2021_osnovna", (req, res) => {
 		questionNum: testsPath.length,
 		pageName: "основна сесія",
 		subjectNames: subjectNames,
-		styleFile: 'test.css'
+
 	})
 });
 
@@ -63,7 +62,7 @@ ukrLangRouter.get("/2021_dodatkova", (req, res) => {
 		questionNum: testsPath.length,
 		pageName: "додаткова сесія",
 		subjectNames: subjectNames,
-		styleFile: 'test.css'
+
 	})
 });
 
@@ -77,7 +76,7 @@ ukrLangRouter.get("/2020_osnovna", (req, res) => {
 		questionNum: testsPath.length,
 		pageName: "основна сесія",
 		subjectNames: subjectNames,
-		styleFile: 'test.css'
+
 	})
 });
 
@@ -90,7 +89,7 @@ ukrLangRouter.get("/2020_dodatkova", (req, res) => {
 		questionNum: testsPath.length,
 		pageName: "додаткова сесія",
 		subjectNames: subjectNames,
-		styleFile: 'test.css'
+
 	})
 });
 
@@ -104,7 +103,7 @@ ukrLangRouter.get("/2005_osnovna", (req, res) => {
 		questionNum: testsPath.length,
 		pageName: "основна сесія",
 		subjectNames: subjectNames,
-		styleFile: 'test.css'
+
 	})
 });
 
@@ -117,7 +116,7 @@ ukrLangRouter.get("/2005_dodatkova", (req, res) => {
 		questionNum: testsPath.length,
 		pageName: "додаткова сесія",
 		subjectNames: subjectNames,
-		styleFile: 'test.css'
+
 	})
 });
 
@@ -129,7 +128,7 @@ ukrLangRouter.get("/2005_demonstration", (req, res) => {
 		questionNum: testsPath.length,
 		pageName: "демонстраційний варіант",
 		subjectNames: subjectNames,
-		styleFile: 'test.css'
+
 	})
 });
 
